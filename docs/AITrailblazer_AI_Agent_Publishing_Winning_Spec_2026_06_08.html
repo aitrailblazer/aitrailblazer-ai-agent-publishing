@@ -60,10 +60,10 @@
       <Strength category="Potential Impact">Converts archive debt into living, monitorable agent memory for publishers and research teams.</Strength>
       <Strength category="Quality Of Idea">TripCodes as memorable primitives plus River continuity are more differentiated than plain RAG.</Strength>
     </JudgingStrengths>
-    <RemainingBottleneck>Live runtime proof completeness: seeded MongoDB Atlas data, MCP inspection evidence, Gemini lane execution, and hosted Cloud Run flow.</RemainingBottleneck>
+    <RemainingBottleneck>Submission packaging and video. The hosted runtime now proves Gemini, Agent Builder, MongoDB, and official MongoDB MCP; Atlas Free remains the preferred external MongoDB deployment path when credentials are available.</RemainingBottleneck>
   </PublicSurfaceAlignment>
   <FinalSpecEvaluation>
-    <Verdict>Production-ready winning spec. 8.7 out of 10 before live-runtime completion.</Verdict>
+    <Verdict>Production-ready winning spec. 9.1 out of 10 after live-runtime completion, with Atlas Free upgrade available for stronger MongoDB-track signaling.</Verdict>
     <DominantCausalLine>This StrategiXVisualSpec operationalizes a compliant MongoDB-track entry: AITrailblazer is the generalized publisher-memory agent, DeltaSignal is proof/source only, and the vertical slice is constrained to three seeded River articles, one TripCode path, visible MongoDB and MCP context, Gemini synthesis, and second-turn memory.</DominantCausalLine>
     <ScoringProjection>
       <Category name="Technological Implementation" points="350">High if /v1/judge-demo proves Gemini calls, Agent Builder lane, MongoDB collections, MCP context, and second-turn memory.</Category>
@@ -72,15 +72,15 @@
       <Category name="Quality Of Idea" points="150">Strong because TripCodes act as handles, Rivers act as trajectories, and MongoDB is structurally necessary.</Category>
       <Category name="Compliance" points="100">Full coverage across new-project framing, permitted tooling audit, public repo, license, hosted URL, video, and Marketplace/free-tier billing path.</Category>
     </ScoringProjection>
-    <Bottleneck>Runtime proof gap: seeded MongoDB data, live TripCode resolution to River traversal to second-turn memory, MCP visibility, and hosted Cloud Run verification.</Bottleneck>
+    <Bottleneck>Atlas-specific proof is optional but strategically useful. The current deployed proof uses MongoDB plus official MongoDB MCP in Cloud Run; an Atlas Free connection string can replace the embedded store without changing the app contract.</Bottleneck>
     <FailureChain>Conceptual panels without actual invocations can create low implementation score or screening failure.</FailureChain>
     <Consequence>Narrative strength is wasted and podium placement is at risk despite superior positioning.</Consequence>
-    <InvestorTakeaway>Execute immediate priorities: seed dataset, Gemini lane, compliance audit, and video. Highest asymmetric return comes from visible runtime proof.</InvestorTakeaway>
+    <InvestorTakeaway>Execute immediate priorities: keep the live proof stable, add Atlas Free if it can be done without risk, and record the video. Highest asymmetric return now comes from submission clarity.</InvestorTakeaway>
   </FinalSpecEvaluation>
   <ExecutionPriorities>
     <Item order="1">Lock naming and framing: AITrailblazer is the generalized publisher agent; DeltaSignal is proof archive only.</Item>
     <Item order="2">Implement minimal vertical slice: archive ingestion to MongoDB records to MCP context to Gemini synthesis to second-turn River memory.</Item>
-    <Item order="3">Deploy on Cloud Run with Secret Manager, Atlas Free or Marketplace-billed MongoDB, and a fresh-browser hosted URL check.</Item>
+    <Item order="3">Deploy on Cloud Run with Secret Manager-ready config, embedded MongoDB judge proof, and Atlas Free or Marketplace-billed MongoDB as the preferred external MongoDB target.</Item>
     <Item order="4">Audit and rebuild contest-facing evidence using permitted Google tooling only; remove prohibited AI development traces and competitor dependencies.</Item>
     <Item order="5">Produce a public demo video under three minutes: TripCode resolution, MongoDB records, MCP and Gemini calls, follow-up memory.</Item>
   </ExecutionPriorities>
@@ -250,6 +250,14 @@
     <Fit>MongoDB Gemini CLI extension is free to use and fits the permitted Google tooling path.</Fit>
     <Fit>For any Atlas usage that should draw down hackathon credits, subscribe through Google Cloud Marketplace for unified billing.</Fit>
   </MongoDBTrackFit>
+  <MongoDBAtlasSubmissionPlan>
+    <Position>MongoDB Atlas is the preferred competition deployment for MongoDB-track signaling; embedded MongoDB remains the self-contained judge-proof fallback.</Position>
+    <CurrentProof>The hosted Cloud Run runtime starts MongoDB, seeds the six judge-demo collections, launches official mongodb-mcp-server HTTP transport, and proves the official MCP find tool against the tripcodes collection.</CurrentProof>
+    <AtlasUpgrade>When Atlas Free credentials are available, set MONGODB_DEPLOYMENT_KIND=atlas and MDB_MCP_CONNECTION_STRING to the Atlas connection string; the same MCP endpoint, Runtime Proof panel, and TripCode flow will report Atlas-backed collection access.</AtlasUpgrade>
+    <NoSecretPolicy>Atlas connection strings, database users, service account credentials, and API secrets must stay in environment variables or Secret Manager, never in source, screenshots, docs, or public repo history.</NoSecretPolicy>
+    <SubmissionLanguage>Describe the project as MongoDB Atlas-ready and MCP-proven: Atlas is the intended managed memory layer, while the live demo is resilient because the Cloud Run image includes a seeded MongoDB/MCP proof path.</SubmissionLanguage>
+    <DecisionRule>If Atlas setup can be completed without destabilizing Cloud Run before the deadline, use Atlas Free. If not, submit the current live MongoDB MCP proof and call Atlas the production target.</DecisionRule>
+  </MongoDBAtlasSubmissionPlan>
   <MongoDBBillingPlan>
     <FreeDevelopment>Use local MongoDB and Atlas Free for no-cost development, demos, and smoke tests.</FreeDevelopment>
     <GeminiCLIExtension>The MongoDB Gemini CLI extension is free to use, requires a Google account, and should be checked against current Gemini CLI requirements.</GeminiCLIExtension>
@@ -388,11 +396,11 @@
     ];
 
     const finalEvaluation = [
-      ['Overall verdict', 'Production-ready winning spec: 8.7 / 10 before live-runtime completion.'],
+      ['Overall verdict', 'Production-ready winning spec: 9.1 / 10 after live-runtime completion, with Atlas Free as the preferred upgrade path.'],
       ['Dominant causal line', 'The spec locks AITrailblazer as the generalized publisher-memory agent, bounds DeltaSignal to proof/source only, and mandates a tiny vertical slice: three River articles, one TripCode path, MongoDB/MCP/Gemini flows, and memory follow-up.'],
-      ['Bottleneck', 'Runtime proof gap: seeded MongoDB data, live flows, MCP visibility, and hosted Cloud Run verification.'],
+      ['Bottleneck', 'Atlas-specific proof is optional but useful; the hosted service already proves MongoDB plus official MongoDB MCP, Gemini, Agent Builder, and Cloud Run.'],
       ['Failure chain', 'Conceptual panels without actual invocations weaken implementation score or trigger screening risk.'],
-      ['Investor takeaway', 'Execute the seed dataset, Gemini lane, compliance audit, and video. Visible runtime proof is the highest-return work.']
+      ['Investor takeaway', 'Keep the live proof stable, add Atlas Free only if it can be done without risk, then focus on the demo video and Devpost clarity.']
     ];
 
     const finalScoringProjection = [
@@ -487,6 +495,15 @@
       ['User Surface', 'Web demo with TripCode packet, River view, follow-up memory']
     ];
 
+    const atlasPlan = [
+      ['Preferred target', 'MongoDB Atlas Free is the preferred MongoDB-track deployment because it makes the managed memory layer explicit to judges.'],
+      ['Current proof', 'Cloud Run currently packages MongoDB, six seeded judge-demo collections, and official mongodb-mcp-server HTTP transport so the demo is self-contained.'],
+      ['Upgrade switch', 'Set MONGODB_DEPLOYMENT_KIND=atlas and MDB_MCP_CONNECTION_STRING to an Atlas connection string; the same MCP find call and Runtime Proof panel become Atlas-backed.'],
+      ['Secret boundary', 'Atlas URI, database users, API client IDs, and secrets stay in environment variables or Secret Manager only.'],
+      ['Submission wording', 'Say Atlas is the production memory target and official MongoDB MCP is already live in the hosted proof path.'],
+      ['Deadline rule', 'Use Atlas Free if setup is fast and stable. Do not risk the working Cloud Run proof solely to change the backing MongoDB deployment.']
+    ];
+
     const executionVerdict = [
       ['Verdict', 'Strong MongoDB Track Contender', 'High win probability if the vertical slice, MCP visibility, compliance audit, hosted URL, and video are completed.'],
       ['Dominant causal line', 'Rules + criteria fit', 'Fresh publisher-memory product, DeltaSignal as proof/source, MongoDB as track memory layer, Gemini as synthesis lane.'],
@@ -496,9 +513,9 @@
 
     const executionPriorities = [
       ['1. Lock framing', 'AITrailblazer is the generalized publisher agent; DeltaSignal is proof archive only.'],
-      ['2. Seed three River articles', 'Prior thesis, anchor TripCode article, and follow-up monitor-next article in MongoDB Atlas or local demo store.'],
+      ['2. Seed three River articles', 'Prior thesis, anchor TripCode article, and follow-up monitor-next article in MongoDB Atlas Free when available, with embedded MongoDB as judge-proof fallback.'],
       ['3. Ship vertical slice', 'TripCode resolution -> MongoDB records -> MCP context -> Gemini synthesis -> second-turn River memory.'],
-      ['4. Deploy cleanly', 'Cloud Run, Secret Manager, MongoDB via Marketplace/free tier, hosted URL fresh-browser test.'],
+      ['4. Deploy cleanly', 'Cloud Run, Secret Manager-ready Atlas variables, MongoDB via Marketplace/free tier where available, hosted URL fresh-browser test.'],
       ['5. Audit evidence', 'Contest-facing code and evidence use permitted Google tooling only and remove prohibited traces.'],
       ['6. Record video', 'Under three minutes: TripCode resolution, MongoDB records, MCP/Gemini calls, follow-up memory.']
     ];
@@ -1120,6 +1137,24 @@
                   ${mongoCollections.map(([title, body]) => html`
                     <article class="card">
                       <span class="tag">MongoDB</span>
+                      <h3>${title}</h3>
+                      <p>${body}</p>
+                    </article>
+                  `)}
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <div class="inner">
+                <div class="section-head">
+                  <h2>Atlas Plan</h2>
+                  <p>Atlas is the preferred managed MongoDB target; the embedded MongoDB path keeps the live judge proof stable.</p>
+                </div>
+                <div class="grid cards-3">
+                  ${atlasPlan.map(([title, body]) => html`
+                    <article class="card">
+                      <span class="tag">Atlas</span>
                       <h3>${title}</h3>
                       <p>${body}</p>
                     </article>
