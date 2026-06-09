@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ExecPlan AITrailblazer MongoDB Atlas Runtime</title>
+  <meta name="description" content="Implemented ExecPlan for making MongoDB Atlas a first-class runtime target for the AITrailblazer AI Agent Publishing competition submission.">
+  <style>
+    html { background:#080a10; color:#f7f0df; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; line-height:1.45; }
+    body { margin:0; min-height:100vh; }
+    atlas-execplan:not(:defined) { display:block; padding:32px; }
+  </style>
+</head>
+<body>
+  <atlas-execplan></atlas-execplan>
+
+  <script id="atlas-execplan-xml" type="application/xml">
+<StrategiXVisualSpec id="execplan-aitrailblazer-mongodb-atlas-runtime-2026-06-09" version="1.0" status="implemented" canonicalFormat="html">
+  <CanonicalArtifact>
+    <Title>ExecPlan AITrailblazer MongoDB Atlas Runtime</Title>
+    <Type>ExecPlan</Type>
+    <Owner>AITrailblazer AI Agent Publishing</Owner>
+    <File>docs/ExecPlan_AITrailblazer_MongoDB_Atlas_Runtime_2026_06_09.html</File>
+    <Created>2026-06-09</Created>
+    <Implemented>2026-06-09</Implemented>
+  </CanonicalArtifact>
+  <Goal>Make MongoDB Atlas a first-class competition runtime target while preserving the already working embedded MongoDB plus official MongoDB MCP judge proof.</Goal>
+  <Context>
+    <Fact>The hosted Cloud Run proof already invokes Gemini, Agent Builder, MongoDB, and official MongoDB MCP.</Fact>
+    <Fact>MongoDB Atlas is the preferred MongoDB-track managed memory layer for competition positioning.</Fact>
+    <Fact>No Atlas credential may be committed to the public repository or durable docs.</Fact>
+  </Context>
+  <AllowedChanges>
+    <Path>scripts/cloud-run-entrypoint.sh</Path>
+    <Path>scripts/mongodb-atlas-check.sh</Path>
+    <Path>Makefile</Path>
+    <Path>.env.example</Path>
+    <Path>README.html</Path>
+    <Path>CHANGELOG.html</Path>
+    <Path>docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html</Path>
+    <Path>docs/ExecPlan_AITrailblazer_MongoDB_Atlas_Runtime_2026_06_09.html</Path>
+  </AllowedChanges>
+  <ForbiddenChanges>
+    <Rule>Do not commit Atlas URI, MongoDB database passwords, Atlas service-account credentials, Google Cloud tokens, or Secret Manager values.</Rule>
+    <Rule>Do not remove the embedded MongoDB judge-proof path unless Atlas is deployed and verified live.</Rule>
+    <Rule>Do not claim Atlas is live unless Cloud Run runtime proof is actually backed by an Atlas connection string.</Rule>
+  </ForbiddenChanges>
+  <ImplementationPlan>
+    <Step status="done">Add explicit runtime mode selection with MONGODB_DEPLOYMENT_KIND=embedded|local|atlas.</Step>
+    <Step status="done">Fail fast when Atlas mode is selected without a non-local MDB_MCP_CONNECTION_STRING.</Step>
+    <Step status="done">Skip starting local mongod in Atlas mode and let the official MCP server connect to Atlas.</Step>
+    <Step status="done">Keep demo seeding optional and enabled by default through MONGODB_SEED_DEMO_DATA=true.</Step>
+    <Step status="done">Add an Atlas preflight script for local or CI validation.</Step>
+    <Step status="done">Add make deploy-atlas using Google Secret Manager for MDB_MCP_CONNECTION_STRING.</Step>
+    <Step status="done">Update public docs to explain Atlas as the preferred target and embedded MongoDB as the stable fallback.</Step>
+  </ImplementationPlan>
+  <RuntimeModes>
+    <Mode name="embedded">Starts local mongod inside Cloud Run, seeds judge-demo collections, starts official MongoDB MCP HTTP transport, and proves MCP find calls.</Mode>
+    <Mode name="atlas">Requires MDB_MCP_CONNECTION_STRING from Secret Manager, skips local mongod, seeds the Atlas demo database when enabled, starts official MongoDB MCP HTTP transport, and reports Atlas-backed evidence when MONGODB_DEPLOYMENT_KIND=atlas.</Mode>
+  </RuntimeModes>
+  <Commands>
+    <Command purpose="embedded-deploy">make deploy</Command>
+    <Command purpose="atlas-preflight">MONGODB_DEPLOYMENT_KIND=atlas MDB_MCP_CONNECTION_STRING='mongodb+srv://...' MCP_SERVER_URL=http://127.0.0.1:3000/mcp make atlas-check</Command>
+    <Command purpose="atlas-secret">gcloud secrets create publishing-mongodb-atlas-uri --project=aitrailblazer-ai-publishing --replication-policy=automatic --data-file=-</Command>
+    <Command purpose="atlas-deploy">make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri</Command>
+    <Command purpose="hosted-proof">curl -s https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/v1/judge-demo</Command>
+  </Commands>
+  <AcceptanceCriteria>
+    <Criterion status="done">Embedded mode still starts locally and returns MongoDB MCP live proof.</Criterion>
+    <Criterion status="done">Atlas mode has a local preflight that rejects localhost connection strings.</Criterion>
+    <Criterion status="done">Atlas deploy path reads the connection string from Secret Manager.</Criterion>
+    <Criterion status="done">make check passes with 100 percent Go coverage and static HTML validation.</Criterion>
+    <Criterion status="done">Public docs distinguish current live MongoDB MCP proof from optional Atlas-backed proof.</Criterion>
+  </AcceptanceCriteria>
+  <Evidence>
+    <Item>Hosted proof before Atlas upgrade reports Gemini live invoked, Agent Builder live invoked, MongoDB live via MongoDB MCP, and MongoDB MCP live invoked.</Item>
+    <Item>Atlas-specific proof is enabled by configuration and Secret Manager once Atlas Free credentials exist.</Item>
+  </Evidence>
+</StrategiXVisualSpec>
+  </script>
+
+  <script type="module">
+    import { LitElement, html, css } from 'https://unpkg.com/lit@3/index.js?module';
+    const xml = document.getElementById('atlas-execplan-xml')?.textContent.trim() ?? '';
+    const modes = [
+      ['Embedded', 'Default stable judge proof: Cloud Run starts local MongoDB, seeds demo collections, starts official MongoDB MCP, and serves the Go API.'],
+      ['Atlas', 'Preferred competition target: Cloud Run skips local MongoDB and connects the official MCP server to Atlas using a Secret Manager connection string.']
+    ];
+    const done = [
+      ['Runtime guard', 'Atlas mode fails fast if the connection string is missing or localhost.'],
+      ['Secret deploy', 'make deploy-atlas binds MDB_MCP_CONNECTION_STRING from Secret Manager.'],
+      ['MCP parity', 'Both modes use official mongodb-mcp-server HTTP transport and the find tool.'],
+      ['Stable fallback', 'Embedded proof remains intact for deadline-safe demos.']
+    ];
+    const commands = ['make deploy', 'make atlas-check', 'make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri', 'make check'];
+    class AtlasExecplan extends LitElement {
+      static styles = css`
+        :host{display:block;min-height:100vh;background:radial-gradient(circle at 18% 0%,rgba(77,199,132,.18),transparent 32%),radial-gradient(circle at 82% 8%,rgba(235,190,90,.14),transparent 34%),#080a10}
+        main{width:min(1160px,calc(100vw - 32px));margin:0 auto;padding:34px 0 56px}
+        .hero,.panel,.card{border:1px solid rgba(235,190,90,.26);background:rgba(16,19,26,.86);border-radius:8px;box-shadow:0 22px 70px rgba(0,0,0,.26)}
+        .hero{padding:26px}.panel{padding:18px;margin-top:16px}.card{padding:16px;min-height:112px}
+        .eyebrow{color:#ebbe5a;font-size:12px;font-weight:900;text-transform:uppercase}
+        h1{margin:8px 0 10px;font-size:clamp(34px,5vw,60px);line-height:1;letter-spacing:0}
+        h2{margin:0 0 10px;color:#ebbe5a;font-size:19px;letter-spacing:0}
+        h3{margin:0 0 8px;color:#f7f0df;font-size:17px;letter-spacing:0}
+        p{margin:0;color:rgba(247,240,223,.76)}
+        .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+        .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+        .tag{display:inline-block;color:#4dc784;border:1px solid rgba(77,199,132,.35);background:rgba(77,199,132,.1);border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;margin-bottom:8px}
+        code{color:#ffe08a}
+        pre{white-space:pre-wrap;overflow:auto;max-height:460px;font-size:12px;color:#e8dcc1;background:rgba(0,0,0,.30);border-radius:8px;padding:14px}
+        @media(max-width:900px){.grid,.grid4{grid-template-columns:1fr}}
+      `;
+      render(){return html`
+        <main>
+          <section class="hero">
+            <div class="eyebrow">Implemented ExecPlan</div>
+            <h1>MongoDB Atlas becomes a first-class runtime target.</h1>
+            <p>The live demo keeps its embedded MongoDB MCP proof, while Atlas mode now has fail-fast validation and a Secret Manager based deploy path.</p>
+          </section>
+          <section class="grid">${modes.map(([title,body])=>html`<article class="card"><span class="tag">Mode</span><h3>${title}</h3><p>${body}</p></article>`)}</section>
+          <section class="panel"><h2>Implemented</h2><div class="grid4">${done.map(([title,body])=>html`<article class="card"><span class="tag">Done</span><h3>${title}</h3><p>${body}</p></article>`)}</div></section>
+          <section class="panel"><h2>Operator Commands</h2><div class="grid4">${commands.map(command=>html`<article class="card"><code>${command}</code></article>`)}</div></section>
+          <section class="panel"><h2>Embedded XML Contract</h2><pre>${xml}</pre></section>
+        </main>`}
+    }
+    customElements.define('atlas-execplan', AtlasExecplan);
+  </script>
+</body>
+</html>

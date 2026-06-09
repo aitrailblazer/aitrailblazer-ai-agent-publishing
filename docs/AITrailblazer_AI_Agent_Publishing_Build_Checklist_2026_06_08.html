@@ -207,6 +207,8 @@ DEMO_SESSION_ID=demo-session-001</pre></div>
         <div class="check done"><span class="box"></span><span>Open the hosted URL from a fresh request and verify TripCode, River, collection-proof, and second-turn memory evidence.</span></div>
         <div class="check done"><span class="box"></span><span>Enable Discovery Engine / Agent Builder API, seed three Agent Search documents, create <code>aitrailblazer-pub-agent</code>, and wire <code>AGENT_BUILDER_ENDPOINT</code> into Cloud Run.</span></div>
         <div class="check done"><span class="box"></span><span>Package self-contained MongoDB runtime for judge proof; external Atlas can override with <code>MONGODB_DEPLOYMENT_KIND=atlas</code> and <code>MDB_MCP_CONNECTION_STRING</code>.</span></div>
+        <div class="check done"><span class="box"></span><span>Add Atlas-specific deploy path: <code>make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri</code> maps Secret Manager to <code>MDB_MCP_CONNECTION_STRING</code> and prevents Atlas credentials from entering source.</span></div>
+        <div class="check done"><span class="box"></span><span>Add Atlas preflight: <code>make atlas-check</code> requires <code>MONGODB_DEPLOYMENT_KIND=atlas</code> and rejects localhost MongoDB connection strings.</span></div>
         <div class="check done"><span class="box"></span><span>Configure official MongoDB MCP HTTP transport at <code>http://127.0.0.1:3000/mcp</code> inside Cloud Run.</span></div>
       </div>
     </section>
@@ -233,7 +235,7 @@ DEMO_SESSION_ID=demo-session-001</pre></div>
         <div class="check done"><span class="box"></span><span>Gemini runtime invocation and Agent Builder orchestration evidence are visible.</span></div>
         <div class="check todo"><span class="box"></span><span>Demo video is public and under three minutes.</span></div>
         <div class="check done"><span class="box"></span><span>README explains setup, architecture, demo URL, public repo, and MongoDB track fit.</span></div>
-        <div class="check todo"><span class="box"></span><span>Seed data is small enough for Atlas Free.</span></div>
+        <div class="check done"><span class="box"></span><span>Seed data is small enough for Atlas Free and the deploy path supports Atlas without source-stored credentials.</span></div>
         <div class="check done"><span class="box"></span><span>No committed secrets found in the contest-facing subtree scan; keep Devpost/session credentials and private screenshots out of final evidence.</span></div>
         <div class="check todo"><span class="box"></span><span>MongoDB track selected and all team members listed.</span></div>
       </div>

@@ -6,8 +6,11 @@ MONGO_PORT="${MONGODB_PORT:-27017}"
 MCP_HOST="${MONGODB_MCP_HOST:-127.0.0.1}"
 MCP_PORT="${MONGODB_MCP_PORT:-3000}"
 DB_NAME="${MONGODB_DATABASE:-aitrailblazer_demo}"
+DEPLOYMENT_KIND="$(printf '%s' "${MONGODB_DEPLOYMENT_KIND:-embedded}" | tr '[:upper:]' '[:lower:]')"
+SEED_DEMO_DATA="$(printf '%s' "${MONGODB_SEED_DEMO_DATA:-true}" | tr '[:upper:]' '[:lower:]')"
 
 export MONGODB_DATABASE="$DB_NAME"
+export MONGODB_DEPLOYMENT_KIND="$DEPLOYMENT_KIND"
 export MDB_MCP_CONNECTION_STRING="${MDB_MCP_CONNECTION_STRING:-mongodb://127.0.0.1:${MONGO_PORT}/?directConnection=true}"
 export MDB_MCP_READ_ONLY="${MDB_MCP_READ_ONLY:-true}"
 export MDB_MCP_TELEMETRY="${MDB_MCP_TELEMETRY:-disabled}"
@@ -25,6 +28,34 @@ cleanup() {
   done
 }
 trap cleanup EXIT INT TERM
+
+connection_is_local() {
+  case "$MDB_MCP_CONNECTION_STRING" in
+    mongodb://127.0.0.1:*|mongodb://localhost:*|mongodb://0.0.0.0:*)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+validate_connection_mode() {
+  case "$DEPLOYMENT_KIND" in
+    atlas)
+      if [[ -z "${MDB_MCP_CONNECTION_STRING:-}" ]] || connection_is_local; then
+        echo "MONGODB_DEPLOYMENT_KIND=atlas requires MDB_MCP_CONNECTION_STRING to point at an Atlas cluster." >&2
+        return 1
+      fi
+      ;;
+    embedded|local)
+      ;;
+    *)
+      echo "Unsupported MONGODB_DEPLOYMENT_KIND=${DEPLOYMENT_KIND}; use embedded, local, or atlas." >&2
+      return 1
+      ;;
+  esac
+}
 
 wait_for_mongo() {
   for _ in $(seq 1 60); do
@@ -135,11 +166,17 @@ database.reader_sessions.createIndex({ session_id: 1 }, { unique: true });
 "
 }
 
-mkdir -p /tmp/mongodb
-mongod --dbpath /tmp/mongodb --bind_ip 127.0.0.1 --port "$MONGO_PORT" --quiet --logpath /tmp/mongodb.log &
-children+=("$!")
+validate_connection_mode
+
+if [[ "$DEPLOYMENT_KIND" != "atlas" ]]; then
+  mkdir -p /tmp/mongodb
+  mongod --dbpath /tmp/mongodb --bind_ip 127.0.0.1 --port "$MONGO_PORT" --quiet --logpath /tmp/mongodb.log &
+  children+=("$!")
+fi
 wait_for_mongo
-seed_mongo
+if [[ "$SEED_DEMO_DATA" == "true" || "$SEED_DEMO_DATA" == "1" || "$SEED_DEMO_DATA" == "yes" ]]; then
+  seed_mongo
+fi
 
 mongodb-mcp-server \
   --transport http \

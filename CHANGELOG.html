@@ -114,7 +114,7 @@
         <li>The local proof surface is working and testable with 100% Go statement coverage.</li>
         <li>The hosted Cloud Run service invokes Gemini live and invokes the Google Cloud Agent Builder / Agent Search lane live.</li>
         <li>The public spec and README now prioritize a small, demonstrable vertical slice over broad platform scope.</li>
-        <li>The production submission still needs live MongoDB Atlas plus official MongoDB MCP runtime evidence before final judging.</li>
+        <li>The hosted service now proves MongoDB through official MongoDB MCP; Atlas mode is available through Secret Manager for stricter Atlas-backed proof.</li>
       </ul>
     </article>
     <script id="strategix-changelog-contract" type="application/xml">
@@ -134,7 +134,9 @@
   <Change date="2026-06-08" category="three-article-river">Hardened the demo dataset around three seeded River articles: prior thesis, anchor TripCode article, and follow-up monitor-next article.</Change>
   <Change date="2026-06-08" category="build-checklist">Added public build checklist for MVP runtime proof, schema, seed data, deployment, video, and submission gates.</Change>
   <Change date="2026-06-08" category="hosted-runtime">Deployed Cloud Run service with live Vertex AI Gemini invocation and live Agent Builder / Agent Search invocation over three seeded River documents.</Change>
-  <Status date="2026-06-08">Hosted Gemini and Agent Builder proof is live; final submission still requires live MongoDB Atlas plus official MongoDB MCP runtime evidence.</Status>
+  <Change date="2026-06-09" category="mongodb-runtime">Added embedded MongoDB plus official MongoDB MCP runtime proof and Atlas mode through Secret Manager.</Change>
+  <Change date="2026-06-09" category="execplan">Added and implemented the MongoDB Atlas runtime ExecPlan.</Change>
+  <Status date="2026-06-09">Hosted Gemini, Agent Builder, MongoDB, and official MongoDB MCP proof is live; Atlas Free is the preferred optional backing store when credentials are available.</Status>
 </StrategiXVisualSpec>
     </script>
   </main>

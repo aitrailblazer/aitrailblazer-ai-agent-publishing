@@ -110,6 +110,7 @@
 
     <h2>Build Checklist</h2>
     <p><a href="./docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html">Build checklist</a> tracks the submission gates: MongoDB persistence, MongoDB MCP proof, Gemini synthesis, Agent Builder orchestration evidence, hosted Cloud Run testing, and the under-three-minute demo video. The Cloud Run image now includes a self-contained MongoDB demo store plus the official MongoDB MCP HTTP server; production Atlas credentials can still override the embedded connection string.</p>
+    <p><a href="./docs/ExecPlan_AITrailblazer_MongoDB_Atlas_Runtime_2026_06_09.html">MongoDB Atlas runtime ExecPlan</a> records the implemented Atlas path: embedded mode for stable judge proof, Atlas mode through Secret Manager, and fail-fast checks that prevent accidental localhost credentials in Atlas deployments.</p>
 
     <h2>Required Technologies Used</h2>
     <ul>
@@ -128,7 +129,7 @@
 
     <h2>MCP Server Usage</h2>
     <p>The MCP proof should show schema, collection, retrieval, or tool-call evidence. The runtime response includes a Runtime Proof panel so judges do not have to infer partner usage.</p>
-    <p>Use the official MongoDB MCP server through <code>mongodb-mcp-server@latest</code>. Configure external Atlas credentials only through environment variables, then run <code>make mcp-check</code> and <code>make mcp-run</code>. The Cloud Run image starts MongoDB, seeds the judge demo collections, launches official MCP HTTP transport in read-only JSON mode with externally managed sessions, and points <code>MCP_SERVER_URL</code> at <code>http://127.0.0.1:3000/mcp</code>. The app sends <code>Accept: application/json, text/event-stream</code>, which is required by the official HTTP transport.</p>
+    <p>Use the official MongoDB MCP server through <code>mongodb-mcp-server@latest</code>. Configure external Atlas credentials only through environment variables or Secret Manager, then run <code>make atlas-check</code> before <code>make deploy-atlas</code>. The Cloud Run image starts MongoDB in embedded mode, or skips local MongoDB in Atlas mode, seeds the judge demo collections when enabled, launches official MCP HTTP transport in read-only JSON mode with externally managed sessions, and points <code>MCP_SERVER_URL</code> at <code>http://127.0.0.1:3000/mcp</code>. The app sends <code>Accept: application/json, text/event-stream</code>, which is required by the official HTTP transport.</p>
 
     <h2>Local Commands</h2>
     <pre><code>make check
@@ -137,7 +138,9 @@ make demo
 make validate
 make preview
 make mcp-check
-make mcp-run</code></pre>
+make atlas-check
+make mcp-run
+make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri</code></pre>
 
     <h2>Runtime Shape</h2>
     <p>The Go service mirrors the useful shape of <code>../deltasignal-ai-agent</code>: a small Cloud Run HTTP surface, deterministic demo mode, judge-friendly curl script, Dockerfile, Cloud Build template, and explicit public/private boundaries.</p>
@@ -146,6 +149,7 @@ make mcp-run</code></pre>
 
     <h2>Deployment Setup</h2>
     <p>Use <code>make deploy-source</code> or <code>make deploy</code> after setting <code>PROJECT</code>, <code>REGION</code>, and the required environment variables. Use a separate Google Cloud project for this competition and link it to the billing account with the available grant credits.</p>
+    <p>For Atlas-backed proof, create a Secret Manager secret containing the Atlas connection string, then run <code>make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri</code>. The deploy target maps that secret to <code>MDB_MCP_CONNECTION_STRING</code> and sets <code>MONGODB_DEPLOYMENT_KIND=atlas</code> without writing the URI to source.</p>
 
     <h2>Environment Variables</h2>
     <ul>
@@ -153,7 +157,7 @@ make mcp-run</code></pre>
       <li><code>PUBLISHING_DEMO_API_KEY</code>: optional demo protection key.</li>
       <li><code>PUBLISHING_USE_GEMINI</code>: production switch for Gemini runtime path.</li>
       <li><code>GOOGLE_CLOUD_PROJECT</code>, <code>GOOGLE_CLOUD_LOCATION</code>, <code>GOOGLE_GENAI_USE_VERTEXAI</code>: Google Cloud runtime settings.</li>
-      <li><code>MONGODB_URI</code>, <code>MONGODB_DATABASE</code>: Atlas or local MongoDB settings.</li>
+      <li><code>MONGODB_URI</code>, <code>MONGODB_DATABASE</code>, <code>MONGODB_DEPLOYMENT_KIND</code>, <code>MONGODB_SEED_DEMO_DATA</code>: Atlas or embedded MongoDB settings.</li>
       <li><code>MDB_MCP_CONNECTION_STRING</code>: official MongoDB MCP connection string input.</li>
       <li><code>MDB_MCP_API_CLIENT_ID</code>, <code>MDB_MCP_API_CLIENT_SECRET</code>: optional Atlas service-account path for official MongoDB MCP tools.</li>
       <li><code>MCP_SERVER_URL</code>, <code>MCP_METHOD</code>, <code>MCP_TOOL_NAME</code>, <code>MCP_SESSION_ID</code>: app runtime path to official MongoDB MCP HTTP transport.</li>
