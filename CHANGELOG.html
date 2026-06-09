@@ -46,6 +46,50 @@
       <p>This changelog records public-facing implementation progress for the Google Cloud Rapid Agent Hackathon submission. The project is framed as a generalized publisher-memory agent: DeltaSignal is proof/source material, while AITrailblazer AI Agent Publishing is the new contest product.</p>
     </section>
     <article>
+      <h2>2026-06-09</h2>
+      <div class="grid">
+        <section class="card">
+          <h3>Hosted Public Demo Root</h3>
+          <p>Deployed the updated Cloud Run image so the public root URL opens the interactive AITrailblazer demo instead of returning a not-found response.</p>
+        </section>
+        <section class="card">
+          <h3>Live Proof UX</h3>
+          <p>Added a first-screen live proof workspace with TripCode input, follow-up question input, hosted proof actions, runtime proof pills, River memory cards, MongoDB collection cards, and a judge checklist.</p>
+        </section>
+        <section class="card">
+          <h3>Static Asset Serving</h3>
+          <p>Updated the Go service and Docker image to serve the public <code>index.html</code>, docs, README, changelog, license, and image assets from the deployed container.</p>
+        </section>
+        <section class="card">
+          <h3>Browser API Compatibility</h3>
+          <p>Added CORS headers and preflight support for browser-based calls to the hosted proof endpoints while preserving the existing API routes.</p>
+        </section>
+        <section class="card">
+          <h3>Runtime Proof Still Live</h3>
+          <p>Re-verified the hosted judge demo after deployment: Gemini, Agent Builder, MongoDB, official MongoDB MCP, and Cloud Run proof remain available from the public service.</p>
+        </section>
+        <section class="card">
+          <h3>Public Repo Published</h3>
+          <p>Committed the public UX update and pushed the sanitized publishing subtree to the public GitHub repository main branch.</p>
+        </section>
+      </div>
+      <h3>What Is New</h3>
+      <ul>
+        <li>The Devpost hosted URL now opens the actual interactive demo at <code>/</code>.</li>
+        <li>Judges can run <code>/v1/judge-demo</code> from the page and inspect live runtime proof without leaving the browser.</li>
+        <li>The page can resolve <code>HUT-RIVER-001</code> through the public <code>/resolve</code> flow and render source-grounded TripCode memory.</li>
+        <li>The service has tests for root serving, image serving, disallowed file access, traversal blocking, CORS preflight, and API route precedence.</li>
+        <li>The public subtree was scanned before push for prohibited private evidence terms and obvious token patterns.</li>
+      </ul>
+      <h3>Verification</h3>
+      <ul>
+        <li><code>make check</code> passed with 100.0% Go statement coverage.</li>
+        <li>The hosted root returned <code>200</code> with the live proof markers present.</li>
+        <li>The hosted image asset returned <code>200</code> as a PNG.</li>
+        <li>The hosted judge demo reported Gemini and Agent Builder as live invoked, MongoDB as live via MongoDB MCP, MongoDB MCP as live invoked, and Cloud Run as the deployment target.</li>
+      </ul>
+    </article>
+    <article>
       <h2>2026-06-08</h2>
       <div class="grid">
         <section class="card">
@@ -136,7 +180,13 @@
   <Change date="2026-06-08" category="hosted-runtime">Deployed Cloud Run service with live Vertex AI Gemini invocation and live Agent Builder / Agent Search invocation over three seeded River documents.</Change>
   <Change date="2026-06-09" category="mongodb-runtime">Added embedded MongoDB plus official MongoDB MCP runtime proof and Atlas mode through Secret Manager.</Change>
   <Change date="2026-06-09" category="execplan">Added and implemented the MongoDB Atlas runtime ExecPlan.</Change>
+  <Change date="2026-06-09" category="public-root">Deployed the Cloud Run image that serves the interactive public demo from the hosted root URL.</Change>
+  <Change date="2026-06-09" category="live-proof-ux">Added a browser-native live proof workspace with TripCode input, follow-up question input, runtime proof pills, River memory cards, MongoDB collection cards, and judge checklist.</Change>
+  <Change date="2026-06-09" category="static-serving">Updated the Go service and Docker image to serve the public static surface and docs from the deployed container.</Change>
+  <Change date="2026-06-09" category="cors">Added CORS headers and preflight handling for hosted browser API calls.</Change>
+  <Change date="2026-06-09" category="public-publish">Committed and pushed the sanitized public publishing subtree to the GitHub repository main branch.</Change>
   <Status date="2026-06-09">Hosted Gemini, Agent Builder, MongoDB, and official MongoDB MCP proof is live; Atlas Free is the preferred optional backing store when credentials are available.</Status>
+  <Status date="2026-06-09">Hosted root is live with the interactive public demo; /v1/judge-demo remains live after deployment.</Status>
 </StrategiXVisualSpec>
     </script>
   </main>
