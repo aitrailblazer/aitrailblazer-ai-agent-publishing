@@ -1,0 +1,41 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - ${_IMAGE}
+      - .
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - ${_IMAGE}
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - aitrailblazer-ai-agent-publishing
+      - --image
+      - ${_IMAGE}
+      - --region
+      - ${_REGION}
+      - --platform
+      - managed
+      - --allow-unauthenticated
+      - --min-instances
+      - "0"
+      - --max-instances
+      - "3"
+      - --memory
+      - 512Mi
+      - --cpu
+      - "1"
+      - --concurrency
+      - "80"
+      - --set-env-vars
+      - GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=us-central1,GOOGLE_GENAI_USE_VERTEXAI=true,PUBLISHING_USE_GEMINI=true,GEMINI_MODEL=gemini-2.5-flash,AGENT_BUILDER_MODE=discoveryengine-search,AGENT_BUILDER_ENDPOINT=https://discoveryengine.googleapis.com/v1/projects/${PROJECT_ID}/locations/global/collections/default_collection/engines/aitrailblazer-pub-agent/servingConfigs/default_search:search,AGENT_BUILDER_AGENT_ID=aitrailblazer-pub-agent,PUBLISHING_COST_TRACKING=true,PUBLISHING_GOOGLE_CREDIT_BUDGET_USD=500,PUBLISHING_ESTIMATED_ARCHIVE_BRIEF_COST_USD=0.01,PUBLISHING_ESTIMATED_TRIPCODE_COST_USD=0.02,PUBLISHING_ESTIMATED_JUDGE_DEMO_COST_USD=0.02,PUBLISHING_ESTIMATED_SESSION_MEMORY_COST_USD=0.00,PUBLISHING_COST_SOURCE=local-estimate
+substitutions:
+  _REGION: us-central1
+  _IMAGE: us-central1-docker.pkg.dev/aitrailblazer-ai-publishing/aitrailblazer-ai-agent-publishing/app:latest
+images:
+  - ${_IMAGE}

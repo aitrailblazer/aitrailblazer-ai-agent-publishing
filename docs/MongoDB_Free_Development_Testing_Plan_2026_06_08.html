@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MongoDB Free Development Testing Plan | AITrailblazer AI Agent Publishing</title>
+  <style>
+    html {
+      background: #f7faf8;
+      color: #132016;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    body { margin: 0; }
+    main {
+      width: min(1120px, calc(100vw - 36px));
+      margin: 0 auto;
+      padding: 44px 0 72px;
+    }
+    h1 { font-size: clamp(34px, 5vw, 64px); line-height: 1; margin: 0 0 16px; }
+    h2 { margin: 34px 0 12px; }
+    p { max-width: 880px; }
+    .meta { color: #526052; font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+    article {
+      border: 1px solid #cfddcf;
+      border-radius: 8px;
+      background: #fff;
+      padding: 18px;
+    }
+    article h3 { margin: 0 0 8px; }
+    code {
+      background: #e8f1e8;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    pre {
+      overflow: auto;
+      background: #101910;
+      color: #f4fff4;
+      border-radius: 8px;
+      padding: 18px;
+    }
+    a { color: #0f7a39; font-weight: 750; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>MongoDB Free Development Testing Plan</h1>
+    <p class="meta">Generated 2026-06-08 for <code>aitrailblazer-ai-agent-publishing</code>. This artifact summarizes official MongoDB free development paths and maps them to the TripCode/River publication-memory product.</p>
+
+    <section class="grid" aria-label="Free development options">
+      <article>
+        <h3>Cloud Demo: Atlas Free Cluster</h3>
+        <p>Use a MongoDB Atlas Free cluster for the hackathon demo database. It is free forever, suitable for learning and small proof-of-concept apps, and includes 512 MB storage with shared RAM and shared vCPU.</p>
+      </article>
+      <article>
+        <h3>Local Dev: Local MongoDB</h3>
+        <p>Use a local MongoDB deployment for repeatable development and tests that should not depend on external accounts, IP allowlists, or cloud availability.</p>
+      </article>
+      <article>
+        <h3>Agent Dev: MongoDB MCP</h3>
+        <p>Use the official MongoDB MCP Server in read-only mode for schema inspection, sample queries, and agent-assisted development against either Atlas or a local MongoDB deployment.</p>
+      </article>
+      <article>
+        <h3>Gemini CLI Extension</h3>
+        <p>The MongoDB Gemini CLI extension is free to use and fits the permitted Google tooling lane. It requires a Google account and should be checked against current Gemini CLI requirements before final setup.</p>
+      </article>
+      <article>
+        <h3>Unified Billing</h3>
+        <p>For any Atlas usage beyond free-tier testing, subscribe to MongoDB through Google Cloud Marketplace so Atlas usage draws down hackathon Google Cloud credits cleanly instead of creating a separate MongoDB billing relationship.</p>
+      </article>
+    </section>
+
+    <h2>Recommended Free Architecture</h2>
+    <p>Keep the default app deterministic and free. Add MongoDB as an optional persistence adapter behind environment variables. Use Atlas Free for judge-visible cloud demos and local MongoDB for CI/integration tests.</p>
+
+    <h2>Billing And Credits</h2>
+    <p>Use Atlas Free for zero-cost development and smoke testing. If the demo needs paid Atlas capacity or marketplace-managed billing, subscribe to MongoDB through Google Cloud Marketplace so usage is tied to Google Cloud unified billing and can draw down the hackathon credits. The MongoDB Gemini CLI extension is free to use, subject to current Gemini CLI requirements and Google account setup.</p>
+
+    <pre><code>AITrailblazer AI Agent Publishing
+  /v1/archive-brief
+  /v1/tripcode
+  /resolve
+
+Optional MongoDB adapter
+  publications
+  articles
+  tripcodes
+  river_edges
+  claim_clusters
+  embeddings
+  reader_sessions</code></pre>
+
+    <h2>Free-Tier Guardrails</h2>
+    <p>Atlas Free clusters are intentionally constrained: one Free cluster per Atlas project, a subset of supported regions, fixed storage and memory, automatic maintenance, no configurable backup, no private endpoints, no network peering, and no dedicated workload-isolation/search nodes. For this project, that is acceptable because the free cluster should hold demo-sized article metadata, TripCodes, River edges, and a small embedding sample.</p>
+
+    <h2>Testing Plan</h2>
+    <div class="grid">
+      <article>
+        <h3>Unit Tests</h3>
+        <p>Use interfaces and in-memory fakes. No MongoDB connection string required. These tests stay in the normal <code>make check</code> gate.</p>
+      </article>
+      <article>
+        <h3>Local Integration</h3>
+        <p>Run MongoDB locally, seed a tiny DeltaSignal fixture, and run tests only when <code>MONGODB_URI</code> is set.</p>
+      </article>
+      <article>
+        <h3>Atlas Smoke</h3>
+        <p>Use Atlas Free only for manual or scheduled smoke tests. Keep dataset size under 512 MB and back up with <code>mongodump</code> if needed.</p>
+      </article>
+      <article>
+        <h3>MCP Inspection</h3>
+        <p>Configure MongoDB MCP read-only for agent/schema inspection. Use write-capable MCP only in a disposable demo database.</p>
+      </article>
+    </div>
+
+    <h2>Minimal Env Contract</h2>
+    <pre><code>PUBLISHING_MONGODB_ENABLED=false
+MONGODB_URI=
+MONGODB_DATABASE=aitrailblazer_publishing
+MONGODB_READ_ONLY=true
+PUBLISHING_VECTOR_SEARCH_ENABLED=false
+PUBLISHING_MONGODB_MCP_READ_ONLY=true</code></pre>
+
+    <script id="strategix-mongodb-plan-contract" type="application/xml">
+<StrategiXVisualSpec version="1.4" status="investigation" generated="2026-06-08" artifact="docs/MongoDB_Free_Development_Testing_Plan_2026_06_08.html">
+  <CanonicalArtifact>
+    <Title>MongoDB Free Development Testing Plan</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+    <PrimaryQuestion>If we choose MongoDB, how can we develop and test for free?</PrimaryQuestion>
+  </CanonicalArtifact>
+  <Recommendation>
+    <Path name="Default">Keep deterministic local demo mode free and dependency-light.</Path>
+    <Path name="CloudDemo">Use one MongoDB Atlas Free cluster for judge-visible persistence smoke tests.</Path>
+    <Path name="LocalDev">Use local MongoDB for integration tests and repeatable fixtures.</Path>
+    <Path name="AgentInspection">Use official MongoDB MCP Server in read-only mode for schema and sample-query inspection.</Path>
+    <Path name="Billing">For any paid Atlas usage, subscribe through Google Cloud Marketplace so MongoDB Atlas usage is unified under Google Cloud billing and can draw down hackathon credits.</Path>
+    <Path name="GeminiCLI">Use the MongoDB Gemini CLI extension as a free permitted development helper, subject to current Gemini CLI requirements.</Path>
+  </Recommendation>
+  <BillingAndCredits>
+    <FreeOption>MongoDB Atlas Free tier cluster with limited storage for no-cost development and smoke tests.</FreeOption>
+    <CreditOption>MongoDB via Google Cloud Marketplace for unified Google Cloud billing and hackathon credit drawdown.</CreditOption>
+    <FreeTool>MongoDB Gemini CLI extension is free to use with a Google account, subject to Gemini CLI requirements.</FreeTool>
+    <Guardrail>Avoid a separate MongoDB paid billing relationship for the hackathon demo unless there is a deliberate reason to keep spend outside Google Cloud credits.</Guardrail>
+  </BillingAndCredits>
+  <AtlasFree>
+    <Strength>Free forever, 512 MB storage, shared RAM, shared vCPU, suitable for learning and small proof-of-concept applications.</Strength>
+    <Limit>One Free cluster per Atlas project.</Limit>
+    <Limit>No configurable memory or storage size.</Limit>
+    <Limit>No backups on Free clusters; use mongodump and mongorestore if backup is needed.</Limit>
+    <Limit>No private endpoints, network peering, database auditing, customer-managed encryption, failover testing, regional outage simulation, or dedicated workload-isolation nodes.</Limit>
+  </AtlasFree>
+  <Schema>
+    <Collection>publications</Collection>
+    <Collection>articles</Collection>
+    <Collection>tripcodes</Collection>
+    <Collection>river_edges</Collection>
+    <Collection>claim_clusters</Collection>
+    <Collection>embeddings</Collection>
+    <Collection>reader_sessions</Collection>
+  </Schema>
+  <AcceptanceCriteria>
+    <Criterion>make check remains free and passes without MongoDB credentials.</Criterion>
+    <Criterion>MongoDB integration tests are opt-in behind MONGODB_URI.</Criterion>
+    <Criterion>Atlas Free never holds private secrets or large article bodies unless explicitly approved.</Criterion>
+    <Criterion>Paid Atlas usage, if needed, is routed through Google Cloud Marketplace for unified hackathon-credit billing.</Criterion>
+    <Criterion>MCP is read-only by default.</Criterion>
+  </AcceptanceCriteria>
+</StrategiXVisualSpec>
+    </script>
+  </main>
+</body>
+</html>

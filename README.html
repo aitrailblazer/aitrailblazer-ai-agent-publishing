@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITrailblazer AI Agent Publishing README</title>
+  <style>
+    html {
+      color: #17212f;
+      background: #f7f8fb;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    body {
+      margin: 0;
+      padding: 40px 20px;
+    }
+    main {
+      width: min(920px, 100%);
+      margin: 0 auto;
+    }
+    h1, h2 {
+      line-height: 1.1;
+      color: #0b1220;
+    }
+    h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      margin: 0 0 16px;
+    }
+    h2 {
+      margin-top: 34px;
+      font-size: 24px;
+    }
+    p, li {
+      font-size: 16px;
+    }
+    code {
+      background: #e9edf5;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    pre {
+      background: #0b1220;
+      color: #f8fafc;
+      border-radius: 8px;
+      padding: 18px;
+      overflow: auto;
+    }
+    a {
+      color: #1358db;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>AITrailblazer AI Agent Publishing</h1>
+    <p>Turn any expert publication archive into MongoDB-backed agent memory with TripCodes, Rivers, and Gemini-powered research workflows.</p>
+
+    <h2>Problem</h2>
+    <p>Expert publishers have years of valuable articles, but readers and agents cannot reliably reuse them. Static archive search does not preserve claims, updates, evidence trails, or follow-up context.</p>
+
+    <h2>Solution</h2>
+    <p>AITrailblazer converts a small seeded publication archive into article records, TripCodes, River links, session memory, and a judge-visible runtime proof package. DeltaSignal is the proof archive; the product is the generalized publisher-memory agent.</p>
+
+    <h2>Demo Flow</h2>
+    <ol>
+      <li>Resolve <code>HUT-RIVER-001</code> through MongoDB-style TripCode, claim, River, and three article records.</li>
+      <li>Show the agent plan, source context, River memory, Gemini answer, next actions, and runtime proof.</li>
+      <li>Ask a follow-up and show second-turn memory from the reader session.</li>
+    </ol>
+
+    <h2>Hosted Runtime</h2>
+    <p>The judge runtime is deployed on Cloud Run at <a href="https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app">https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app</a>. The hosted service exposes <code>GET /health</code> and <code>GET /v1/judge-demo</code> for a fresh-browser or curl smoke test. Current hosted proof invokes Gemini live through Vertex AI and invokes the Agent Builder lane through a Google Cloud Agent Search engine over the three seeded River documents.</p>
+
+    <h2>Usage</h2>
+    <p>AITrailblazer is a publication-memory agent. It lets a reader enter a known TripCode from an article, newsletter, or research note and retrieve the article's source context, claim cluster, River memory, and follow-up path.</p>
+
+    <h2>Example TripCode Flow</h2>
+    <ol>
+      <li>Open the hosted Cloud Run app.</li>
+      <li>Enter a known TripCode: <code>HUT-RIVER-001</code>.</li>
+      <li>The agent resolves the TripCode through MongoDB.</li>
+      <li>MongoDB MCP retrieves three linked River articles, claims, River edges, and prior memory.</li>
+      <li>Gemini generates a grounded synthesis from the retrieved publisher memory.</li>
+      <li>The user asks a follow-up: <code>What should I monitor next?</code>.</li>
+      <li>The agent uses the saved reader session to continue without requiring the TripCode again.</li>
+    </ol>
+
+    <h2>Demo Questions</h2>
+    <ul>
+      <li><code>Resolve HUT-RIVER-001</code></li>
+      <li><code>What changed across this River?</code></li>
+      <li><code>What should I monitor next?</code></li>
+      <li><code>Show the claims behind this article.</code></li>
+      <li><code>Which connected article updates this claim?</code></li>
+    </ul>
+
+    <h2>What This Proves</h2>
+    <p>AITrailblazer proves that a publication archive can become agent memory. MongoDB stores the memory objects, MCP exposes them to the agent, Gemini synthesizes the answer, and Google Cloud hosts the working application.</p>
+
+    <h2>Architecture</h2>
+    <p>Cloud Run HTTP service, Secret Manager-ready configuration, MongoDB Atlas data model, MongoDB MCP context surface, Gemini synthesis lane, and deterministic fallback for local tests.</p>
+
+    <h2>Entrypoint</h2>
+    <p><a href="./index.html">index.html</a> is the GitHub Pages-compatible publishing surface. It is a self-contained StrategiX Visual Spec with an embedded XML contract.</p>
+
+    <h2>Build Checklist</h2>
+    <p><a href="./docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html">Build checklist</a> tracks the submission gates: MongoDB Atlas persistence, MongoDB MCP proof, Gemini synthesis, Agent Builder orchestration evidence, hosted Cloud Run testing, and the under-three-minute demo video. The current Cloud Run service proves Gemini and Agent Builder live; MongoDB Atlas and official MongoDB MCP wiring remain the final external integration gate.</p>
+
+    <h2>Required Technologies Used</h2>
+    <ul>
+      <li>Gemini synthesis lane for grounded answers.</li>
+      <li>Google Cloud Agent Builder or Gemini Enterprise Agent Platform as the orchestration lane.</li>
+      <li>MongoDB Atlas data model for articles, TripCodes, claims, River edges, reader sessions, and agent runs.</li>
+      <li>MongoDB MCP Server context path for database-grounded agent access.</li>
+      <li>Cloud Run deployment target.</li>
+    </ul>
+
+    <h2>MongoDB Track Implementation</h2>
+    <p>The required collection model is <code>articles</code>, <code>tripcodes</code>, <code>claims</code>, <code>river_edges</code>, <code>reader_sessions</code>, and <code>agent_runs</code>. The runtime exposes this model in <code>GET /v1/judge-demo</code>; final MongoDB-track proof still requires a live Atlas database and official MongoDB MCP endpoint.</p>
+
+    <h2>Agent Builder and Gemini Implementation</h2>
+    <p>The judge-proof path is: input TripCode, plan retrieval steps, use MCP context, synthesize with Gemini, write reader-session memory, then answer a follow-up using prior River state.</p>
+
+    <h2>MCP Server Usage</h2>
+    <p>The MCP proof should show schema, collection, retrieval, or tool-call evidence. The runtime response includes a Runtime Proof panel so judges do not have to infer partner usage.</p>
+    <p>Use the official MongoDB MCP server through <code>mongodb-mcp-server@latest</code>. Configure credentials only through environment variables, then run <code>make mcp-check</code> and <code>make mcp-run</code>. The server requires either <code>MDB_MCP_CONNECTION_STRING</code> or both <code>MDB_MCP_API_CLIENT_ID</code> and <code>MDB_MCP_API_CLIENT_SECRET</code>. The local runner starts HTTP transport in read-only mode with JSON responses and externally managed sessions so the app can make a direct <code>tools/call</code> request to the official <code>find</code> tool. Set <code>MCP_SERVER_URL</code> to the HTTP transport URL before redeploying the app runtime.</p>
+
+    <h2>Local Commands</h2>
+    <pre><code>make check
+make run
+make demo
+make validate
+make preview
+make mcp-check
+make mcp-run</code></pre>
+
+    <h2>Runtime Shape</h2>
+    <p>The Go service mirrors the useful shape of <code>../deltasignal-ai-agent</code>: a small Cloud Run HTTP surface, deterministic demo mode, judge-friendly curl script, Dockerfile, Cloud Build template, and explicit public/private boundaries.</p>
+
+    <p>Local endpoints include <code>GET /health</code>, <code>POST /v1/archive-brief</code>, <code>POST /v1/tripcode</code>, <code>GET/POST /resolve</code>, <code>GET /v1/judge-demo</code>, and <code>GET /v1/usage</code>.</p>
+
+    <h2>Deployment Setup</h2>
+    <p>Use <code>make deploy-source</code> or <code>make deploy</code> after setting <code>PROJECT</code>, <code>REGION</code>, and the required environment variables. Use a separate Google Cloud project for this competition and link it to the billing account with the available grant credits.</p>
+
+    <h2>Environment Variables</h2>
+    <ul>
+      <li><code>PORT</code>: local or Cloud Run port.</li>
+      <li><code>PUBLISHING_DEMO_API_KEY</code>: optional demo protection key.</li>
+      <li><code>PUBLISHING_USE_GEMINI</code>: production switch for Gemini runtime path.</li>
+      <li><code>GOOGLE_CLOUD_PROJECT</code>, <code>GOOGLE_CLOUD_LOCATION</code>, <code>GOOGLE_GENAI_USE_VERTEXAI</code>: Google Cloud runtime settings.</li>
+      <li><code>MONGODB_URI</code>, <code>MONGODB_DATABASE</code>: Atlas or local MongoDB settings.</li>
+      <li><code>MDB_MCP_CONNECTION_STRING</code>: official MongoDB MCP connection string input.</li>
+      <li><code>MDB_MCP_API_CLIENT_ID</code>, <code>MDB_MCP_API_CLIENT_SECRET</code>: optional Atlas service-account path for official MongoDB MCP tools.</li>
+      <li><code>MCP_SERVER_URL</code>, <code>MCP_METHOD</code>, <code>MCP_TOOL_NAME</code>, <code>MCP_SESSION_ID</code>: app runtime path to official MongoDB MCP HTTP transport.</li>
+      <li><code>MDB_MCP_READ_ONLY</code>, <code>MDB_MCP_HTTP_RESPONSE_TYPE</code>, <code>MDB_MCP_EXTERNALLY_MANAGED_SESSIONS</code>: MCP server safety and HTTP compatibility settings.</li>
+    </ul>
+
+    <h2>Data Model</h2>
+    <p>The judge dataset should use three seeded River articles: a prior thesis article, the anchor TripCode article, and a follow-up monitor-next article. Keep the dataset to 1 TripCode path, 3 to 9 claim nodes, 2 to 4 River edges, and 1 to 2 sessions. Do not ingest the full DeltaSignal archive for the first submission.</p>
+
+    <h2>Screenshots</h2>
+    <p>Final screenshots should show the TripCode input, source context, River memory, Gemini answer, next actions, and runtime proof panel.</p>
+
+    <h2>Demo Video</h2>
+    <p>Keep the video under three minutes: problem, architecture, TripCode demo, River memory demo, second-turn memory, and impact close.</p>
+
+    <h2>License</h2>
+    <p>Add an OSI-approved root <code>LICENSE</code> before public submission.</p>
+
+    <h2>Compliance Notes</h2>
+    <p>Contest-facing code, docs, screenshots, configs, commits, and video should contain only permitted Google Cloud and MongoDB evidence. Do not publish private planning files or local credentials.</p>
+
+    <h2>Source Inspiration</h2>
+    <p>The structure is inspired by <code>../deltasignal-ai-agent</code>: static public page first, explicit competition positioning, and clear separation between public presentation and private runtime credentials. The new submission should keep DeltaSignal as the proof case while pitching a broader publisher product.</p>
+
+    <h2>MongoDB Fit</h2>
+    <p>The Rapid Agent MongoDB resource page describes MongoDB Atlas as a persistent memory layer for AI and agentic workloads, combining operational, vector, and semantic data. That makes MongoDB the closest partner lane for publication archives, TripCode objects, River continuity, vector search, and MCP-backed database access.</p>
+
+    <h2>Boundaries</h2>
+    <p>This repository should not contain Devpost cookies, Google Cloud keys, billing exports, backend secrets, or private screenshots. Public claims should link back to the Rapid Agent resources page, the submission runtime, or checked local evidence.</p>
+  </main>
+</body>
+</html>

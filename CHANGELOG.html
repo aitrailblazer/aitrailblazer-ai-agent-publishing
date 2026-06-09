@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITrailblazer AI Agent Publishing Changelog</title>
+  <style>
+    html {
+      background: #f8fafc;
+      color: #111827;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    body { margin: 0; padding: 42px 20px; }
+    main { width: min(900px, 100%); margin: 0 auto; }
+    h1 { font-size: clamp(34px, 5vw, 60px); line-height: 1; margin: 0 0 18px; }
+    article { border-top: 1px solid #d8dee9; padding: 22px 0; }
+    .summary {
+      background: #ffffff;
+      border: 1px solid #d8dee9;
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin: 20px 0 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #d8dee9;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .card h3 { margin: 0 0 6px; font-size: 17px; }
+    ul { padding-left: 20px; }
+    code { background: #e5e7eb; border-radius: 6px; padding: 2px 6px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>AITrailblazer AI Agent Publishing Changelog</h1>
+    <section class="summary">
+      <p>This changelog records public-facing implementation progress for the Google Cloud Rapid Agent Hackathon submission. The project is framed as a generalized publisher-memory agent: DeltaSignal is proof/source material, while AITrailblazer AI Agent Publishing is the new contest product.</p>
+    </section>
+    <article>
+      <h2>2026-06-08</h2>
+      <div class="grid">
+        <section class="card">
+          <h3>Workspace Created</h3>
+          <p>Created the <code>aitrailblazer-ai-agent-publishing</code> workspace with a Go HTTP service, static web surface, documentation folder, deployment templates, and local validation scripts.</p>
+        </section>
+        <section class="card">
+          <h3>Competition Context Saved</h3>
+          <p>Saved the Rapid Agent Hackathon rules source and resource map. Added competition name, deadline context, required technologies, judging criteria, and MongoDB track fit to the final spec.</p>
+        </section>
+        <section class="card">
+          <h3>Final Spec Consolidated</h3>
+          <p>Reduced earlier analysis artifacts into one final StrategiX Visual Spec focused on the judge-proof vertical slice: TripCode resolution, River traversal, and second-turn memory.</p>
+        </section>
+        <section class="card">
+          <h3>MongoDB Track Framing</h3>
+          <p>Defined the required MongoDB object model: <code>articles</code>, <code>tripcodes</code>, <code>claims</code>, <code>river_edges</code>, <code>reader_sessions</code>, and <code>agent_runs</code>.</p>
+        </section>
+        <section class="card">
+          <h3>Runtime Proof Package</h3>
+          <p>Added <code>GET /v1/judge-demo</code> to expose required UI panels, collection evidence, runtime proof fields, three demo flows, and session-memory follow-up output.</p>
+        </section>
+        <section class="card">
+          <h3>Public App Surface</h3>
+          <p>Updated <code>index.html</code> with visible sections for Judge Proof, Three Live Flows, and MongoDB Objects so judges can understand the working path without reading source code first.</p>
+        </section>
+        <section class="card">
+          <h3>README And License</h3>
+          <p>Updated <code>README.html</code> with problem, solution, demo flow, architecture, required technologies, MongoDB track implementation, setup, deployment, data model, screenshots, video, license, and compliance notes. Added an MIT <code>LICENSE</code> file.</p>
+        </section>
+        <section class="card">
+          <h3>Separate Cloud Project Defaults</h3>
+          <p>Set local deployment defaults around <code>aitrailblazer-ai-publishing</code> so the contest project can be separated from the existing DeltaSignal project while using the same billing account if allowed by credit terms.</p>
+        </section>
+        <section class="card">
+          <h3>Verification</h3>
+          <p>Ran the local check gate, public trace scan, judge-demo smoke test, and in-browser render checks for both the app surface and the final spec.</p>
+        </section>
+        <section class="card">
+          <h3>Final User Stage</h3>
+          <p>Defined the end-user flow for readers who already know a TripCode: enter the code, resolve the linked article and River, receive a grounded synthesis, then ask a follow-up that uses saved session memory.</p>
+        </section>
+        <section class="card">
+          <h3>Three-Article River</h3>
+          <p>Hardened the demo around three seeded River articles: a prior thesis article, the anchor TripCode article, and a follow-up monitor-next article. This gives judges a concrete River instead of an abstract continuity graph.</p>
+        </section>
+        <section class="card">
+          <h3>Build Checklist</h3>
+          <p>Added a public build checklist covering repository structure, environment variables, MongoDB schema, seed data, core flows, Cloud Run deployment, video shot list, and final submission gates.</p>
+        </section>
+        <section class="card">
+          <h3>Hosted Gemini And Agent Builder</h3>
+          <p>Deployed the Cloud Run runtime in project <code>aitrailblazer-ai-publishing</code>. Verified live Gemini invocation through Vertex AI and live Agent Builder invocation through an Agent Search engine seeded with three River documents.</p>
+        </section>
+      </div>
+      <h3>User Flow With A Known TripCode</h3>
+      <ul>
+        <li>User enters a known TripCode such as <code>HUT-RIVER-001</code>.</li>
+        <li>The system resolves the TripCode into the linked article, claims, and River edges.</li>
+        <li>The agent produces a source-grounded answer and shows the connected memory objects.</li>
+        <li>The user asks a follow-up such as <code>What should I monitor next?</code>.</li>
+        <li>The system uses the prior session memory to continue without requiring the user to repeat the TripCode.</li>
+      </ul>
+      <h3>Current Status</h3>
+      <ul>
+        <li>The local proof surface is working and testable with 100% Go statement coverage.</li>
+        <li>The hosted Cloud Run service invokes Gemini live and invokes the Google Cloud Agent Builder / Agent Search lane live.</li>
+        <li>The public spec and README now prioritize a small, demonstrable vertical slice over broad platform scope.</li>
+        <li>The production submission still needs live MongoDB Atlas plus official MongoDB MCP runtime evidence before final judging.</li>
+      </ul>
+    </article>
+    <script id="strategix-changelog-contract" type="application/xml">
+<StrategiXVisualSpec version="1.4" status="public-changelog" generated="2026-06-08" artifact="CHANGELOG.html">
+  <CanonicalArtifact>
+    <Title>AITrailblazer AI Agent Publishing Changelog</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+  </CanonicalArtifact>
+  <Change date="2026-06-08" category="workspace">Created contest workspace, Go service, static app surface, docs folder, deployment templates, and validation scripts.</Change>
+  <Change date="2026-06-08" category="competition-context">Saved Rapid Agent Hackathon rules/resource context and added competition goals to the final spec.</Change>
+  <Change date="2026-06-08" category="spec">Consolidated analysis into one final judge-proof StrategiX Visual Spec focused on TripCode resolution, River traversal, and second-turn memory.</Change>
+  <Change date="2026-06-08" category="mongodb-track">Defined MongoDB collections for articles, tripcodes, claims, river_edges, reader_sessions, and agent_runs.</Change>
+  <Change date="2026-06-08" category="runtime-proof">Added /v1/judge-demo proof package with required panels, collection evidence, runtime proof fields, three flows, and follow-up memory.</Change>
+  <Change date="2026-06-08" category="public-surface">Updated index.html with Judge Proof, Three Live Flows, and MongoDB Objects sections.</Change>
+  <Change date="2026-06-08" category="submission-readiness">Updated README.html, added MIT license, set separate project defaults, and verified local checks and browser rendering.</Change>
+  <Change date="2026-06-08" category="final-user-stage">Defined the known-TripCode user flow: enter TripCode, resolve article and River memory, produce grounded synthesis, then continue through session-aware follow-up memory.</Change>
+  <Change date="2026-06-08" category="three-article-river">Hardened the demo dataset around three seeded River articles: prior thesis, anchor TripCode article, and follow-up monitor-next article.</Change>
+  <Change date="2026-06-08" category="build-checklist">Added public build checklist for MVP runtime proof, schema, seed data, deployment, video, and submission gates.</Change>
+  <Change date="2026-06-08" category="hosted-runtime">Deployed Cloud Run service with live Vertex AI Gemini invocation and live Agent Builder / Agent Search invocation over three seeded River documents.</Change>
+  <Status date="2026-06-08">Hosted Gemini and Agent Builder proof is live; final submission still requires live MongoDB Atlas plus official MongoDB MCP runtime evidence.</Status>
+</StrategiXVisualSpec>
+    </script>
+  </main>
+</body>
+</html>

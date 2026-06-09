@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+artifacts/
+tmp/
+.private/
+node_modules/
+dist/
+coverage/
+!assets/
+!assets/*.png
+!img/
+!img/AITrailblazerAI.png
