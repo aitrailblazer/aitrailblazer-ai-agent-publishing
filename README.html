@@ -73,6 +73,9 @@
     <h2>Hosted Runtime</h2>
     <p>The judge runtime is deployed on Cloud Run at <a href="https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app">https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app</a>. The hosted service exposes <code>GET /health</code> and <code>GET /v1/judge-demo</code> for a fresh-browser or curl smoke test. Current hosted proof invokes Gemini live through Vertex AI and invokes the Agent Builder lane through a Google Cloud Agent Search engine over the three seeded River documents.</p>
 
+    <h2>Public Repository</h2>
+    <p>The competition-facing public source repository is <a href="https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing">https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing</a>. It contains only this sanitized publishing workspace, not the private parent monorepo.</p>
+
     <h2>Usage</h2>
     <p>AITrailblazer is a publication-memory agent. It lets a reader enter a known TripCode from an article, newsletter, or research note and retrieve the article's source context, claim cluster, River memory, and follow-up path.</p>
 
@@ -167,7 +170,7 @@ make mcp-run</code></pre>
     <p>Keep the video under three minutes: problem, architecture, TripCode demo, River memory demo, second-turn memory, and impact close.</p>
 
     <h2>License</h2>
-    <p>Add an OSI-approved root <code>LICENSE</code> before public submission.</p>
+    <p>The repository includes an OSI-approved MIT <code>LICENSE</code> at the root.</p>
 
     <h2>Compliance Notes</h2>
     <p>Contest-facing code, docs, screenshots, configs, commits, and video should contain only permitted Google Cloud and MongoDB evidence. Do not publish private planning files or local credentials.</p>
