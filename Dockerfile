@@ -18,6 +18,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /out/aitrailblazer-ai-agent-publishing /aitrailblazer-ai-agent-publishing
+COPY --from=build /src/index.html /index.html
+COPY --from=build /src/README.html /README.html
+COPY --from=build /src/CHANGELOG.html /CHANGELOG.html
+COPY --from=build /src/LICENSE /LICENSE
+COPY --from=build /src/img /img
+COPY --from=build /src/docs /docs
 COPY scripts/cloud-run-entrypoint.sh /cloud-run-entrypoint.sh
 ENV PORT=8080
 ENV MONGODB_DATABASE=aitrailblazer_demo

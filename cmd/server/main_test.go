@@ -29,6 +29,91 @@ func TestHealth(t *testing.T) {
 	if body["service"] != "aitrailblazer-ai-agent-publishing" {
 		t.Fatalf("service = %v", body["service"])
 	}
+	if rec.Header().Get("Access-Control-Allow-Origin") != "*" {
+		t.Fatalf("missing CORS header")
+	}
+}
+
+func TestCORSPreflight(t *testing.T) {
+	t.Setenv("PUBLISHING_DEMO_API_KEY", "secret")
+	mux := testMux()
+	req := httptest.NewRequest(http.MethodOptions, "/v1/judge-demo", nil)
+	req.Header.Set("Origin", "https://aitrailblazer.github.io")
+	req.Header.Set("Access-Control-Request-Headers", "Content-Type")
+	rec := httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusNoContent {
+		t.Fatalf("preflight status = %d", rec.Code)
+	}
+	if rec.Header().Get("Access-Control-Allow-Origin") != "*" {
+		t.Fatalf("missing preflight CORS header")
+	}
+}
+
+func TestStaticPublishingSurface(t *testing.T) {
+	t.Setenv("PUBLISHING_DEMO_API_KEY", "")
+	temp := t.TempDir()
+	originalDir, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("getwd: %v", err)
+	}
+	if err := os.Chdir(temp); err != nil {
+		t.Fatalf("chdir temp: %v", err)
+	}
+	t.Cleanup(func() {
+		if err := os.Chdir(originalDir); err != nil {
+			t.Fatalf("restore cwd: %v", err)
+		}
+	})
+	if err := os.WriteFile("index.html", []byte("<!doctype html><title>AITrailblazer</title>"), 0o600); err != nil {
+		t.Fatalf("write index: %v", err)
+	}
+	if err := os.Mkdir("img", 0o700); err != nil {
+		t.Fatalf("mkdir img: %v", err)
+	}
+	if err := os.WriteFile("img/AITrailblazerAI.png", []byte("png"), 0o600); err != nil {
+		t.Fatalf("write img: %v", err)
+	}
+	if err := os.WriteFile("go.mod", []byte("module private"), 0o600); err != nil {
+		t.Fatalf("write go.mod: %v", err)
+	}
+
+	mux := testMux()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "AITrailblazer") {
+		t.Fatalf("root static = %d %q", rec.Code, rec.Body.String())
+	}
+
+	req = httptest.NewRequest(http.MethodGet, "/img/AITrailblazerAI.png", nil)
+	rec = httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK || rec.Body.String() != "png" {
+		t.Fatalf("image static = %d %q", rec.Code, rec.Body.String())
+	}
+
+	req = httptest.NewRequest(http.MethodGet, "/go.mod", nil)
+	rec = httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusNotFound {
+		t.Fatalf("disallowed static status = %d", rec.Code)
+	}
+
+	req = httptest.NewRequest(http.MethodGet, "/", nil)
+	req.URL.Path = "../secret"
+	rec = httptest.NewRecorder()
+	serveStaticPublishingSurface(rec, req)
+	if rec.Code != http.StatusNotFound {
+		t.Fatalf("traversal static status = %d", rec.Code)
+	}
+
+	req = httptest.NewRequest(http.MethodGet, "/health", nil)
+	rec = httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK || !strings.Contains(rec.Header().Get("Content-Type"), "application/json") {
+		t.Fatalf("health route = %d content-type=%q", rec.Code, rec.Header().Get("Content-Type"))
+	}
 }
 
 func TestArchiveBrief(t *testing.T) {

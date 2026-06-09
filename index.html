@@ -148,7 +148,21 @@
       ['README', './README.html']
     ];
 
+    const DEFAULT_API_BASE = 'https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app';
+    const DEMO_SESSION_ID = 'public-live-demo';
+
     class AIPublishingSurface extends LitElement {
+      static properties = {
+        apiBase: { state: true },
+        tripcode: { state: true },
+        question: { state: true },
+        loading: { state: true },
+        error: { state: true },
+        demo: { state: true },
+        resolved: { state: true },
+        lastMode: { state: true }
+      };
+
       static styles = css`
         :host {
           display: block;
@@ -218,8 +232,8 @@
         .hero {
           width: min(var(--max), calc(100vw - 32px));
           margin: 0 auto;
-          min-height: calc(100vh - 66px);
-          padding: 54px 0 44px;
+          min-height: auto;
+          padding: 46px 0 36px;
           display: grid;
           grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
           gap: 32px;
@@ -236,7 +250,7 @@
         h1 {
           margin: 0;
           max-width: 760px;
-          font-size: clamp(44px, 7vw, 92px);
+          font-size: clamp(40px, 6vw, 76px);
           line-height: .96;
           letter-spacing: 0;
         }
@@ -269,6 +283,14 @@
           background: var(--blue);
           color: #07111f;
           border-color: transparent;
+        }
+        button.button {
+          cursor: pointer;
+          font: inherit;
+        }
+        button.button:disabled {
+          cursor: wait;
+          opacity: .64;
         }
         .media {
           border: 1px solid var(--line);
@@ -331,6 +353,209 @@
           display: grid;
           grid-template-columns: repeat(5, minmax(0, 1fr));
           gap: 12px;
+        }
+        .demo-grid {
+          display: grid;
+          grid-template-columns: minmax(320px, .74fr) minmax(300px, .26fr);
+          gap: 14px;
+          align-items: start;
+        }
+        .demo-panel {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: var(--panel);
+          padding: 18px;
+        }
+        .demo-kicker {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 16px;
+        }
+        .demo-kicker span {
+          display: inline-flex;
+          align-items: center;
+          min-height: 28px;
+          border: 1px solid rgba(97, 211, 148, .35);
+          border-radius: 999px;
+          background: rgba(97, 211, 148, .1);
+          color: var(--green);
+          padding: 0 10px;
+          font-size: 12px;
+          font-weight: 850;
+        }
+        .proof-summary {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 8px;
+          margin-bottom: 14px;
+        }
+        .summary-tile {
+          min-height: 74px;
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .06);
+          padding: 10px;
+        }
+        .summary-tile strong,
+        .summary-tile span {
+          display: block;
+        }
+        .summary-tile strong {
+          color: var(--yellow);
+          font-size: 20px;
+        }
+        .summary-tile span {
+          color: var(--muted);
+          font-size: 12px;
+          font-weight: 750;
+          margin-top: 2px;
+        }
+        .demo-panel h3,
+        .mini-card h3 {
+          margin: 0 0 8px;
+          font-size: 18px;
+        }
+        .demo-panel p,
+        .mini-card p {
+          margin: 0;
+          color: var(--muted);
+          font-size: 14px;
+        }
+        .control-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+        label {
+          display: grid;
+          gap: 6px;
+          color: var(--muted);
+          font-size: 12px;
+          font-weight: 850;
+          text-transform: uppercase;
+        }
+        input {
+          width: 100%;
+          min-height: 42px;
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .08);
+          color: var(--ink);
+          padding: 0 12px;
+          font: inherit;
+          font-size: 14px;
+          text-transform: none;
+        }
+        input::placeholder {
+          color: rgba(249, 251, 255, .44);
+        }
+        .demo-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin: 12px 0 16px;
+        }
+        details.advanced {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .045);
+          padding: 10px 12px 12px;
+          margin: 0 0 14px;
+        }
+        details.advanced summary {
+          cursor: pointer;
+          color: var(--muted);
+          font-size: 12px;
+          font-weight: 850;
+          text-transform: uppercase;
+        }
+        details.advanced label {
+          margin-top: 10px;
+        }
+        .status-strip {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 8px;
+          margin: 12px 0 0;
+        }
+        .status-pill {
+          min-height: 72px;
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .06);
+          padding: 10px;
+        }
+        .status-pill strong,
+        .status-pill span {
+          display: block;
+        }
+        .status-pill strong {
+          font-size: 13px;
+        }
+        .status-pill span {
+          color: var(--muted);
+          font-size: 12px;
+          margin-top: 3px;
+        }
+        .status-pill.live {
+          border-color: rgba(97, 211, 148, .5);
+          background: rgba(97, 211, 148, .12);
+        }
+        .demo-layout {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(250px, .42fr);
+          gap: 12px;
+          margin-top: 14px;
+        }
+        .river-list,
+        .mini-list {
+          display: grid;
+          gap: 8px;
+        }
+        .mini-card {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .06);
+          padding: 12px;
+        }
+        .mini-card small {
+          display: block;
+          color: var(--green);
+          font-weight: 850;
+          margin-bottom: 3px;
+        }
+        .subhead {
+          margin: 16px 0 8px;
+          color: var(--ink);
+          font-size: 16px;
+        }
+        .claim-list {
+          margin: 10px 0 0;
+          padding-left: 18px;
+          color: var(--muted);
+          font-size: 14px;
+        }
+        .error-box {
+          border: 1px solid rgba(255, 107, 107, .5);
+          border-radius: 8px;
+          background: rgba(255, 107, 107, .1);
+          color: #ffd7d7;
+          padding: 12px;
+          margin-top: 12px;
+          font-size: 14px;
+        }
+        .empty-state {
+          min-height: 180px;
+          display: grid;
+          place-items: center;
+          border: 1px dashed var(--line);
+          border-radius: 8px;
+          color: var(--muted);
+          text-align: center;
+          padding: 20px;
         }
         .card {
           min-height: 180px;
@@ -416,8 +641,18 @@
             min-height: auto;
             grid-template-columns: 1fr;
           }
+          .demo-grid,
+          .demo-layout {
+            grid-template-columns: 1fr;
+          }
           .grid,
           .links {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+          .status-strip {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+          .proof-summary {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
         }
@@ -442,7 +677,10 @@
           }
           .grid,
           .checklist,
-          .links {
+          .links,
+          .control-grid,
+          .status-strip,
+          .proof-summary {
             grid-template-columns: 1fr;
           }
           .media-footer {
@@ -450,6 +688,258 @@
           }
         }
       `;
+
+      constructor() {
+        super();
+        this.apiBase = DEFAULT_API_BASE;
+        this.tripcode = 'HUT-RIVER-001';
+        this.question = 'What should I monitor next?';
+        this.loading = false;
+        this.error = '';
+        this.demo = null;
+        this.resolved = null;
+        this.lastMode = 'judge-demo';
+      }
+
+      firstUpdated() {
+        this.runJudgeDemo();
+      }
+
+      apiURL(path) {
+        return `${this.apiBase.replace(/\/+$/, '')}${path}`;
+      }
+
+      async fetchJSON(path, options = {}) {
+        const response = await fetch(this.apiURL(path), {
+          ...options,
+          headers: {
+            Accept: 'application/json',
+            ...(options.headers || {})
+          }
+        });
+        const text = await response.text();
+        let body = {};
+        if (text.trim()) {
+          body = JSON.parse(text);
+        }
+        if (!response.ok) {
+          throw new Error(body.error || `Request failed with HTTP ${response.status}`);
+        }
+        return body;
+      }
+
+      async runJudgeDemo() {
+        this.loading = true;
+        this.error = '';
+        this.lastMode = 'judge-demo';
+        try {
+          const demo = await this.fetchJSON('/v1/judge-demo');
+          this.demo = demo;
+          this.resolved = demo.tripcode_result;
+          this.tripcode = demo.tripcode_result?.tripcode || this.tripcode;
+        } catch (error) {
+          this.error = error.message || String(error);
+        } finally {
+          this.loading = false;
+        }
+      }
+
+      async resolveTripCode() {
+        this.loading = true;
+        this.error = '';
+        this.lastMode = 'resolve';
+        try {
+          const params = new URLSearchParams({
+            tripcode: this.tripcode || 'HUT-RIVER-001',
+            session_id: DEMO_SESSION_ID,
+            question: this.question || 'Resolve this article into agent memory.',
+            include_river: 'true',
+            include_mongo_fit: 'true'
+          });
+          this.resolved = await this.fetchJSON(`/resolve?${params.toString()}`);
+        } catch (error) {
+          this.error = error.message || String(error);
+        } finally {
+          this.loading = false;
+        }
+      }
+
+      runtimeItems() {
+        return this.demo?.runtime_proof || this.resolved?.runtime_proof || [];
+      }
+
+      proofSummaryItems() {
+        const panels = this.demo?.required_panels?.length || 7;
+        const collections = this.demo?.required_collections?.length || 6;
+        const flows = this.demo?.live_flows?.filter((flow) => flow.verified).length || 3;
+        const riverNodes = this.resolved?.packet?.river?.nodes?.length || 3;
+        return [
+          [panels, 'judge panels'],
+          [collections, 'MongoDB collections'],
+          [flows, 'verified live flows'],
+          [riverNodes, 'River article nodes']
+        ];
+      }
+
+      isLiveStatus(status = '') {
+        const text = status.toLowerCase();
+        return text.includes('live') || text.includes('deployment') || text.includes('ready');
+      }
+
+      renderStatusPills() {
+        const items = this.runtimeItems();
+        if (!items.length) {
+          return html`<div class="empty-state">Run the hosted proof to load runtime status.</div>`;
+        }
+        return html`
+          <div class="status-strip">
+            ${items.map((item) => html`
+              <div class="status-pill ${this.isLiveStatus(item.status) ? 'live' : ''}">
+                <strong>${item.system}</strong>
+                <span>${item.status}</span>
+              </div>
+            `)}
+          </div>
+        `;
+      }
+
+      renderRiverNodes() {
+        const nodes = this.resolved?.packet?.river?.nodes || [];
+        if (!nodes.length) {
+          return html`<div class="empty-state">River nodes will appear after a proof run.</div>`;
+        }
+        return html`
+          <div class="river-list">
+            ${nodes.map((node) => html`
+              <article class="mini-card">
+                <small>${node.kind}</small>
+                <h3>${node.title}</h3>
+                <p>${node.description}</p>
+              </article>
+            `)}
+          </div>
+        `;
+      }
+
+      renderClaims() {
+        const claims = this.resolved?.packet?.article?.claims || [];
+        if (!claims.length) {
+          return html``;
+        }
+        return html`
+          <ul class="claim-list">
+            ${claims.map((claim) => html`<li>${claim}</li>`)}
+          </ul>
+        `;
+      }
+
+      renderCollections() {
+        const collections = this.demo?.required_collections || [];
+        if (!collections.length) {
+          return html`<div class="empty-state">Collection proof loads from /v1/judge-demo.</div>`;
+        }
+        return html`
+          <div class="mini-list">
+            ${collections.map((collection) => html`
+              <article class="mini-card">
+                <small>${collection.seeded && collection.visible ? 'seeded + visible' : 'pending'}</small>
+                <h3>${collection.name}</h3>
+                <p>${collection.purpose}</p>
+              </article>
+            `)}
+          </div>
+        `;
+      }
+
+      renderLiveDemo() {
+        const article = this.resolved?.packet?.article;
+        const followUp = this.demo?.follow_up_result;
+        const flows = this.demo?.live_flows || [];
+        return html`
+          <section id="live-demo">
+            <div class="inner">
+              <div class="section-head">
+                <h2>Try the live proof</h2>
+                <p>Run the hosted Cloud Run agent path and render the exact TripCode, River, MongoDB, MCP, Gemini, and second-turn memory evidence judges need to see.</p>
+              </div>
+              <div class="demo-grid">
+                <div class="demo-panel">
+                  <div class="demo-kicker">
+                    <span>Hosted Cloud Run</span>
+                    <span>Official MongoDB MCP</span>
+                    <span>Gemini + Agent Builder</span>
+                  </div>
+                  <div class="proof-summary">
+                    ${this.proofSummaryItems().map(([value, label]) => html`
+                      <div class="summary-tile">
+                        <strong>${value}</strong>
+                        <span>${label}</span>
+                      </div>
+                    `)}
+                  </div>
+                  <div class="control-grid">
+                    <label>
+                      TripCode
+                      <input .value=${this.tripcode} @input=${(event) => { this.tripcode = event.target.value; }}>
+                    </label>
+                    <label>
+                      Follow-up question
+                      <input .value=${this.question} @input=${(event) => { this.question = event.target.value; }}>
+                    </label>
+                  </div>
+                  <div class="demo-actions">
+                    <button class="button primary" type="button" ?disabled=${this.loading} @click=${this.runJudgeDemo}>${this.loading && this.lastMode === 'judge-demo' ? 'Loading proof...' : 'Run hosted proof'}</button>
+                    <button class="button" type="button" ?disabled=${this.loading} @click=${this.resolveTripCode}>${this.loading && this.lastMode === 'resolve' ? 'Resolving...' : 'Resolve TripCode'}</button>
+                  </div>
+                  <details class="advanced">
+                    <summary>Advanced endpoint</summary>
+                    <label>
+                      API base
+                      <input .value=${this.apiBase} @input=${(event) => { this.apiBase = event.target.value; }}>
+                    </label>
+                  </details>
+                  ${this.error ? html`<div class="error-box">${this.error}</div>` : ''}
+                  ${this.renderStatusPills()}
+
+                  <div class="demo-layout">
+                    <div>
+                      <article class="mini-card">
+                        <small>${this.resolved?.mode || 'waiting'}</small>
+                        <h3>${article?.title || 'TripCode packet not loaded yet'}</h3>
+                        <p>${this.resolved?.summary || 'Run the hosted proof to load source-grounded synthesis.'}</p>
+                        ${this.renderClaims()}
+                      </article>
+                      <h3 class="subhead">River memory</h3>
+                      ${this.renderRiverNodes()}
+                    </div>
+                    <div>
+                      <article class="mini-card">
+                        <small>second-turn memory</small>
+                        <h3>${followUp?.tripcode || this.resolved?.tripcode || 'HUT-RIVER-001'}</h3>
+                        <p>${followUp?.summary || 'The judge proof loads follow-up memory from the stored session context.'}</p>
+                      </article>
+                      <h3 class="subhead">MongoDB collections</h3>
+                      ${this.renderCollections()}
+                    </div>
+                  </div>
+                </div>
+                <aside class="demo-panel">
+                  <h3>Proof checklist</h3>
+                  <div class="mini-list">
+                    ${flows.length ? flows.map((flow) => html`
+                      <article class="mini-card">
+                        <small>${flow.verified ? 'verified' : 'pending'}</small>
+                        <h3>${flow.name}</h3>
+                        <p>${flow.outcome}</p>
+                      </article>
+                    `) : html`<div class="empty-state">The live flow checklist appears after the proof loads.</div>`}
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </section>
+        `;
+      }
 
       render() {
         return html`
@@ -461,6 +951,7 @@
                   <span>AITrailblazer Publishing</span>
                 </div>
                 <div class="navlinks" aria-label="Page links">
+                  <a href="#live-demo">Try live</a>
                   <a href="#resources">Resources</a>
                   <a href="#proof">Proof</a>
                   <a href="#checklist">Checklist</a>
@@ -473,10 +964,11 @@
               <div class="hero">
                 <div>
                   <p class="eyebrow">Google Cloud Rapid Agent Hackathon</p>
-                  <h1>AITrailblazer: Turning Publication Archives into Agent Memory.</h1>
-                  <p class="lede">A Gemini-powered publishing agent that turns articles, TripCodes, and research archives into searchable, source-grounded memory using MongoDB Atlas, MCP, and Google Cloud.</p>
+                  <h1>AITrailblazer AI Agent Publishing.</h1>
+                  <p class="lede">Turn publication archives into Gemini-powered TripCode, River, MongoDB, and MCP agent memory. Enter one code, see the source packet, inspect runtime proof, and continue the conversation.</p>
                   <div class="actions">
-                    <a class="button primary" href="#proof">View runtime proof</a>
+                    <a class="button primary" href="#live-demo">Try live proof</a>
+                    <a class="button" href="#proof">View runtime proof</a>
                     <a class="button" href="./docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html">Build checklist</a>
                   </div>
                 </div>
@@ -488,6 +980,8 @@
                   </figcaption>
                 </figure>
               </div>
+
+              ${this.renderLiveDemo()}
 
               <section>
                 <div class="inner">

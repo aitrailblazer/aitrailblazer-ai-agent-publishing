@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -51,6 +52,10 @@ func newMux(
 	costTracker *agent.CostTracker,
 ) *http.ServeMux {
 	mux := http.NewServeMux()
+	mux.HandleFunc("OPTIONS /", func(w http.ResponseWriter, _ *http.Request) {
+		setCORSHeaders(w)
+		w.WriteHeader(http.StatusNoContent)
+	})
 	healthHandler := func(w http.ResponseWriter, _ *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]any{
 			"ok":      true,
@@ -132,7 +137,30 @@ func newMux(
 		}
 		writeJSON(w, http.StatusOK, costTracker.Snapshot())
 	})
+	mux.HandleFunc("GET /", serveStaticPublishingSurface)
 	return mux
+}
+
+func serveStaticPublishingSurface(w http.ResponseWriter, r *http.Request) {
+	clean := filepath.Clean(strings.TrimPrefix(r.URL.Path, "/"))
+	if clean == "." {
+		clean = "index.html"
+	}
+	if strings.HasPrefix(clean, "..") || strings.Contains(clean, string(filepath.Separator)+".."+string(filepath.Separator)) {
+		http.NotFound(w, r)
+		return
+	}
+	allowed := clean == "index.html" ||
+		clean == "README.html" ||
+		clean == "CHANGELOG.html" ||
+		clean == "LICENSE" ||
+		strings.HasPrefix(clean, "img"+string(filepath.Separator)) ||
+		strings.HasPrefix(clean, "docs"+string(filepath.Separator))
+	if !allowed {
+		http.NotFound(w, r)
+		return
+	}
+	http.ServeFile(w, r, clean)
 }
 
 type tripCodeResult struct {
@@ -251,7 +279,15 @@ func authorizedDemoRequest(r *http.Request) bool {
 }
 
 func writeJSON(w http.ResponseWriter, status int, body any) {
+	setCORSHeaders(w)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(body)
+}
+
+func setCORSHeaders(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Demo-Key")
+	w.Header().Set("Access-Control-Max-Age", "3600")
 }
