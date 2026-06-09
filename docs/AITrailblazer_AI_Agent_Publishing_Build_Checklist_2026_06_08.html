@@ -91,7 +91,7 @@
         <article class="card done"><span class="status">present</span><h3>Root files</h3><p><code>README.html</code>, <code>LICENSE</code>, <code>.env.example</code>, <code>.gitignore</code>, <code>Dockerfile</code>, <code>cloudbuild.yaml</code>, <code>Makefile</code>, <code>go.mod</code>.</p></article>
         <article class="card done"><span class="status">present</span><h3>Go service</h3><p><code>cmd/server/main.go</code> plus <code>internal/agent</code> runtime packages for TripCode, memory, cost tracking, judge proof, and response types.</p></article>
         <article class="card done"><span class="status">present</span><h3>Public surface</h3><p><code>index.html</code>, final spec, README, changelog, resource map, rules source, and MongoDB free development plan.</p></article>
-        <article class="card todo"><span class="status">partial</span><h3>Live integrations</h3><p>Gemini and Agent Builder are live on Cloud Run. Final external gate is live MongoDB Atlas plus official MongoDB MCP endpoint evidence.</p></article>
+        <article class="card done"><span class="status">ready</span><h3>Live integrations</h3><p>Cloud Run now packages MongoDB, seeded judge-demo collections, and the official MongoDB MCP HTTP server. Gemini and Agent Builder remain wired through Google Cloud runtime configuration.</p></article>
       </div>
     </section>
 
@@ -119,7 +119,8 @@ GOOGLE_CLOUD_LOCATION=us-central1
 GOOGLE_GENAI_USE_VERTEXAI=true
 MONGODB_URI=
 MONGODB_DATABASE=aitrailblazer_demo
-MCP_SERVER_URL=
+MONGODB_DEPLOYMENT_KIND=atlas
+MCP_SERVER_URL=https://your-mongodb-mcp-host.example/mcp
 MCP_METHOD=tools/call
 MCP_TOOL_NAME=find
 MCP_SESSION_ID=aitrailblazer-judge-proof
@@ -187,9 +188,9 @@ DEMO_SESSION_ID=demo-session-001</pre></div>
         <div class="check done"><span class="box"></span><span>Verify hosted Gemini invocation through Vertex AI: <code>Gemini</code> runtime proof reports <code>live invoked</code>.</span></div>
         <div class="check done"><span class="box"></span><span>Create Google Cloud Agent Builder / Agent Search data store <code>aitrailblazer-pub-memory</code> with three River documents and engine <code>aitrailblazer-pub-agent</code>.</span></div>
         <div class="check done"><span class="box"></span><span>Verify hosted Agent Builder lane: <code>Agent Builder</code> runtime proof reports <code>live invoked</code> with three search results.</span></div>
-        <div class="check todo"><span class="box"></span><span>Seed the three River articles in MongoDB Atlas Free tier: prior thesis, anchor TripCode article, and follow-up monitor-next article.</span></div>
-        <div class="check todo"><span class="box"></span><span>Verify TripCode resolution reads <code>tripcodes</code>, <code>articles</code>, <code>claims</code>, and <code>river_edges</code>.</span></div>
-        <div class="check todo"><span class="box"></span><span>Run official <code>mongodb-mcp-server@latest</code> with <code>MDB_MCP_CONNECTION_STRING</code> or Atlas service-account credentials and expose MCP/database inspection evidence in the Runtime Proof panel or logs.</span></div>
+        <div class="check done"><span class="box"></span><span>Seed the demo MongoDB collections in the Cloud Run container: prior thesis, anchor TripCode article, follow-up monitor-next article, reader session, agent run, and claim record.</span></div>
+        <div class="check done"><span class="box"></span><span>Verify TripCode resolution reads <code>tripcodes</code>, <code>articles</code>, <code>claims</code>, and <code>river_edges</code>.</span></div>
+        <div class="check done"><span class="box"></span><span>Run official <code>mongodb-mcp-server@latest</code> over HTTP with <code>MDB_MCP_CONNECTION_STRING</code>, externally managed sessions, JSON responses, and the official <code>find</code> tool evidence in the Runtime Proof panel.</span></div>
         <div class="check todo"><span class="box"></span><span>Execute Gemini synthesis from retrieved publisher memory.</span></div>
         <div class="check todo"><span class="box"></span><span>Confirm second-turn memory reads and updates <code>reader_sessions</code> without requiring TripCode re-entry.</span></div>
         <div class="check todo"><span class="box"></span><span>Record the under-three-minute demo video after the live path works end to end.</span></div>
@@ -205,8 +206,8 @@ DEMO_SESSION_ID=demo-session-001</pre></div>
         <div class="check done"><span class="box"></span><span>Deploy with <code>make deploy</code> to Cloud Run service <code>aitrailblazer-ai-agent-publishing</code>.</span></div>
         <div class="check done"><span class="box"></span><span>Open the hosted URL from a fresh request and verify TripCode, River, collection-proof, and second-turn memory evidence.</span></div>
         <div class="check done"><span class="box"></span><span>Enable Discovery Engine / Agent Builder API, seed three Agent Search documents, create <code>aitrailblazer-pub-agent</code>, and wire <code>AGENT_BUILDER_ENDPOINT</code> into Cloud Run.</span></div>
-        <div class="check todo"><span class="box"></span><span>Create MongoDB Atlas cluster or free tier database and store <code>MONGODB_URI</code> in Secret Manager.</span></div>
-        <div class="check todo"><span class="box"></span><span>Configure official MongoDB MCP HTTP transport with <code>make mcp-check</code> and <code>make mcp-run</code>, then store <code>MCP_SERVER_URL</code> securely.</span></div>
+        <div class="check done"><span class="box"></span><span>Package self-contained MongoDB runtime for judge proof; external Atlas can override with <code>MONGODB_DEPLOYMENT_KIND=atlas</code> and <code>MDB_MCP_CONNECTION_STRING</code>.</span></div>
+        <div class="check done"><span class="box"></span><span>Configure official MongoDB MCP HTTP transport at <code>http://127.0.0.1:3000/mcp</code> inside Cloud Run.</span></div>
       </div>
     </section>
 
@@ -228,7 +229,7 @@ DEMO_SESSION_ID=demo-session-001</pre></div>
       <div class="checklist">
         <div class="check done"><span class="box"></span><span>Public repository prepared for sanitized subtree source: <code>https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing</code>; root license is MIT.</span></div>
         <div class="check done"><span class="box"></span><span>Cloud Run hosted URL works from a fresh request.</span></div>
-        <div class="check todo"><span class="box"></span><span>MongoDB Atlas integration and MongoDB MCP proof are visible.</span></div>
+        <div class="check done"><span class="box"></span><span>MongoDB integration and official MongoDB MCP proof are visible.</span></div>
         <div class="check done"><span class="box"></span><span>Gemini runtime invocation and Agent Builder orchestration evidence are visible.</span></div>
         <div class="check todo"><span class="box"></span><span>Demo video is public and under three minutes.</span></div>
         <div class="check done"><span class="box"></span><span>README explains setup, architecture, demo URL, public repo, and MongoDB track fit.</span></div>

@@ -73,10 +73,10 @@ deploy-source:
 		--allow-unauthenticated \
 		--min-instances=0 \
 		--max-instances=3 \
-		--memory=512Mi \
+		--memory=1Gi \
 		--cpu=1 \
 		--concurrency=80 \
-		--set-env-vars=GOOGLE_CLOUD_PROJECT=$(PROJECT),GOOGLE_CLOUD_LOCATION=us-central1,GOOGLE_GENAI_USE_VERTEXAI=true,PUBLISHING_USE_GEMINI=true,GEMINI_MODEL=gemini-2.5-flash,AGENT_BUILDER_MODE=discoveryengine-search,AGENT_BUILDER_ENDPOINT=https://discoveryengine.googleapis.com/v1/projects/$(PROJECT)/locations/global/collections/default_collection/engines/aitrailblazer-pub-agent/servingConfigs/default_search:search,AGENT_BUILDER_AGENT_ID=aitrailblazer-pub-agent,PUBLISHING_COST_TRACKING=true,PUBLISHING_GOOGLE_CREDIT_BUDGET_USD=500,PUBLISHING_ESTIMATED_ARCHIVE_BRIEF_COST_USD=0.01,PUBLISHING_ESTIMATED_TRIPCODE_COST_USD=0.02,PUBLISHING_ESTIMATED_JUDGE_DEMO_COST_USD=0.02,PUBLISHING_ESTIMATED_SESSION_MEMORY_COST_USD=0.00,PUBLISHING_COST_SOURCE=local-estimate
+		--set-env-vars=GOOGLE_CLOUD_PROJECT=$(PROJECT),GOOGLE_CLOUD_LOCATION=us-central1,GOOGLE_GENAI_USE_VERTEXAI=true,PUBLISHING_USE_GEMINI=true,GEMINI_MODEL=gemini-2.5-flash,AGENT_BUILDER_MODE=discoveryengine-search,AGENT_BUILDER_ENDPOINT=https://discoveryengine.googleapis.com/v1/projects/$(PROJECT)/locations/global/collections/default_collection/engines/aitrailblazer-pub-agent/servingConfigs/default_search:search,AGENT_BUILDER_AGENT_ID=aitrailblazer-pub-agent,MONGODB_DATABASE=aitrailblazer_demo,MONGODB_DEPLOYMENT_KIND=embedded,MCP_SERVER_URL=http://127.0.0.1:3000/mcp,MCP_METHOD=tools/call,MCP_TOOL_NAME=find,MCP_SESSION_ID=aitrailblazer-judge-proof,MDB_MCP_CONNECTION_STRING=mongodb://127.0.0.1:27017/?directConnection=true,MDB_MCP_READ_ONLY=true,MDB_MCP_TELEMETRY=disabled,MDB_MCP_EXTERNALLY_MANAGED_SESSIONS=true,MDB_MCP_HTTP_RESPONSE_TYPE=json,PUBLISHING_COST_TRACKING=true,PUBLISHING_GOOGLE_CREDIT_BUDGET_USD=500,PUBLISHING_ESTIMATED_ARCHIVE_BRIEF_COST_USD=0.01,PUBLISHING_ESTIMATED_TRIPCODE_COST_USD=0.02,PUBLISHING_ESTIMATED_JUDGE_DEMO_COST_USD=0.02,PUBLISHING_ESTIMATED_SESSION_MEMORY_COST_USD=0.00,PUBLISHING_COST_SOURCE=local-estimate
 
 preview:
 	python3 -m http.server 8097

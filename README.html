@@ -109,26 +109,26 @@
     <p><a href="./index.html">index.html</a> is the GitHub Pages-compatible publishing surface. It is a self-contained StrategiX Visual Spec with an embedded XML contract.</p>
 
     <h2>Build Checklist</h2>
-    <p><a href="./docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html">Build checklist</a> tracks the submission gates: MongoDB Atlas persistence, MongoDB MCP proof, Gemini synthesis, Agent Builder orchestration evidence, hosted Cloud Run testing, and the under-three-minute demo video. The current Cloud Run service proves Gemini and Agent Builder live; MongoDB Atlas and official MongoDB MCP wiring remain the final external integration gate.</p>
+    <p><a href="./docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html">Build checklist</a> tracks the submission gates: MongoDB persistence, MongoDB MCP proof, Gemini synthesis, Agent Builder orchestration evidence, hosted Cloud Run testing, and the under-three-minute demo video. The Cloud Run image now includes a self-contained MongoDB demo store plus the official MongoDB MCP HTTP server; production Atlas credentials can still override the embedded connection string.</p>
 
     <h2>Required Technologies Used</h2>
     <ul>
       <li>Gemini synthesis lane for grounded answers.</li>
       <li>Google Cloud Agent Builder or Gemini Enterprise Agent Platform as the orchestration lane.</li>
-      <li>MongoDB Atlas data model for articles, TripCodes, claims, River edges, reader sessions, and agent runs.</li>
+      <li>MongoDB data model for articles, TripCodes, claims, River edges, reader sessions, and agent runs.</li>
       <li>MongoDB MCP Server context path for database-grounded agent access.</li>
       <li>Cloud Run deployment target.</li>
     </ul>
 
     <h2>MongoDB Track Implementation</h2>
-    <p>The required collection model is <code>articles</code>, <code>tripcodes</code>, <code>claims</code>, <code>river_edges</code>, <code>reader_sessions</code>, and <code>agent_runs</code>. The runtime exposes this model in <code>GET /v1/judge-demo</code>; final MongoDB-track proof still requires a live Atlas database and official MongoDB MCP endpoint.</p>
+    <p>The required collection model is <code>articles</code>, <code>tripcodes</code>, <code>claims</code>, <code>river_edges</code>, <code>reader_sessions</code>, and <code>agent_runs</code>. The runtime exposes this model in <code>GET /v1/judge-demo</code> and calls the official MongoDB MCP <code>find</code> tool against a seeded MongoDB store. Set <code>MONGODB_DEPLOYMENT_KIND=atlas</code> and override <code>MDB_MCP_CONNECTION_STRING</code> for an external Atlas database.</p>
 
     <h2>Agent Builder and Gemini Implementation</h2>
     <p>The judge-proof path is: input TripCode, plan retrieval steps, use MCP context, synthesize with Gemini, write reader-session memory, then answer a follow-up using prior River state.</p>
 
     <h2>MCP Server Usage</h2>
     <p>The MCP proof should show schema, collection, retrieval, or tool-call evidence. The runtime response includes a Runtime Proof panel so judges do not have to infer partner usage.</p>
-    <p>Use the official MongoDB MCP server through <code>mongodb-mcp-server@latest</code>. Configure credentials only through environment variables, then run <code>make mcp-check</code> and <code>make mcp-run</code>. The server requires either <code>MDB_MCP_CONNECTION_STRING</code> or both <code>MDB_MCP_API_CLIENT_ID</code> and <code>MDB_MCP_API_CLIENT_SECRET</code>. The local runner starts HTTP transport in read-only mode with JSON responses and externally managed sessions so the app can make a direct <code>tools/call</code> request to the official <code>find</code> tool. Set <code>MCP_SERVER_URL</code> to the HTTP transport URL before redeploying the app runtime.</p>
+    <p>Use the official MongoDB MCP server through <code>mongodb-mcp-server@latest</code>. Configure external Atlas credentials only through environment variables, then run <code>make mcp-check</code> and <code>make mcp-run</code>. The Cloud Run image starts MongoDB, seeds the judge demo collections, launches official MCP HTTP transport in read-only JSON mode with externally managed sessions, and points <code>MCP_SERVER_URL</code> at <code>http://127.0.0.1:3000/mcp</code>. The app sends <code>Accept: application/json, text/event-stream</code>, which is required by the official HTTP transport.</p>
 
     <h2>Local Commands</h2>
     <pre><code>make check

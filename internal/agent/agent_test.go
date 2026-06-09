@@ -263,7 +263,7 @@ func TestRuntimeIntegrationsFromEnvAndHelpers(t *testing.T) {
 	if cfg.ProjectID != "fallback-project" || cfg.Location != "global" || cfg.GeminiModel != "gemini-2.5-flash" || !cfg.UseGemini {
 		t.Fatalf("env config = %#v", cfg)
 	}
-	if cfg.AccessToken != "google-token" || cfg.MCPMethod != "tools/call" || cfg.MCPTool != "find" || cfg.MCPSessionID != "aitrailblazer-judge-proof" || cfg.AgentEndpoint != "http://agent.test" || cfg.AgentMode != "discoveryengine-search" {
+	if cfg.AccessToken != "google-token" || cfg.MCPEndpoint != "http://mcp.test/mcp" || cfg.MCPMethod != "tools/call" || cfg.MCPTool != "find" || cfg.MCPSessionID != "aitrailblazer-judge-proof" || cfg.AgentEndpoint != "http://agent.test" || cfg.AgentMode != "discoveryengine-search" {
 		t.Fatalf("env endpoints = %#v", cfg)
 	}
 	if envDefault("missing", "fallback") != "fallback" || firstEnv("missing-one", "missing-two") != "" || !envBool("PUBLISHING_USE_GEMINI") {
@@ -285,6 +285,9 @@ func TestRuntimeIntegrationsFromEnvAndHelpers(t *testing.T) {
 	}
 	if (RuntimeIntegrations{}).httpClient() == nil || (RuntimeIntegrations{HTTPClient: http.DefaultClient}).httpClient() != http.DefaultClient {
 		t.Fatal("httpClient helper failed")
+	}
+	if normalizeMCPEndpoint(" http://mcp.test/ ") != "http://mcp.test/mcp" || normalizeMCPEndpoint("http://mcp.test/mcp") != "http://mcp.test/mcp" || normalizeMCPEndpoint(" ") != "" {
+		t.Fatal("normalizeMCPEndpoint failed")
 	}
 	if compactJSON(func() {}) != "unserializable JSON" || !strings.Contains(compactJSON(map[string]string{"x": "y"}), `"x":"y"`) {
 		t.Fatal("compactJSON failed")
@@ -369,7 +372,10 @@ func TestRuntimeIntegrationsMCPAgentAndProof(t *testing.T) {
 	}
 
 	mcpServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Header.Get("Authorization") != "Bearer mcp" || r.Header.Get("X-API-Key") != "key" || r.Header.Get("mcp-session-id") != "aitrailblazer-judge-proof" || r.Header.Get("Accept") != "application/json" {
+		if r.URL.Path != "/mcp" {
+			t.Fatalf("mcp path = %q", r.URL.Path)
+		}
+		if r.Header.Get("Authorization") != "Bearer mcp" || r.Header.Get("X-API-Key") != "key" || r.Header.Get("mcp-session-id") != "aitrailblazer-judge-proof" || r.Header.Get("Accept") != "application/json, text/event-stream" {
 			t.Fatalf("mcp headers = auth:%q key:%q session:%q accept:%q", r.Header.Get("Authorization"), r.Header.Get("X-API-Key"), r.Header.Get("mcp-session-id"), r.Header.Get("Accept"))
 		}
 		var body map[string]any
@@ -399,6 +405,11 @@ func TestRuntimeIntegrationsMCPAgentAndProof(t *testing.T) {
 	if mcpResult.Status != "live invoked" || mongodbAtlasStatus(mcpResult) != "live via MongoDB MCP" || !strings.Contains(mongodbAtlasEvidence(mcpResult), "proved") {
 		t.Fatalf("mcp success = %#v", mcpResult)
 	}
+	t.Setenv("MONGODB_DEPLOYMENT_KIND", "atlas")
+	if !strings.Contains(mongodbAtlasEvidence(mcpResult), "Atlas collection access") {
+		t.Fatalf("atlas evidence = %q", mongodbAtlasEvidence(mcpResult))
+	}
+	t.Setenv("MONGODB_DEPLOYMENT_KIND", "")
 
 	mcpErrorServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte(`{"error":{"message":"tool failed"}}`))

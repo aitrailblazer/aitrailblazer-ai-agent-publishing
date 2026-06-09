@@ -55,7 +55,7 @@ func RuntimeIntegrationsFromEnv() RuntimeIntegrations {
 		AccessToken:      strings.TrimSpace(os.Getenv("GOOGLE_OAUTH_ACCESS_TOKEN")),
 		TokenURL:         strings.TrimSpace(os.Getenv("GOOGLE_METADATA_TOKEN_URL")),
 		MetadataHost:     strings.TrimSpace(os.Getenv("GCE_METADATA_HOST")),
-		MCPEndpoint:      strings.TrimSpace(os.Getenv("MCP_SERVER_URL")),
+		MCPEndpoint:      normalizeMCPEndpoint(os.Getenv("MCP_SERVER_URL")),
 		MCPMethod:        envDefault("MCP_METHOD", "tools/call"),
 		MCPTool:          envDefault("MCP_TOOL_NAME", "find"),
 		MCPSessionID:     envDefault("MCP_SESSION_ID", "aitrailblazer-judge-proof"),
@@ -95,7 +95,7 @@ func (r RuntimeIntegrations) RuntimeProof(ctx context.Context, req RuntimeProbeR
 	return []RuntimeProofItem{
 		{System: "Gemini", Status: results[0].Status, Evidence: results[0].Evidence},
 		{System: "Agent Builder", Status: results[1].Status, Evidence: results[1].Evidence},
-		{System: "MongoDB Atlas", Status: mongodbAtlasStatus(results[2]), Evidence: mongodbAtlasEvidence(results[2])},
+		{System: "MongoDB", Status: mongodbAtlasStatus(results[2]), Evidence: mongodbAtlasEvidence(results[2])},
 		{System: "MongoDB MCP", Status: results[2].Status, Evidence: results[2].Evidence},
 		{System: "Cloud Run", Status: "deployment target", Evidence: "Container-ready HTTP service with health and judge-demo endpoints."},
 	}
@@ -176,7 +176,8 @@ func (r RuntimeIntegrations) invokeMCP(ctx context.Context, req RuntimeProbeRequ
 		headers["X-API-Key"] = r.MCPAPIKey
 	}
 	var out map[string]any
-	if err := r.postJSON(ctx, r.MCPEndpoint, "", payload, &out, headers); err != nil {
+	headers["Accept"] = "application/json, text/event-stream"
+	if err := r.postJSON(ctx, normalizeMCPEndpoint(r.MCPEndpoint), "", payload, &out, headers); err != nil {
 		return integrationResult{System: "MongoDB MCP", Status: "invoke failed", Evidence: err.Error()}
 	}
 	if _, hasError := out["error"]; hasError {
@@ -371,7 +372,10 @@ func mongodbAtlasStatus(mcp integrationResult) string {
 
 func mongodbAtlasEvidence(mcp integrationResult) string {
 	if mcp.Status == "live invoked" {
-		return "MongoDB collection access proved through MCP tool invocation."
+		if strings.ToLower(envDefault("MONGODB_DEPLOYMENT_KIND", "")) == "atlas" {
+			return "MongoDB Atlas collection access proved through MCP tool invocation."
+		}
+		return "MongoDB collection access proved through official MCP tool invocation."
 	}
 	return "Expected collections: articles, tripcodes, claims, river_edges, reader_sessions, agent_runs. MCP evidence: " + mcp.Evidence
 }
@@ -398,6 +402,20 @@ func firstEnv(keys ...string) string {
 		}
 	}
 	return ""
+}
+
+func normalizeMCPEndpoint(value string) string {
+	endpoint := strings.TrimSpace(value)
+	if endpoint == "" {
+		return ""
+	}
+	if strings.HasSuffix(endpoint, "/") {
+		endpoint = strings.TrimRight(endpoint, "/")
+	}
+	if !strings.HasSuffix(endpoint, "/mcp") {
+		endpoint += "/mcp"
+	}
+	return endpoint
 }
 
 func envBool(key string) bool {
