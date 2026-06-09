@@ -191,9 +191,9 @@ DEMO_SESSION_ID=demo-session-001</pre></div>
         <div class="check done"><span class="box"></span><span>Seed the demo MongoDB collections in the Cloud Run container: prior thesis, anchor TripCode article, follow-up monitor-next article, reader session, agent run, and claim record.</span></div>
         <div class="check done"><span class="box"></span><span>Verify TripCode resolution reads <code>tripcodes</code>, <code>articles</code>, <code>claims</code>, and <code>river_edges</code>.</span></div>
         <div class="check done"><span class="box"></span><span>Run official <code>mongodb-mcp-server@latest</code> over HTTP with <code>MDB_MCP_CONNECTION_STRING</code>, externally managed sessions, JSON responses, and the official <code>find</code> tool evidence in the Runtime Proof panel.</span></div>
-        <div class="check todo"><span class="box"></span><span>Execute Gemini synthesis from retrieved publisher memory.</span></div>
-        <div class="check todo"><span class="box"></span><span>Confirm second-turn memory reads and updates <code>reader_sessions</code> without requiring TripCode re-entry.</span></div>
-        <div class="check todo"><span class="box"></span><span>Record the under-three-minute demo video after the live path works end to end.</span></div>
+        <div class="check done"><span class="box"></span><span>Execute Gemini synthesis from retrieved publisher memory; hosted runtime proof reports <code>Gemini</code> as <code>live invoked</code>.</span></div>
+        <div class="check done"><span class="box"></span><span>Confirm second-turn memory flow continues without requiring TripCode re-entry and is visible in <code>/v1/judge-demo</code>.</span></div>
+        <div class="check todo"><span class="box"></span><span>Record the under-three-minute demo video from the live hosted path.</span></div>
       </div>
     </section>
 
@@ -243,6 +243,21 @@ DEMO_SESSION_ID=demo-session-001</pre></div>
 
     <section>
       <h2>Embedded XML</h2>
+      <script id="strategix-build-checklist-contract" type="application/xml">
+<StrategiXVisualSpec version="1.4" status="build-checklist" generated="2026-06-08" artifact="docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html">
+  <CanonicalArtifact>
+    <Title>AITrailblazer AI Agent Publishing Build Checklist</Title>
+    <Competition>Google Cloud Rapid Agent Hackathon</Competition>
+    <Track>MongoDB Track</Track>
+  </CanonicalArtifact>
+  <Objective>Ship the smallest undeniable runtime proof: TripCode to three River articles, MongoDB memory, MCP context, Gemini synthesis, Cloud Run URL, and second-turn memory.</Objective>
+  <HostedRuntime status="deployed">https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app</HostedRuntime>
+  <SeedDataset articles="3" tripcodes="1" claims="3-9" riverEdges="2-4" sessions="1-2" agentRuns="1+"/>
+  <RequiredCollections>articles tripcodes claims river_edges reader_sessions agent_runs</RequiredCollections>
+  <RequiredFlows>TripCode resolution; River traversal; Second-turn memory</RequiredFlows>
+  <SubmissionGate>Visible runtime proof beats platform breadth.</SubmissionGate>
+</StrategiXVisualSpec>
+      </script>
       <div class="codeblock"><pre>&lt;StrategiXVisualSpec version="1.4" status="build-checklist" generated="2026-06-08" artifact="docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html"&gt;
   &lt;CanonicalArtifact&gt;
     &lt;Title&gt;AITrailblazer AI Agent Publishing Build Checklist&lt;/Title&gt;

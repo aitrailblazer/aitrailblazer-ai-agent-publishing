@@ -115,8 +115,8 @@ validate:
 	@test -f docs/AITrailblazer_AI_Agent_Publishing_Winning_Spec_2026_06_08.html
 	@test -f docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html
 	@test -f docs/ExecPlan_AITrailblazer_MongoDB_Atlas_Runtime_2026_06_09.html
+	@test -f docs/ExecPlan_Public_Docs_Sanitization_2026_06_09.html
 	@test -f docs/Rapid_Agent_Hackathon_Rules_Source_2026_06_08.html
-	@test -f docs/Rapid_Agent_Hackathon_Rules_Source_2026_06_08.raw.html
 	@grep -q "StrategiXVisualSpec" index.html
 	@grep -q "Google Cloud Rapid Agent Hackathon" index.html
 	@grep -q "rapid-agent.devpost.com/resources" index.html

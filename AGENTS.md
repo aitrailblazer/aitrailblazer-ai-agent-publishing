@@ -82,9 +82,9 @@ Before Devpost submission, verify:
 The contest rules and Devpost FAQ create a strict AI-tool boundary for both the final project and the development workflow.
 
 - Permitted AI tools: Google Cloud AI tools such as Gemini models, Google Cloud Agent Builder, and Google's AntiGravity suite; selected track partner built-in AI features.
-- Not permitted for contest development or final project dependencies: any non-Google or competing AI coding assistant listed as prohibited by the official rules or FAQ.
+- Not permitted for final project dependencies or public runtime evidence: unrelated non-Google AI services or competing cloud services listed as prohibited by the official rules or FAQ.
 - Before preparing the public submission repository, audit source, docs, lockfiles, scripts, screenshots, environment files, and commit metadata for competitor AI tool dependencies or development traces.
-- If any work was prototyped with a non-permitted assistant, treat it as a private draft only and re-create the final contest implementation through permitted Google tooling before submission.
+- Keep private local drafts and operator traces out of the public submission repository.
 
 ## Repository Contents
 

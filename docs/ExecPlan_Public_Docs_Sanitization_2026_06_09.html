@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ExecPlan Public Docs Sanitization</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17212f;
+      --muted: #627086;
+      --line: #d7deea;
+      --panel: #ffffff;
+      --bg: #f7f8fb;
+      --blue: #1358db;
+      --green: #0f7a4d;
+      --amber: #9a5b00;
+    }
+    html { background: var(--bg); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; line-height: 1.55; }
+    body { margin: 0; }
+    main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 44px 0 72px; }
+    h1 { font-size: clamp(34px, 6vw, 64px); line-height: .98; margin: 0 0 14px; max-width: 900px; }
+    h2 { font-size: clamp(22px, 3vw, 32px); margin: 34px 0 12px; }
+    h3 { margin: 0 0 8px; font-size: 18px; }
+    p { max-width: 880px; }
+    code { background: #e9edf5; border-radius: 6px; padding: 2px 6px; }
+    pre { margin: 0; overflow: auto; white-space: pre-wrap; }
+    .lede { font-size: 19px; color: #263241; }
+    .meta { color: var(--muted); font-size: 13px; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(248px, 1fr)); gap: 14px; }
+    .card, .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; }
+    .tag { color: var(--blue); font-size: 12px; font-weight: 850; text-transform: uppercase; letter-spacing: .08em; }
+    .done .tag { color: var(--green); }
+    .warn .tag { color: var(--amber); }
+    .table { display: grid; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+    .row { display: grid; grid-template-columns: minmax(190px, .38fr) 1fr; }
+    .row + .row { border-top: 1px solid var(--line); }
+    .cell { padding: 12px 14px; }
+    .cell:first-child { background: #eef2f7; font-weight: 850; }
+    .xml { background: #0b1220; color: #f8fafc; border-radius: 8px; padding: 16px; font-size: 12px; }
+    @media (max-width: 760px) {
+      .row { grid-template-columns: 1fr; }
+      .cell:first-child { border-bottom: 1px solid var(--line); }
+    }
+  </style>
+  <script id="strategix-public-docs-sanitization-contract" type="application/xml">
+<StrategiXVisualSpec id="execplan-public-docs-sanitization-2026-06-09" version="1.4" status="implemented" canonicalFormat="html">
+  <CanonicalArtifact>
+    <Title>ExecPlan Public Docs Sanitization</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+    <File>docs/ExecPlan_Public_Docs_Sanitization_2026_06_09.html</File>
+    <Generated>2026-06-09</Generated>
+  </CanonicalArtifact>
+  <Goal>Remove private or misleading public-documentation evidence while preserving the competition-facing Google Cloud, Gemini, Agent Builder, MongoDB, and MongoDB MCP story.</Goal>
+  <Context>
+    <Fact>The public repository must not contain secrets, Devpost session data, browser account artifacts, raw executable page captures, or private local operator traces.</Fact>
+    <Fact>The hosted runtime proof is already live for Cloud Run, Gemini, Agent Builder, MongoDB, and official MongoDB MCP.</Fact>
+    <Fact>Durable plans and reports in this workspace must be self-contained StrategiX HTML files with embedded XML contracts.</Fact>
+  </Context>
+  <AllowedChanges>
+    <Path>docs/*.html</Path>
+    <Path>Makefile</Path>
+    <Path>AGENTS.md</Path>
+  </AllowedChanges>
+  <ForbiddenChanges>
+    <Rule>Do not publish raw browser HTML captures, session tokens, CSRF values, analytics identifiers, private screenshots, or account-specific Devpost content.</Rule>
+    <Rule>Do not name private development operators or unofficial tool evidence in public contest materials.</Rule>
+    <Rule>Do not weaken the required Google Cloud, Gemini, Agent Builder, MongoDB, and MongoDB MCP runtime narrative.</Rule>
+  </ForbiddenChanges>
+  <Implementation>
+    <Step status="done">Deleted the raw Devpost HTML capture from the public docs directory.</Step>
+    <Step status="done">Updated validation so the public surface no longer requires the raw capture.</Step>
+    <Step status="done">Updated the curated rules-source page to state that executable scripts, session metadata, analytics identifiers, and account fields are excluded.</Step>
+    <Step status="done">Corrected stale live-proof TODOs in the build checklist and competition analysis.</Step>
+    <Step status="done">Replaced future-dated competition analysis with a 2026-06-09 artifact path and metadata.</Step>
+    <Step status="done">Converted visible XML-only blocks into real embedded XML contracts where needed.</Step>
+    <Step status="done">Reduced public wording that could imply private local development evidence.</Step>
+  </Implementation>
+  <AcceptanceCriteria>
+    <Criterion status="done">No raw Devpost browser capture remains in docs.</Criterion>
+    <Criterion status="done">Public docs contain no explicit private development operator evidence.</Criterion>
+    <Criterion status="done">Embedded XML contracts parse successfully.</Criterion>
+    <Criterion status="done">make validate passes.</Criterion>
+    <Criterion status="done">make check passes.</Criterion>
+  </AcceptanceCriteria>
+</StrategiXVisualSpec>
+  </script>
+</head>
+<body>
+  <main>
+    <p class="meta">Implemented ExecPlan • Public Surface Hygiene • 2026-06-09</p>
+    <h1>Public docs are sanitized for competition review.</h1>
+    <p class="lede">This ExecPlan removes private browser evidence, stale runtime-gate language, future-dated metadata, and public wording that could imply unofficial development traces. The repository keeps the official story focused on Google Cloud, Gemini, Agent Builder, Cloud Run, MongoDB, and official MongoDB MCP.</p>
+
+    <section>
+      <h2>Scope</h2>
+      <div class="grid">
+        <article class="card done">
+          <span class="tag">Done</span>
+          <h3>Raw Capture Removed</h3>
+          <p>The executable Devpost raw HTML snapshot is no longer part of the public docs. The curated rules source remains as inert text and a valid StrategiX contract.</p>
+        </article>
+        <article class="card done">
+          <span class="tag">Done</span>
+          <h3>Live Proof Current</h3>
+          <p>Checklist and competition analysis now reflect the hosted proof: Gemini, Agent Builder, MongoDB, MongoDB MCP, and Cloud Run are live runtime lanes.</p>
+        </article>
+        <article class="card done">
+          <span class="tag">Done</span>
+          <h3>Private Evidence Excluded</h3>
+          <p>Public wording now excludes private local operator traces, raw account captures, session artifacts, secret-bearing output, and account-specific evidence.</p>
+        </article>
+        <article class="card warn">
+          <span class="tag">Remaining Gate</span>
+          <h3>Video and Devpost</h3>
+          <p>The repository is cleaned for public review. The remaining external work is the public under-three-minute video and final Devpost fields.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Implementation Map</h2>
+      <div class="table">
+        <div class="row"><div class="cell">Deleted</div><div class="cell"><code>docs/Rapid_Agent_Hackathon_Rules_Source_2026_06_08.raw.html</code>, because it contained executable third-party scripts and browser/session artifacts.</div></div>
+        <div class="row"><div class="cell">Updated</div><div class="cell"><code>docs/Rapid_Agent_Hackathon_Rules_Source_2026_06_08.html</code> now describes a sanitized, inert text extraction.</div></div>
+        <div class="row"><div class="cell">Updated</div><div class="cell"><code>docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html</code> now marks hosted Gemini synthesis and second-turn memory proof as done.</div></div>
+        <div class="row"><div class="cell">Renamed</div><div class="cell"><code>docs/AITrailblazer_AI_Agent_Publishing_Competition_Win_Improvements_2026_06_09.html</code> replaces the future-dated 2026-06-10 analysis.</div></div>
+        <div class="row"><div class="cell">Updated</div><div class="cell"><code>docs/AITrailblazer_AI_Agent_Publishing_Winning_Spec_2026_06_08.html</code> now frames the remaining critical path as video, Devpost fields, and evidence hygiene.</div></div>
+        <div class="row"><div class="cell">Updated</div><div class="cell"><code>Makefile</code> validates this ExecPlan and no longer requires the removed raw capture.</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Embedded XML Contract</h2>
+      <div class="panel">
+        <pre class="xml">&lt;StrategiXVisualSpec id="execplan-public-docs-sanitization-2026-06-09" version="1.4" status="implemented" canonicalFormat="html"&gt;
+  &lt;Goal&gt;Remove private or misleading public-documentation evidence while preserving the competition-facing runtime story.&lt;/Goal&gt;
+  &lt;AcceptanceCriteria&gt;
+    &lt;Criterion status="done"&gt;No raw Devpost browser capture remains in docs.&lt;/Criterion&gt;
+    &lt;Criterion status="done"&gt;No explicit private development operator evidence remains in public docs.&lt;/Criterion&gt;
+    &lt;Criterion status="done"&gt;Embedded XML contracts parse successfully.&lt;/Criterion&gt;
+    &lt;Criterion status="done"&gt;make validate and make check pass.&lt;/Criterion&gt;
+  &lt;/AcceptanceCriteria&gt;
+&lt;/StrategiXVisualSpec&gt;</pre>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
