@@ -155,6 +155,9 @@
     <h2>Devpost Submission Pack</h2>
     <p><a href="./DEVPOST_SUBMISSION.html">DEVPOST_SUBMISSION.html</a> contains copy-ready Devpost fields: title, tagline, description, technical implementation, impact, judging notes, built-with tags, submission links, and final checklist.</p>
 
+    <h2>Final Video ExecPlan</h2>
+    <p><a href="./EXECPLAN_FINAL_SUBMISSION_VIDEO.html">EXECPLAN_FINAL_SUBMISSION_VIDEO.html</a> contains the public sanitized implementation plan and recording runbook for the final under-three-minute Devpost demo video. Use <code>make video-url-check DEMO_VIDEO_URL=https://...</code> after the public YouTube or Vimeo link exists.</p>
+
     <h2>Required Technologies Used</h2>
     <ul>
       <li>Gemini synthesis lane for grounded answers.</li>
@@ -182,6 +185,7 @@ make validate
 make preview
 make mcp-check
 make atlas-check
+make video-url-check DEMO_VIDEO_URL=https://...
 make submission-readiness
 make mcp-run
 make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri</code></pre>

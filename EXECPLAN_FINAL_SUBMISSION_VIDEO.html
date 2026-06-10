@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITrailblazer Final Submission Video ExecPlan</title>
+  <meta name="description" content="Public sanitized ExecPlan for finishing the AITrailblazer Devpost video and final submission gate.">
+  <style>
+    html {
+      background: #f7f8fb;
+      color: #17212f;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    body { margin: 0; padding: 36px 18px; }
+    main { width: min(980px, 100%); margin: 0 auto; }
+    h1, h2, h3 { color: #0b1220; line-height: 1.12; }
+    h1 { font-size: clamp(34px, 5vw, 58px); margin: 0 0 10px; }
+    h2 { margin-top: 34px; font-size: 24px; }
+    h3 { margin-top: 24px; font-size: 18px; }
+    p, li { font-size: 16px; }
+    code {
+      background: #e9edf5;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    a { color: #1358db; font-weight: 700; }
+    .panel {
+      border: 1px solid #d6deea;
+      border-radius: 8px;
+      background: #fff;
+      padding: 18px;
+      margin: 14px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .tag {
+      display: inline-flex;
+      min-height: 26px;
+      align-items: center;
+      border-radius: 999px;
+      background: #e9f7ef;
+      color: #136f3e;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Final Submission Video ExecPlan</h1>
+    <p>This public sanitized ExecPlan closes the remaining local work for the AITrailblazer AI Agent Publishing submission. It does not include private operator evidence, credentials, account metadata, or unreleased claims.</p>
+
+    <section class="panel">
+      <span class="tag">Task</span>
+      <h2>Finish The Final Devpost Gate</h2>
+      <p>Prepare the under-three-minute demo video workflow and make the public repo, hosted demo, README, submission pack, and readiness automation point judges to the exact final path. The only intentionally external remaining action is recording/uploading the video and pasting its public URL into Devpost.</p>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <span class="tag">Allowed Changes</span>
+        <ul>
+          <li>Root public HTML artifacts.</li>
+          <li>README, changelog, and consolidated public docs.</li>
+          <li>Static serving allowlist, Dockerfile, Makefile, tests, and readiness scripts.</li>
+          <li>Video URL validation helper that accepts only public URLs supplied by environment variable.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <span class="tag">Forbidden Changes</span>
+        <ul>
+          <li>No credentials, cookies, account metadata, billing exports, or private screenshots.</li>
+          <li>No claims that this submission is a live SEC/XBRL market-data product.</li>
+          <li>No investment recommendations, paid-route pricing claims, or trading signals.</li>
+          <li>No additional files under <code>docs/</code>; the docs folder remains one canonical HTML artifact.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <span class="tag">Implementation Steps</span>
+      <ol>
+        <li>Create this public sanitized ExecPlan as a root HTML artifact.</li>
+        <li>Add a final video URL checker script and Makefile target.</li>
+        <li>Link this ExecPlan from the hosted root, README, Devpost submission pack, and consolidated docs.</li>
+        <li>Update readiness automation to verify the hosted ExecPlan and the public repository copy.</li>
+        <li>Keep the final video URL as an explicit manual Devpost gate until a public YouTube or Vimeo URL exists.</li>
+        <li>Run local tests, public scans, hosted deployment, and final submission readiness.</li>
+      </ol>
+    </section>
+
+    <section class="panel">
+      <span class="tag">Three-Minute Video Runbook</span>
+      <ol>
+        <li><strong>0:00-0:20 Problem:</strong> expert publishers have years of articles, but readers cannot reuse claims, updates, or follow-up context through normal archive search.</li>
+        <li><strong>0:20-0:45 Solution:</strong> AITrailblazer turns a publication archive into MongoDB-backed agent memory using Trip Codes, River links, claims, sessions, MongoDB MCP, Gemini, Agent Builder, and Cloud Run.</li>
+        <li><strong>0:45-1:25 Live Trip Code demo:</strong> enter <code>HUT-RIVER-001</code> and show resolved article, three River articles, claim cluster, River edges, and source context.</li>
+        <li><strong>1:25-1:55 Runtime proof:</strong> show Gemini live, Agent Builder live, MongoDB live, MongoDB MCP live, and Cloud Run hosted proof.</li>
+        <li><strong>1:55-2:25 Follow-up memory:</strong> ask <code>What should I monitor next?</code> and show the agent continuing from reader-session memory.</li>
+        <li><strong>2:25-2:50 Impact:</strong> explain how this generalizes to newsletters, research firms, technical blogs, local journalism, financial research, and any publisher with a valuable archive.</li>
+        <li><strong>2:50-3:00 Close:</strong> MongoDB is the memory layer, MCP is the agent access path, Gemini is the synthesis layer, and Cloud Run is the live runtime.</li>
+      </ol>
+    </section>
+
+    <section class="panel">
+      <span class="tag">Acceptance Criteria</span>
+      <ul>
+        <li><code>make check</code> passes with the static surface and Go tests.</li>
+        <li><code>make submission-readiness</code> passes after deployment.</li>
+        <li>Hosted root, README, Devpost pack, consolidated docs, and this ExecPlan return HTTP 200.</li>
+        <li>Public repository exposes this ExecPlan and the video URL checker.</li>
+        <li><code>make video-url-check DEMO_VIDEO_URL=...</code> validates a public YouTube or Vimeo demo URL when the final video exists.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <span class="tag">Remaining Manual Gate</span>
+      <p>Record and upload the final under-three-minute public demo video, then paste the URL into Devpost. Do not click final Devpost submit without explicit human confirmation.</p>
+    </section>
+
+    <script id="strategix-final-submission-video-execplan-contract" type="application/xml">
+<StrategiXVisualSpec version="1.4" status="public-execplan" artifact="EXECPLAN_FINAL_SUBMISSION_VIDEO.html">
+  <CanonicalArtifact>
+    <Title>AITrailblazer Final Submission Video ExecPlan</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+    <Challenge>Google Cloud Rapid Agent Hackathon</Challenge>
+  </CanonicalArtifact>
+  <Task>Prepare the final under-three-minute video workflow and submission gate while preserving public/private boundaries.</Task>
+  <AllowedChanges>
+    <Path>Root public HTML artifacts</Path>
+    <Path>README.html</Path>
+    <Path>CHANGELOG.html</Path>
+    <Path>DEVPOST_SUBMISSION.html</Path>
+    <Path>Makefile</Path>
+    <Path>scripts</Path>
+    <Path>cmd/server</Path>
+    <Path>Dockerfile</Path>
+  </AllowedChanges>
+  <ForbiddenChanges>
+    <Item>No credentials, cookies, account metadata, billing exports, or private screenshots.</Item>
+    <Item>No investment recommendations, SEC/XBRL market-data claims, paid-route pricing claims, or trading signals.</Item>
+    <Item>No additional docs-folder HTML files.</Item>
+  </ForbiddenChanges>
+  <ImplementationPlan>
+    <Step order="1">Create public sanitized ExecPlan.</Step>
+    <Step order="2">Add video URL checker.</Step>
+    <Step order="3">Link ExecPlan from public surfaces.</Step>
+    <Step order="4">Update readiness checks.</Step>
+    <Step order="5">Run tests, deploy, and verify.</Step>
+  </ImplementationPlan>
+  <AcceptanceCriteria>
+    <Criterion>make check passes.</Criterion>
+    <Criterion>make submission-readiness passes after deploy.</Criterion>
+    <Criterion>make video-url-check validates a supplied public video URL.</Criterion>
+    <Criterion>Final manual gate remains recording/uploading video and pasting URL into Devpost.</Criterion>
+  </AcceptanceCriteria>
+</StrategiXVisualSpec>
+    </script>
+  </main>
+</body>
+</html>

@@ -71,6 +71,9 @@ func TestStaticPublishingSurface(t *testing.T) {
 	if err := os.WriteFile("DEVPOST_SUBMISSION.html", []byte("<!doctype html><title>Devpost</title>"), 0o600); err != nil {
 		t.Fatalf("write devpost: %v", err)
 	}
+	if err := os.WriteFile("EXECPLAN_FINAL_SUBMISSION_VIDEO.html", []byte("<!doctype html><title>ExecPlan</title>"), 0o600); err != nil {
+		t.Fatalf("write execplan: %v", err)
+	}
 	if err := os.Mkdir("img", 0o700); err != nil {
 		t.Fatalf("mkdir img: %v", err)
 	}
@@ -101,6 +104,13 @@ func TestStaticPublishingSurface(t *testing.T) {
 	mux.ServeHTTP(rec, req)
 	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "Devpost") {
 		t.Fatalf("devpost static = %d %q", rec.Code, rec.Body.String())
+	}
+
+	req = httptest.NewRequest(http.MethodGet, "/EXECPLAN_FINAL_SUBMISSION_VIDEO.html", nil)
+	rec = httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "ExecPlan") {
+		t.Fatalf("execplan static = %d %q", rec.Code, rec.Body.String())
 	}
 
 	req = httptest.NewRequest(http.MethodGet, "/go.mod", nil)

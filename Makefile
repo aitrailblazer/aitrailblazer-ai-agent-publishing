@@ -9,7 +9,7 @@ ATLAS_SECRET ?= publishing-mongodb-atlas-uri
 -include .env
 export
 
-.PHONY: help test coverage vet check run demo spend build docker-build deploy deploy-source deploy-atlas preview validate submission-readiness mcp-check atlas-check mcp-run clean print-config
+.PHONY: help test coverage vet check run demo spend build docker-build deploy deploy-source deploy-atlas preview validate submission-readiness video-url-check mcp-check atlas-check mcp-run clean print-config
 
 help:
 	@echo "Available commands:"
@@ -28,6 +28,7 @@ help:
 	@echo "  make preview   - Serve the static publishing surface locally"
 	@echo "  make validate  - Run lightweight static validation"
 	@echo "  make submission-readiness - Run final local, hosted, repo, link, and scan gates"
+	@echo "  make video-url-check - Validate DEMO_VIDEO_URL for the final public demo video"
 	@echo "  make mcp-check - Verify official MongoDB MCP prerequisites"
 	@echo "  make atlas-check - Verify Atlas-mode MongoDB MCP prerequisites"
 	@echo "  make mcp-run   - Run official MongoDB MCP server over HTTP"
@@ -108,6 +109,7 @@ validate:
 	@test -f img/AITrailblazerAI.png
 	@test -f README.html
 	@test -f DEVPOST_SUBMISSION.html
+	@test -f EXECPLAN_FINAL_SUBMISSION_VIDEO.html
 	@test -f LICENSE
 	@test -f AGENTS.md
 	@test -f go.mod
@@ -117,6 +119,7 @@ validate:
 	@test "$$(find docs -maxdepth 1 -type f -name '*.html' | wc -l | tr -d ' ')" = "1"
 	@grep -q "StrategiXVisualSpec" index.html
 	@grep -q "StrategiXVisualSpec" DEVPOST_SUBMISSION.html
+	@grep -q "StrategiXVisualSpec" EXECPLAN_FINAL_SUBMISSION_VIDEO.html
 	@grep -q "StrategiXVisualSpec" docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html
 	@grep -q "Google Cloud Rapid Agent Hackathon" index.html
 	@grep -q "rapid-agent.devpost.com/resources" index.html
@@ -125,6 +128,9 @@ validate:
 
 submission-readiness:
 	scripts/submission-readiness.sh
+
+video-url-check:
+	scripts/video-url-check.sh
 
 mcp-check:
 	scripts/mongodb-mcp-check.sh

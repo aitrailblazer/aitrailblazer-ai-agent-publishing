@@ -88,6 +88,7 @@
     <Item status="done">Hosted root includes a dedicated Mongo DB MCP Runtime Proof panel with server, transport, read-only mode, queried collections, tool result, and agent action.</Item>
     <Item status="done">README includes Judge Quickstart, Public Safety Boundary, target users, impact framing, and three-minute video structure.</Item>
     <Item status="done">A root-level Devpost submission pack provides copy-ready fields without adding another docs-folder artifact.</Item>
+    <Item status="done">A root-level Final Video ExecPlan and video URL checker make the last manual Devpost gate explicit.</Item>
     <Item status="remaining">Add the final public video demo link in Devpost before final submit.</Item>
   </BuildChecklist>
   <SanitizationContract>
@@ -173,6 +174,7 @@
       ['done', 'The first screen now includes Judge Proof Checklist, Run Judge Demo, demo states, and Mongo DB MCP Runtime Proof.'],
       ['done', 'DEVPOST_SUBMISSION.html provides copy-ready title, tagline, description, technical implementation, impact, judging notes, built-with tags, and final checklist.'],
       ['done', 'Public scope boundary clarifies that DeltaSignal is source inspiration/proof material only, and this submission does not claim live SEC/XBRL, paid access, investment recommendation, or trading-signal behavior.'],
+      ['done', 'EXECPLAN_FINAL_SUBMISSION_VIDEO.html and make video-url-check define and validate the last video URL gate.'],
       ['remaining', 'Add the final public demo video link in Devpost before final submit.']
     ];
 
@@ -191,6 +193,7 @@
       ['Local gate', 'make check'],
       ['Hosted proof', 'curl -s https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/v1/judge-demo'],
       ['Final readiness', 'make submission-readiness'],
+      ['Video URL check', 'make video-url-check DEMO_VIDEO_URL=https://...'],
       ['Atlas preflight', 'make atlas-check'],
       ['Atlas deploy', 'make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri']
     ];
@@ -424,6 +427,7 @@
               <h2>Submission Pack</h2>
               <div class="grid3">
                 ${this.renderCard(['Devpost copy', 'DEVPOST_SUBMISSION.html contains copy-ready title, tagline, description, technical implementation, impact, judging notes, built-with tags, and submission links.'], 'Ready')}
+                ${this.renderCard(['Final video ExecPlan', 'EXECPLAN_FINAL_SUBMISSION_VIDEO.html contains the recording runbook and validation criteria for the final under-three-minute demo video.'], 'Ready')}
                 ${this.renderCard(['Hosted project', 'https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app'], 'Link')}
                 ${this.renderCard(['Public repository', 'https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing'], 'Link')}
               </div>

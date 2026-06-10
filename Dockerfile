@@ -22,6 +22,7 @@ COPY --from=build /src/index.html /index.html
 COPY --from=build /src/README.html /README.html
 COPY --from=build /src/CHANGELOG.html /CHANGELOG.html
 COPY --from=build /src/DEVPOST_SUBMISSION.html /DEVPOST_SUBMISSION.html
+COPY --from=build /src/EXECPLAN_FINAL_SUBMISSION_VIDEO.html /EXECPLAN_FINAL_SUBMISSION_VIDEO.html
 COPY --from=build /src/LICENSE /LICENSE
 COPY --from=build /src/img /img
 COPY --from=build /src/docs /docs
