@@ -88,9 +88,12 @@ echo "== hosted HTTP smoke =="
 http_get "${BASE_URL}/" "${tmpdir}/root.html" "${tmpdir}/root.headers"
 rg -q "AITrailblazer AI Agent Publishing" "${tmpdir}/root.html" || fail "hosted root missing project title"
 rg -q "Try the live proof" "${tmpdir}/root.html" || fail "hosted root missing live proof CTA"
+rg -q "Judge Proof Checklist" "${tmpdir}/root.html" || fail "hosted root missing judge proof checklist"
+rg -q "Run Judge Demo" "${tmpdir}/root.html" || fail "hosted root missing Run Judge Demo button"
 rg -q "Public docs" "${tmpdir}/root.html" || fail "hosted root missing consolidated docs link"
 rg -q "A short code printed in an article" "${tmpdir}/root.html" || fail "hosted root missing plain-language TripCode definition"
 rg -q "Resolve handle" "${tmpdir}/root.html" || fail "hosted root missing agent action trace"
+rg -q "Mongo DB MCP Runtime Proof" "${tmpdir}/root.html" || fail "hosted root missing MongoDB MCP runtime proof panel"
 pass "hosted root"
 
 http_get "${BASE_URL}/health" "${tmpdir}/health.json" "${tmpdir}/health.headers"
@@ -99,6 +102,7 @@ assert_json_value "${tmpdir}/health.json" '.ok == true' "hosted health"
 http_get "${BASE_URL}/${DOC_PATH}" "${tmpdir}/docs.html" "${tmpdir}/docs.headers"
 rg -q "Consolidated Public Documentation" "${tmpdir}/docs.html" || fail "hosted docs missing consolidated docs marker"
 rg -q "Embedded XML Contract" "${tmpdir}/docs.html" || fail "hosted docs missing embedded XML marker"
+rg -q "Judge Quick Proof" "${tmpdir}/docs.html" || fail "hosted docs missing judge quick proof marker"
 pass "hosted consolidated docs"
 
 http_get "${BASE_URL}/LICENSE" "${tmpdir}/license.txt" "${tmpdir}/license.headers"
@@ -134,8 +138,14 @@ http_get "${PUBLIC_RAW_BASE}/LICENSE" "${tmpdir}/repo-license.txt" "${tmpdir}/re
 rg -q "MIT License" "${tmpdir}/repo-license.txt" || fail "public repo raw LICENSE missing MIT License"
 pass "public repo MIT license visible"
 
+http_get "${PUBLIC_RAW_BASE}/README.html" "${tmpdir}/repo-readme.html" "${tmpdir}/repo-readme.headers"
+rg -q "Judge Quickstart" "${tmpdir}/repo-readme.html" || fail "public repo README missing Judge Quickstart"
+rg -q "Public Safety Boundary" "${tmpdir}/repo-readme.html" || fail "public repo README missing Public Safety Boundary"
+pass "public repo README judge quickstart visible"
+
 http_get "${PUBLIC_RAW_BASE}/${DOC_PATH}" "${tmpdir}/repo-doc.html" "${tmpdir}/repo-doc.headers"
 rg -q "Consolidated Public Documentation" "${tmpdir}/repo-doc.html" || fail "public repo docs missing consolidated docs marker"
+rg -q "Mongo DB MCP Runtime Proof" "${tmpdir}/repo-doc.html" || fail "public repo docs missing Mongo DB MCP Runtime Proof"
 pass "public repo consolidated docs visible"
 
 echo

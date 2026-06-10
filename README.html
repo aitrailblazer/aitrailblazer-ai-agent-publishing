@@ -57,11 +57,21 @@
     <h1>AITrailblazer AI Agent Publishing</h1>
     <p>Turn any expert publication archive into MongoDB-backed agent memory with TripCodes, Rivers, and Gemini-powered research workflows.</p>
 
+    <h2>Judge Quickstart</h2>
+    <ol>
+      <li>Open the hosted demo.</li>
+      <li>Enter Trip Code: <code>HUT-RIVER-001</code>.</li>
+      <li>Click <code>Run Judge Demo</code>.</li>
+      <li>Confirm Gemini / Vertex AI synthesis, Agent Builder retrieval lane, MongoDB memory objects, MongoDB MCP tool-call proof, and reader-session follow-up memory.</li>
+    </ol>
+    <p>Smoke tests: <code>GET /health</code> and <code>GET /v1/judge-demo</code>.</p>
+
     <h2>Problem</h2>
     <p>Expert publishers have years of valuable articles, but readers and agents cannot reliably reuse them. Static archive search does not preserve claims, updates, evidence trails, or follow-up context.</p>
 
     <h2>Solution</h2>
-    <p>AITrailblazer converts a small seeded publication archive into article records, TripCodes, River links, session memory, and a judge-visible runtime proof package. DeltaSignal is the proof archive; the product is the generalized publisher-memory agent.</p>
+    <p>AITrailblazer turns expert publication archives into agent memory. A reader enters a Trip Code from an article, MongoDB resolves the article, claims, River links, and session memory through MCP, and Gemini synthesizes a grounded answer that can continue across follow-up questions.</p>
+    <p>DeltaSignal is the proof archive; the product is the generalized publisher-memory agent.</p>
 
     <h2>Demo Flow</h2>
     <ol>
@@ -101,6 +111,32 @@
 
     <h2>What This Proves</h2>
     <p>AITrailblazer proves that a publication archive can become agent memory. MongoDB stores the memory objects, MCP exposes them to the agent, Gemini synthesizes the answer, and Google Cloud hosts the working application.</p>
+
+    <h2>Public Safety Boundary</h2>
+    <ul>
+      <li>No credentials.</li>
+      <li>No Devpost cookies.</li>
+      <li>No Google Cloud keys.</li>
+      <li>No billing exports.</li>
+      <li>No private screenshots.</li>
+      <li>Atlas URI only through Secret Manager.</li>
+      <li>Demo seed data only.</li>
+      <li>Delta Signal used as proof archive, not a private data dump.</li>
+    </ul>
+
+    <h2>Target Users</h2>
+    <ul>
+      <li>Independent publishers.</li>
+      <li>Research firms.</li>
+      <li>Analyst teams.</li>
+      <li>Technical blogs.</li>
+      <li>Newsletters.</li>
+      <li>Education archives.</li>
+      <li>Financial research teams.</li>
+    </ul>
+
+    <h2>Why It Matters</h2>
+    <p>AITrailblazer lets old content become usable memory for future agents. Instead of a static archive, the publisher gets a living claim graph with continuity, updates, contradictions, and follow-up sessions.</p>
 
     <h2>Architecture</h2>
     <p>Cloud Run HTTP service, Secret Manager-ready configuration, MongoDB Atlas data model, MongoDB MCP context surface, Gemini synthesis lane, and deterministic fallback for local tests.</p>
@@ -173,7 +209,16 @@ make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri</code></pre>
     <p>Final screenshots should show the TripCode input, source context, River memory, Gemini answer, next actions, and runtime proof panel.</p>
 
     <h2>Demo Video</h2>
-    <p>Keep the video under three minutes: problem, architecture, TripCode demo, River memory demo, second-turn memory, and impact close.</p>
+    <p>Keep the video under three minutes and make proof visible in this order: problem, solution, live Trip Code demo, runtime proof, follow-up memory, impact, and close.</p>
+    <ol>
+      <li><code>0:00-0:20</code>: expert publishers have years of articles, but readers cannot reuse claims, updates, or follow-up context through normal archive search.</li>
+      <li><code>0:20-0:45</code>: AITrailblazer turns a publication archive into MongoDB-backed agent memory using Trip Codes, River links, claims, sessions, MongoDB MCP, Gemini, and Cloud Run.</li>
+      <li><code>0:45-1:25</code>: enter <code>HUT-RIVER-001</code> and show the resolved article, three River articles, claim cluster, River edges, and source context.</li>
+      <li><code>1:25-1:55</code>: show Gemini live, Agent Builder live, MongoDB live, MongoDB MCP live, and Cloud Run hosted proof.</li>
+      <li><code>1:55-2:25</code>: ask <code>What should I monitor next?</code> and show the agent continuing from saved reader-session memory.</li>
+      <li><code>2:25-2:50</code>: explain how this generalizes to newsletters, research firms, technical blogs, local journalism, financial research, and any publisher with a valuable archive.</li>
+      <li><code>2:50-3:00</code>: close with MongoDB as the memory layer, MCP as the agent access path, Gemini as the synthesis layer, and Cloud Run as the live runtime.</li>
+    </ol>
 
     <h2>License</h2>
     <p>The repository includes an OSI-approved MIT <code>LICENSE</code> at the root.</p>

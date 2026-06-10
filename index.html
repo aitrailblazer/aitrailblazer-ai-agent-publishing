@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AITrailblazer AI Agent Publishing | Google Cloud Rapid Agent Hackathon</title>
-  <meta name="description" content="AITrailblazer is a Gemini-powered publishing agent that turns articles, TripCodes, and research archives into searchable, source-grounded memory using MongoDB Atlas, MCP, and Google Cloud.">
+  <meta name="description" content="AITrailblazer turns expert publication archives into MongoDB-backed agent memory with TripCodes, River links, MongoDB MCP, Gemini, Agent Builder, and Cloud Run.">
   <meta property="og:title" content="AITrailblazer AI Agent Publishing">
-  <meta property="og:description" content="Turn publication archives into source-grounded agent memory with TripCodes, Rivers, MongoDB Atlas, MCP, Gemini, and Google Cloud.">
+  <meta property="og:description" content="Turn expert publication archives into source-grounded agent memory with TripCodes, Rivers, MongoDB MCP, Gemini, Agent Builder, and Google Cloud.">
   <meta property="og:image" content="./img/AITrailblazerAI.png">
   <style>
     html {
@@ -36,8 +36,8 @@
   </CanonicalArtifact>
   <Purpose>Present AITrailblazer AI Agent Publishing as an official-facing Google Cloud Rapid Agent Hackathon submission: a Gemini-powered publishing agent that turns articles, TripCodes, and research archives into searchable, source-grounded memory using MongoDB Atlas, MCP, and Google Cloud.</Purpose>
   <ProductContract>
-    <Tagline>A Gemini-powered publishing agent that turns articles, TripCodes, and research archives into searchable, source-grounded memory using MongoDB Atlas, MCP, and Google Cloud.</Tagline>
-    <Summary>AITrailblazer transforms publication archives into reusable agent memory. A reader enters a known TripCode, the agent resolves linked article records, claim clusters, and River edges stored in MongoDB, and Gemini generates source-grounded synthesis with follow-up memory.</Summary>
+    <Tagline>AITrailblazer turns expert publication archives into agent memory.</Tagline>
+    <Summary>AITrailblazer turns expert publication archives into agent memory. A reader enters a Trip Code from an article, MongoDB resolves the article, claims, River links, and session memory through MCP, and Gemini synthesizes a grounded answer that can continue across follow-up questions.</Summary>
     <ProofCase>DeltaSignal provides the proof archive: more than 300 macro and financial articles that demonstrate why published research needs durable memory, claim continuity, and monitor-next workflows.</ProofCase>
     <Audience>Publishers, analysts, researchers, newsletter operators, institutional research teams, and readers who need accumulated articles to become reusable knowledge.</Audience>
   </ProductContract>
@@ -105,6 +105,22 @@
       ['Impact', 'AITrailblazer turns static publishing into living memory. Publishers make old articles useful again, analysts preserve reasoning trails, and readers navigate complex archives through a simple code instead of a blank prompt or keyword search.']
     ];
 
+    const judgeProofChecklist = [
+      ['Live Cloud Run app', 'passing'],
+      ['Gemini / Vertex AI synthesis', 'passing'],
+      ['Agent Builder search lane', 'passing'],
+      ['MongoDB collections resolved', 'passing'],
+      ['MongoDB MCP tool call', 'passing'],
+      ['Trip Code HUT-RIVER-001', 'ready'],
+      ['Second-turn reader memory', 'ready']
+    ];
+
+    const demoStates = [
+      ['Resolve', 'Trip Code entered and MongoDB objects found.'],
+      ['Understand', 'Source context, claims, River links, and Gemini answer shown together.'],
+      ['Continue', 'Follow-up question reuses session memory and returns next monitoring actions.']
+    ];
+
     const checklist = [
       ['Name lock', 'Use AITrailblazer AI Agent Publishing as the official product name.'],
       ['Proof case', 'Use DeltaSignal and the HUT TripCode article as the concrete origin story.'],
@@ -152,6 +168,15 @@
       ['Invoke MCP', 'Use the official MongoDB MCP path to expose database-grounded context.'],
       ['Synthesize', 'Ask Gemini to produce a source-grounded answer from the retrieved packet.'],
       ['Continue', 'Store and reuse session context for the next reader question.']
+    ];
+
+    const mcpRuntimeProof = [
+      ['MCP server', 'official MongoDB MCP server'],
+      ['Transport', 'HTTP'],
+      ['Mode', 'read-only JSON'],
+      ['Collections queried', 'articles, tripcodes, claims, river_edges, reader_sessions, agent_runs'],
+      ['Tool result', 'found records for HUT-RIVER-001'],
+      ['Agent action', 'retrieved River context and passed it to Gemini']
     ];
 
     const links = [
@@ -425,6 +450,75 @@
           font-size: 12px;
           font-weight: 750;
           margin-top: 2px;
+        }
+        .judge-proof-card {
+          margin-top: 24px;
+          border: 1px solid rgba(95, 168, 255, .44);
+          border-radius: 8px;
+          background: rgba(18, 23, 32, .9);
+          padding: 16px;
+        }
+        .judge-proof-card h2 {
+          font-size: 22px;
+          margin: 0 0 10px;
+        }
+        .judge-proof-card p {
+          margin: 0 0 12px;
+          color: var(--muted);
+          font-size: 14px;
+        }
+        .judge-proof-list,
+        .mcp-proof-grid,
+        .state-grid {
+          display: grid;
+          gap: 8px;
+        }
+        .judge-proof-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .judge-proof-item,
+        .mcp-proof-item,
+        .state-card {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .055);
+          padding: 10px;
+        }
+        .judge-proof-item strong,
+        .judge-proof-item span,
+        .mcp-proof-item strong,
+        .mcp-proof-item span,
+        .state-card strong,
+        .state-card span {
+          display: block;
+        }
+        .judge-proof-item strong,
+        .mcp-proof-item strong,
+        .state-card strong {
+          font-size: 12px;
+        }
+        .judge-proof-item span {
+          margin-top: 3px;
+          color: var(--green);
+          font-size: 12px;
+          font-weight: 850;
+        }
+        .mcp-proof-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          margin-top: 12px;
+        }
+        .mcp-proof-panel-wrap {
+          margin-top: 14px;
+        }
+        .mcp-proof-item span,
+        .state-card span {
+          color: var(--muted);
+          font-size: 12px;
+          margin-top: 4px;
+        }
+        .state-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          margin: 14px 0;
         }
         .demo-panel h3,
         .mini-card h3 {
@@ -718,6 +812,9 @@
           .links {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
+          .state-grid {
+            grid-template-columns: 1fr;
+          }
           .status-strip {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
@@ -750,6 +847,8 @@
           .control-grid,
           .status-strip,
           .proof-summary,
+          .judge-proof-list,
+          .mcp-proof-grid,
           .term-grid,
           .action-trace {
             grid-template-columns: 1fr;
@@ -912,6 +1011,57 @@
         `;
       }
 
+      renderJudgeProofChecklist() {
+        return html`
+          <div class="judge-proof-card">
+            <h2>Judge Proof Checklist</h2>
+            <p>One Trip Code, one live runtime proof, one MongoDB MCP proof, one Gemini/Agent Builder proof.</p>
+            <div class="judge-proof-list">
+              ${judgeProofChecklist.map(([title, status]) => html`
+                <div class="judge-proof-item">
+                  <strong>${title}</strong>
+                  <span>${status}</span>
+                </div>
+              `)}
+            </div>
+            <div class="actions">
+              <button class="button primary" type="button" ?disabled=${this.loading} @click=${this.runJudgeDemo}>${this.loading && this.lastMode === 'judge-demo' ? 'Loading proof...' : 'Run Judge Demo'}</button>
+              <a class="button" href="#live-demo">Inspect proof</a>
+            </div>
+          </div>
+        `;
+      }
+
+      renderDemoStates() {
+        return html`
+          <div class="state-grid" aria-label="Visible demo states">
+            ${demoStates.map(([title, body]) => html`
+              <article class="state-card">
+                <strong>${title}</strong>
+                <span>${body}</span>
+              </article>
+            `)}
+          </div>
+        `;
+      }
+
+      renderMCPRuntimeProof() {
+        return html`
+          <article class="demo-panel">
+            <h3>Mongo DB MCP Runtime Proof</h3>
+            <p>The live demo shows partner usage in the browser instead of hiding it in docs.</p>
+            <div class="mcp-proof-grid">
+              ${mcpRuntimeProof.map(([title, body]) => html`
+                <div class="mcp-proof-item">
+                  <strong>${title}</strong>
+                  <span>${body}</span>
+                </div>
+              `)}
+            </div>
+          </article>
+        `;
+      }
+
       renderStatusPills() {
         const items = this.runtimeItems();
         if (!items.length) {
@@ -985,7 +1135,7 @@
           <section id="live-demo">
             <div class="inner">
               <div class="section-head">
-                <h2>Try the live proof</h2>
+                <h2>Run Judge Demo</h2>
                 <p>Run the hosted Cloud Run agent path and watch the agent resolve a handle, retrieve MongoDB memory through MCP, invoke Gemini, and continue with saved session context.</p>
               </div>
               <div class="demo-grid">
@@ -1004,6 +1154,7 @@
                     `)}
                   </div>
                   ${this.renderTermCards()}
+                  ${this.renderDemoStates()}
                   <div class="control-grid">
                     <label>
                       TripCode
@@ -1015,7 +1166,7 @@
                     </label>
                   </div>
                   <div class="demo-actions">
-                    <button class="button primary" type="button" ?disabled=${this.loading} @click=${this.runJudgeDemo}>${this.loading && this.lastMode === 'judge-demo' ? 'Loading proof...' : 'Run hosted proof'}</button>
+                    <button class="button primary" type="button" ?disabled=${this.loading} @click=${this.runJudgeDemo}>${this.loading && this.lastMode === 'judge-demo' ? 'Loading proof...' : 'Run Judge Demo'}</button>
                     <button class="button" type="button" ?disabled=${this.loading} @click=${this.resolveTripCode}>${this.loading && this.lastMode === 'resolve' ? 'Resolving...' : 'Resolve TripCode'}</button>
                   </div>
                   <details class="advanced">
@@ -1064,6 +1215,9 @@
                   </div>
                 </aside>
               </div>
+              <div class="mcp-proof-panel-wrap">
+                ${this.renderMCPRuntimeProof()}
+              </div>
             </div>
           </section>
         `;
@@ -1093,12 +1247,13 @@
                 <div>
                   <p class="eyebrow">Google Cloud Rapid Agent Hackathon</p>
                   <h1>AITrailblazer AI Agent Publishing.</h1>
-                  <p class="lede">Turn publication archives into Gemini-powered TripCode, River, MongoDB, and MCP agent memory. Enter one code, see the source packet, inspect runtime proof, and continue the conversation.</p>
+                  <p class="lede">AITrailblazer turns expert publication archives into agent memory. A reader enters a Trip Code from an article, MongoDB resolves the article, claims, River links, and session memory through MCP, and Gemini synthesizes a grounded answer that can continue across follow-up questions.</p>
                   <div class="actions">
                     <a class="button primary" href="#live-demo">Try live proof</a>
                     <a class="button" href="#proof">View runtime proof</a>
                     <a class="button" href="./docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html">Public docs</a>
                   </div>
+                  ${this.renderJudgeProofChecklist()}
                 </div>
                 <figure class="media">
                   <img src="./img/AITrailblazerAI.png" alt="AITrailblazer AI Agent Publishing visual identity">

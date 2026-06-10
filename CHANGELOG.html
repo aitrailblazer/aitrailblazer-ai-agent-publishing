@@ -84,6 +84,14 @@
           <h3>Judge UX Clarified</h3>
           <p>Added plain-language cards for TripCode, River, MCP context, and session memory, plus a visible agent action trace so judges can see the project doing more than answering over documents.</p>
         </section>
+        <section class="card">
+          <h3>10/10 Judge Path Upgrade</h3>
+          <p>Moved proof higher on the page with a Judge Proof Checklist, a Run Judge Demo button, explicit Resolve / Understand / Continue states, and a dedicated Mongo DB MCP Runtime Proof panel.</p>
+        </section>
+        <section class="card">
+          <h3>README Judge Quickstart</h3>
+          <p>Added one-screen judge instructions, public safety boundary, impact target users, and a three-minute video structure focused on live proof rather than architecture claims.</p>
+        </section>
       </div>
       <h3>What Is New</h3>
       <ul>
@@ -94,6 +102,9 @@
         <li>The public docs folder now contains one canonical consolidated HTML artifact instead of separate spec, checklist, rules, resource, and ExecPlan pages.</li>
         <li>The final proof path can now be checked with <code>make submission-readiness</code> before Devpost submission.</li>
         <li>The first live demo section now makes the agent workflow explicit: resolve handle, retrieve memory, invoke MCP, synthesize, and continue with session memory.</li>
+        <li>The top page now leads with <code>Judge Proof Checklist</code> and <code>Run Judge Demo</code> so judges see the Cloud Run, Gemini, Agent Builder, MongoDB, MCP, Trip Code, and follow-up-memory proof immediately.</li>
+        <li>The live page now includes <code>Mongo DB MCP Runtime Proof</code>: official server, HTTP transport, read-only JSON mode, queried collections, HUT-RIVER-001 result, and agent action.</li>
+        <li>The README now includes Judge Quickstart, Public Safety Boundary, target users, impact framing, and the under-three-minute demo-video run of show.</li>
         <li>The public subtree was scanned before push for prohibited private evidence terms and obvious token patterns.</li>
       </ul>
       <h3>Verification</h3>
@@ -203,6 +214,8 @@
   <Change date="2026-06-10" category="docs-consolidation">Consolidated the public docs folder into one canonical StrategiX Visual Spec HTML artifact.</Change>
   <Change date="2026-06-10" category="submission-readiness">Added a final readiness automation gate for local checks, hosted proof, public repo visibility, scans, links, and second-turn memory.</Change>
   <Change date="2026-06-10" category="judge-ux">Clarified the public demo with plain-language definitions and a visible agent action trace.</Change>
+  <Change date="2026-06-10" category="judge-proof-upgrade">Added Judge Proof Checklist, Run Judge Demo, Resolve/Understand/Continue demo states, and Mongo DB MCP Runtime Proof to make live proof visible in the first judge path.</Change>
+  <Change date="2026-06-10" category="readme-quickstart">Added Judge Quickstart, Public Safety Boundary, impact targets, and three-minute video structure to README.html.</Change>
   <Status date="2026-06-09">Hosted Gemini, Agent Builder, MongoDB, and official MongoDB MCP proof is live; Atlas Free is the preferred optional backing store when credentials are available.</Status>
   <Status date="2026-06-09">Hosted root is live with the interactive public demo; /v1/judge-demo remains live after deployment.</Status>
 </StrategiXVisualSpec>

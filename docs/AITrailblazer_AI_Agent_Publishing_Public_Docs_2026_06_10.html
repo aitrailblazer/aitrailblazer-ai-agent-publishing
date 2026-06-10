@@ -40,8 +40,8 @@
   <Purpose>Replace the previous multi-file public docs set with one judge-readable and machine-readable HTML artifact that explains the product, runtime proof, MongoDB/MCP architecture, competition fit, build checklist, sanitization posture, and remaining submission gate.</Purpose>
   <ProductContract>
     <Name>AITrailblazer AI Agent Publishing</Name>
-    <Tagline>Turn publication archives into Gemini-powered TripCode, River, MongoDB, and MCP agent memory.</Tagline>
-    <UserFlow>A reader enters a known TripCode, the agent resolves related article records and River edges from MongoDB, Gemini synthesizes source-grounded context, and the reader can continue through session-aware follow-up memory.</UserFlow>
+    <Tagline>AITrailblazer turns expert publication archives into agent memory.</Tagline>
+    <UserFlow>A reader enters a Trip Code from an article, MongoDB resolves the article, claims, River links, and session memory through MCP, and Gemini synthesizes a grounded answer that can continue across follow-up questions.</UserFlow>
     <ProofTripCode>HUT-RIVER-001</ProofTripCode>
     <ProofDataset>Three seeded River articles, claim nodes, River edges, reader session memory, and agent run records.</ProofDataset>
   </ProductContract>
@@ -84,6 +84,9 @@
     <Item status="done">Public docs are consolidated into one HTML artifact.</Item>
     <Item status="done">Submission-readiness automation validates local gates, public scans, hosted proof, repository links, and second-turn memory.</Item>
     <Item status="done">Public UX explains TripCode, River, MCP context, and session memory in plain language before showing the live agent action trace.</Item>
+    <Item status="done">Hosted root now leads with a Judge Proof Checklist and a Run Judge Demo button above the live proof workspace.</Item>
+    <Item status="done">Hosted root includes a dedicated Mongo DB MCP Runtime Proof panel with server, transport, read-only mode, queried collections, tool result, and agent action.</Item>
+    <Item status="done">README includes Judge Quickstart, Public Safety Boundary, target users, impact framing, and three-minute video structure.</Item>
     <Item status="remaining">Add the final public video demo link in Devpost before final submit.</Item>
   </BuildChecklist>
   <SanitizationContract>
@@ -127,6 +130,35 @@
       ['Second-turn memory', 'The user asks what to monitor next and the session reuses the already resolved River memory.']
     ];
 
+    const judgeProof = [
+      ['Live Cloud Run app', 'passing'],
+      ['Gemini / Vertex AI synthesis', 'passing'],
+      ['Agent Builder search lane', 'passing'],
+      ['MongoDB collections resolved', 'passing'],
+      ['MongoDB MCP tool call', 'passing'],
+      ['Trip Code HUT-RIVER-001', 'ready'],
+      ['Second-turn reader memory', 'ready']
+    ];
+
+    const mcpRuntimeProof = [
+      ['MCP server', 'official MongoDB MCP server'],
+      ['Transport', 'HTTP'],
+      ['Mode', 'read-only JSON'],
+      ['Collections queried', 'articles, tripcodes, claims, river_edges, reader_sessions, agent_runs'],
+      ['Tool result', 'found records for HUT-RIVER-001'],
+      ['Agent action', 'retrieved River context and passed it to Gemini']
+    ];
+
+    const targetUsers = [
+      ['Independent publishers', 'Make old articles useful as source-grounded agent memory.'],
+      ['Research firms', 'Preserve claim continuity, updates, and thesis trails.'],
+      ['Analyst teams', 'Reuse prior work in follow-up questions and monitoring workflows.'],
+      ['Technical blogs', 'Connect posts, updates, evidence, and reader context.'],
+      ['Newsletters', 'Turn issue archives into searchable memory with stable handles.'],
+      ['Education archives', 'Let students and instructors recover source context and continuity.'],
+      ['Financial research teams', 'Track claims, contradictions, and monitor-next actions.']
+    ];
+
     const checklist = [
       ['done', 'Public root serves the interactive demo.'],
       ['done', 'Cloud Run image includes index, README, changelog, docs, license, and image assets.'],
@@ -136,6 +168,7 @@
       ['done', 'Docs are consolidated into one canonical HTML artifact.'],
       ['done', 'Submission-readiness automation checks local gates, hosted smoke tests, public repo visibility, scans, and follow-up memory.'],
       ['done', 'The live demo now exposes the agent action trace: resolve handle, retrieve memory, invoke MCP, synthesize, and continue.'],
+      ['done', 'The first screen now includes Judge Proof Checklist, Run Judge Demo, demo states, and Mongo DB MCP Runtime Proof.'],
       ['remaining', 'Add the final public demo video link in Devpost before final submit.']
     ];
 
@@ -335,9 +368,19 @@
               </div>
             </section>
 
+            <section class="panel">
+              <h2>Judge Quick Proof</h2>
+              <div class="grid3">${judgeProof.map((item) => this.renderCard(item, 'Proof'))}</div>
+            </section>
+
             <section class="panel" id="runtime">
               <h2>Runtime Proof</h2>
               <div class="grid3">${systems.map((item) => this.renderCard(item, 'Live'))}</div>
+            </section>
+
+            <section class="panel">
+              <h2>Mongo DB MCP Runtime Proof</h2>
+              <div class="grid3">${mcpRuntimeProof.map((item) => this.renderCard(item, 'MCP'))}</div>
             </section>
 
             <section class="panel" id="mongodb">
@@ -348,6 +391,12 @@
             <section class="panel">
               <h2>Core Demo Flows</h2>
               <div class="grid3">${flows.map((item) => this.renderCard(item, 'Flow'))}</div>
+            </section>
+
+            <section class="panel">
+              <h2>Impact Targets</h2>
+              <p>AITrailblazer lets old content become usable memory for future agents. Instead of a static archive, the publisher gets a living claim graph with continuity, updates, contradictions, and follow-up sessions.</p>
+              <div class="grid3">${targetUsers.map((item) => this.renderCard(item, 'User'))}</div>
             </section>
 
             <section class="panel" id="checklist">
