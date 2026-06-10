@@ -146,10 +146,12 @@ pass "public repo MIT license visible"
 http_get "${PUBLIC_RAW_BASE}/README.html" "${tmpdir}/repo-readme.html" "${tmpdir}/repo-readme.headers"
 rg -q "Judge Quickstart" "${tmpdir}/repo-readme.html" || fail "public repo README missing Judge Quickstart"
 rg -q "Public Safety Boundary" "${tmpdir}/repo-readme.html" || fail "public repo README missing Public Safety Boundary"
+rg -q "No investment recommendations" "${tmpdir}/repo-readme.html" || fail "public repo README missing investment boundary"
 pass "public repo README judge quickstart visible"
 
 http_get "${PUBLIC_RAW_BASE}/DEVPOST_SUBMISSION.html" "${tmpdir}/repo-devpost.html" "${tmpdir}/repo-devpost.headers"
 rg -q "AITrailblazer AI Agent Publishing Devpost Submission Pack" "${tmpdir}/repo-devpost.html" || fail "public repo Devpost submission pack missing title"
+rg -q "does not claim to be a live SEC/XBRL market-data product" "${tmpdir}/repo-devpost.html" || fail "public repo Devpost submission pack missing scope boundary"
 pass "public repo Devpost submission pack visible"
 
 http_get "${PUBLIC_RAW_BASE}/${DOC_PATH}" "${tmpdir}/repo-doc.html" "${tmpdir}/repo-doc.headers"
