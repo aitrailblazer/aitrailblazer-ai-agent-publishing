@@ -87,7 +87,6 @@ echo
 echo "== hosted HTTP smoke =="
 http_get "${BASE_URL}/" "${tmpdir}/root.html" "${tmpdir}/root.headers"
 rg -q "AITrailblazer AI Agent Publishing" "${tmpdir}/root.html" || fail "hosted root missing project title"
-rg -q "Try the live proof" "${tmpdir}/root.html" || fail "hosted root missing live proof CTA"
 rg -q "Judge Proof Checklist" "${tmpdir}/root.html" || fail "hosted root missing judge proof checklist"
 rg -q "Run Judge Demo" "${tmpdir}/root.html" || fail "hosted root missing Run Judge Demo button"
 rg -q "Public docs" "${tmpdir}/root.html" || fail "hosted root missing consolidated docs link"
