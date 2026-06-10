@@ -138,8 +138,11 @@ make validate
 make preview
 make mcp-check
 make atlas-check
+make submission-readiness
 make mcp-run
 make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri</code></pre>
+
+    <p>Run <code>make submission-readiness</code> before any Devpost final submit. It executes the local gates, validates the official MongoDB MCP prerequisite, optionally runs Atlas preflight when Atlas mode is configured, scans public files for prohibited private evidence/token patterns, checks the hosted root, health endpoint, consolidated docs, license, judge proof, TripCode resolve flow, second-turn follow-up memory, public GitHub repo, raw license, and raw consolidated docs.</p>
 
     <h2>Runtime Shape</h2>
     <p>The Go service mirrors the useful shape of <code>../deltasignal-ai-agent</code>: a small Cloud Run HTTP surface, deterministic demo mode, judge-friendly curl script, Dockerfile, Cloud Build template, and explicit public/private boundaries.</p>

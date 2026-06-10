@@ -76,6 +76,10 @@
           <h3>Docs Consolidated</h3>
           <p>Replaced the previous multi-file docs folder with one canonical public StrategiX Visual Spec that contains the product contract, competition digest, MongoDB/MCP architecture, checklist, Atlas path, and sanitization posture.</p>
         </section>
+        <section class="card">
+          <h3>Submission Readiness Automation</h3>
+          <p>Added a final readiness gate that runs local validation, official MongoDB MCP prerequisite checks, optional Atlas preflight, public scans, hosted smoke tests, repository checks, license checks, consolidated-doc checks, TripCode resolution, and second-turn memory verification.</p>
+        </section>
       </div>
       <h3>What Is New</h3>
       <ul>
@@ -84,6 +88,7 @@
         <li>The page can resolve <code>HUT-RIVER-001</code> through the public <code>/resolve</code> flow and render source-grounded TripCode memory.</li>
         <li>The service has tests for root serving, image serving, disallowed file access, traversal blocking, CORS preflight, and API route precedence.</li>
         <li>The public docs folder now contains one canonical consolidated HTML artifact instead of separate spec, checklist, rules, resource, and ExecPlan pages.</li>
+        <li>The final proof path can now be checked with <code>make submission-readiness</code> before Devpost submission.</li>
         <li>The public subtree was scanned before push for prohibited private evidence terms and obvious token patterns.</li>
       </ul>
       <h3>Verification</h3>
@@ -191,6 +196,7 @@
   <Change date="2026-06-09" category="cors">Added CORS headers and preflight handling for hosted browser API calls.</Change>
   <Change date="2026-06-09" category="public-publish">Committed and pushed the sanitized public publishing subtree to the GitHub repository main branch.</Change>
   <Change date="2026-06-10" category="docs-consolidation">Consolidated the public docs folder into one canonical StrategiX Visual Spec HTML artifact.</Change>
+  <Change date="2026-06-10" category="submission-readiness">Added a final readiness automation gate for local checks, hosted proof, public repo visibility, scans, links, and second-turn memory.</Change>
   <Status date="2026-06-09">Hosted Gemini, Agent Builder, MongoDB, and official MongoDB MCP proof is live; Atlas Free is the preferred optional backing store when credentials are available.</Status>
   <Status date="2026-06-09">Hosted root is live with the interactive public demo; /v1/judge-demo remains live after deployment.</Status>
 </StrategiXVisualSpec>

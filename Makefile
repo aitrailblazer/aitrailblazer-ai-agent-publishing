@@ -9,7 +9,7 @@ ATLAS_SECRET ?= publishing-mongodb-atlas-uri
 -include .env
 export
 
-.PHONY: help test coverage vet check run demo spend build docker-build deploy deploy-source deploy-atlas preview validate mcp-check atlas-check mcp-run clean print-config
+.PHONY: help test coverage vet check run demo spend build docker-build deploy deploy-source deploy-atlas preview validate submission-readiness mcp-check atlas-check mcp-run clean print-config
 
 help:
 	@echo "Available commands:"
@@ -27,6 +27,7 @@ help:
 	@echo "  make deploy-atlas  - Build and deploy Cloud Run with Atlas URI from Secret Manager"
 	@echo "  make preview   - Serve the static publishing surface locally"
 	@echo "  make validate  - Run lightweight static validation"
+	@echo "  make submission-readiness - Run final local, hosted, repo, link, and scan gates"
 	@echo "  make mcp-check - Verify official MongoDB MCP prerequisites"
 	@echo "  make atlas-check - Verify Atlas-mode MongoDB MCP prerequisites"
 	@echo "  make mcp-run   - Run official MongoDB MCP server over HTTP"
@@ -119,6 +120,9 @@ validate:
 	@grep -q "rapid-agent.devpost.com/resources" index.html
 	@grep -q "AITrailblazer AI Agent Publishing" index.html
 	@echo "Static publishing surface validated."
+
+submission-readiness:
+	scripts/submission-readiness.sh
 
 mcp-check:
 	scripts/mongodb-mcp-check.sh

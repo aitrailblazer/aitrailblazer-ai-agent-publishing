@@ -82,6 +82,7 @@
     <Item status="done">MongoDB and official MongoDB MCP proof is available.</Item>
     <Item status="done">CORS and browser API calls are supported.</Item>
     <Item status="done">Public docs are consolidated into one HTML artifact.</Item>
+    <Item status="done">Submission-readiness automation validates local gates, public scans, hosted proof, repository links, and second-turn memory.</Item>
     <Item status="remaining">Add the final public video demo link in Devpost before final submit.</Item>
   </BuildChecklist>
   <SanitizationContract>
@@ -132,6 +133,7 @@
       ['done', 'CORS preflight and browser API calls are supported.'],
       ['done', 'Public subtree is sanitized and published to GitHub.'],
       ['done', 'Docs are consolidated into one canonical HTML artifact.'],
+      ['done', 'Submission-readiness automation checks local gates, hosted smoke tests, public repo visibility, scans, and follow-up memory.'],
       ['remaining', 'Add the final public demo video link in Devpost before final submit.']
     ];
 
@@ -149,6 +151,7 @@
     const commands = [
       ['Local gate', 'make check'],
       ['Hosted proof', 'curl -s https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/v1/judge-demo'],
+      ['Final readiness', 'make submission-readiness'],
       ['Atlas preflight', 'make atlas-check'],
       ['Atlas deploy', 'make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri']
     ];
