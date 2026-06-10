@@ -107,6 +107,7 @@ validate:
 	@test -f index.html
 	@test -f img/AITrailblazerAI.png
 	@test -f README.html
+	@test -f DEVPOST_SUBMISSION.html
 	@test -f LICENSE
 	@test -f AGENTS.md
 	@test -f go.mod
@@ -115,6 +116,7 @@ validate:
 	@test -f docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html
 	@test "$$(find docs -maxdepth 1 -type f -name '*.html' | wc -l | tr -d ' ')" = "1"
 	@grep -q "StrategiXVisualSpec" index.html
+	@grep -q "StrategiXVisualSpec" DEVPOST_SUBMISSION.html
 	@grep -q "StrategiXVisualSpec" docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html
 	@grep -q "Google Cloud Rapid Agent Hackathon" index.html
 	@grep -q "rapid-agent.devpost.com/resources" index.html

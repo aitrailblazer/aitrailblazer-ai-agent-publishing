@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITrailblazer AI Agent Publishing Devpost Submission Pack</title>
+  <meta name="description" content="Copy-ready Devpost submission pack for AITrailblazer AI Agent Publishing.">
+  <style>
+    html {
+      color: #17212f;
+      background: #f7f8fb;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    body { margin: 0; padding: 36px 18px; }
+    main { width: min(980px, 100%); margin: 0 auto; }
+    h1, h2, h3 { color: #0b1220; line-height: 1.12; }
+    h1 { font-size: clamp(34px, 5vw, 58px); margin: 0 0 10px; }
+    h2 { margin-top: 34px; font-size: 24px; }
+    h3 { margin-top: 22px; font-size: 18px; }
+    p, li { font-size: 16px; }
+    a { color: #1358db; font-weight: 700; }
+    code {
+      background: #e9edf5;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+    .field {
+      border: 1px solid #d6deea;
+      border-radius: 8px;
+      background: #fff;
+      padding: 18px;
+      margin: 14px 0;
+    }
+    .label {
+      display: block;
+      color: #586477;
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .copy {
+      white-space: pre-wrap;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>AITrailblazer AI Agent Publishing</h1>
+    <p>Copy-ready Devpost submission pack for the Google Cloud Rapid Agent Hackathon.</p>
+
+    <section class="field">
+      <span class="label">Title</span>
+      <div class="copy">AITrailblazer AI Agent Publishing</div>
+    </section>
+
+    <section class="field">
+      <span class="label">Tagline</span>
+      <div class="copy">Turn publication archives into Gemini-powered Trip Code, River, Mongo DB, and MCP agent memory.</div>
+    </section>
+
+    <section class="field">
+      <span class="label">Description</span>
+      <div class="copy">AITrailblazer AI Agent Publishing turns a static expert publication archive into an agent-readable memory system.
+
+Most expert publishers have years of valuable articles, research notes, newsletters, and analysis, but those archives are usually trapped in static search. Readers can find a page, but they cannot reliably recover the article's claims, see what updated them later, follow the evidence trail, or continue a grounded conversation across sessions.
+
+AITrailblazer solves this by converting publication content into structured memory objects: articles, Trip Codes, claims, River edges, reader sessions, and agent run records. A reader can enter a known Trip Code, such as HUT-RIVER-001, and the agent resolves the relevant article cluster through Mongo DB, retrieves connected River memory through MCP, and uses Gemini to synthesize a source-grounded answer.
+
+The demo uses a small seeded archive as proof: three River-connected articles, claim nodes, update edges, session memory, and runtime proof records. The product is broader than the demo archive: it is a reusable pattern for publishers, analysts, research teams, and media organizations that want their archives to become living agent memory instead of passive content libraries.
+
+The core user flow is:
+
+1. A reader enters a known Trip Code from an article or research note.
+2. The agent resolves the Trip Code to article records, claims, and River edges in Mongo DB.
+3. Mongo DB MCP exposes the database-grounded context to the agent.
+4. Gemini synthesizes an answer grounded in the retrieved archive memory.
+5. The reader asks a follow-up, and the agent continues using saved session memory.
+
+AITrailblazer proves that publication archives can become interactive, persistent, tool-using agent systems.</div>
+    </section>
+
+    <section class="field">
+      <span class="label">Technical Implementation</span>
+      <div class="copy">AITrailblazer is a functional agent system built with Gemini, Google Cloud Agent Builder, Cloud Run, Mongo DB, and the official Mongo DB MCP server.
+
+Runtime architecture:
+
+The hosted runtime is a Cloud Run HTTP service with judge-facing endpoints:
+
+GET /health
+GET /resolve
+GET /v1/judge-demo
+POST /v1/archive-brief
+POST /v1/tripcode
+GET /v1/usage
+
+The judge demo path is designed to be easy to verify from either a browser or curl. It exposes the Trip Code resolution flow, source context, River memory, Gemini answer, next actions, and runtime proof panel.
+
+Google Cloud + Gemini:
+
+Gemini is used as the synthesis layer. After the agent retrieves the relevant publisher memory, Gemini generates a grounded answer from the resolved article records, claims, River edges, and reader-session context.
+
+Google Cloud Agent Builder provides the orchestration/search lane over the seeded River documents, while Cloud Run hosts the public web and API runtime.
+
+Mongo DB memory model:
+
+Mongo DB is the persistent memory layer for the agent. The demo uses these collections:
+
+articles: canonical article records with title, date, summary, source label, Trip Code, and key claims.
+tripcodes: stable reader-facing handles that map a known code to article and River memory.
+claims: source-grounded claims extracted from article memory.
+river_edges: links between articles, including updates, continuations, contradictions, and theme relationships.
+reader_sessions: questions, resolved objects, and follow-up context.
+agent_runs: tool calls, timestamps, runtime proof, and output summaries.
+
+This lets the agent go beyond answering from a single document. It can reason across a structured archive, preserve continuity, and continue from prior resolved context.
+
+Mongo DB MCP integration:
+
+AITrailblazer integrates the official Mongo DB MCP server as the partner MCP path. The runtime uses MCP to expose database-grounded context to the agent and demonstrate partner usage directly in the judge proof.
+
+The runtime supports:
+
+Official Mongo DB MCP server via mongodb-mcp-server@latest.
+HTTP transport.
+Read-only JSON mode.
+Externally managed sessions.
+MCP-compatible request headers, including Accept: application/json, text/event-stream.
+A judge-visible proof panel showing MCP/database usage.
+
+Runtime modes:
+
+Embedded mode runs Mongo DB inside the Cloud Run container, seeds the judge-demo records, runs official Mongo DB MCP, and provides stable deadline-safe proof.
+
+Atlas mode uses MDB_MCP_CONNECTION_STRING from Secret Manager, rejects localhost strings, skips embedded Mongo DB, and connects the official MCP server to Atlas.
+
+This gives the project both a reliable competition demo path and a production-ready Atlas deployment path.</div>
+    </section>
+
+    <section class="field">
+      <span class="label">Impact</span>
+      <div class="copy">AITrailblazer targets a real problem for publishers, analysts, educators, financial researchers, and expert creators: archives lose value when they are only searchable pages.
+
+A traditional archive can answer: "Where is the article?" AITrailblazer answers: "What did this article claim, what updated it, what evidence supports it, and what should I read or monitor next?"
+
+The impact is strongest for communities with long-running knowledge bases:
+
+Independent publishers with years of articles.
+Research teams with evolving theses.
+Analysts tracking updates across time.
+Newsletters that want reusable reader memory.
+Educational archives where concepts build across lessons.
+Financial or technical publishers where evidence trails matter.
+
+The project turns archives into structured, agent-accessible memory. That makes expert content more reusable, more interactive, and more durable.
+
+Instead of forcing readers to restart every search from zero, AITrailblazer gives them continuity: Trip Codes, River links, claim memory, and session-aware follow-up.</div>
+    </section>
+
+    <section class="field">
+      <span class="label">Judging Notes</span>
+      <div class="copy">Technological implementation:
+
+AITrailblazer demonstrates a full multi-service agent architecture: Gemini synthesis through Vertex AI / Google Cloud runtime, Google Cloud Agent Builder orchestration/search lane, Cloud Run public deployment, Mongo DB persistent memory model, official Mongo DB MCP server integration, judge-visible runtime proof through /v1/judge-demo, Secret Manager-ready Atlas mode, and embedded mode for reliable demo verification.
+
+The implementation is not just a chatbot. It plans a retrieval path, uses structured database memory, calls partner MCP infrastructure, synthesizes from retrieved context, and preserves follow-up session state.
+
+Design:
+
+The user experience is intentionally simple: enter a Trip Code, see the resolved article context, review the River memory and connected claims, read the Gemini-generated answer, then ask a follow-up without starting over.
+
+The design makes the agent's work visible. Judges can see the input, retrieval path, source context, River memory, answer, next actions, and runtime proof rather than guessing whether the partner integration happened.
+
+Potential impact:
+
+The project has broad applicability because many organizations already have valuable archives but lack a way to turn them into agent memory.
+
+AITrailblazer can support publishers, research groups, analysts, education platforms, and expert communities that need persistent, source-grounded, update-aware knowledge systems.
+
+Quality of the idea:
+
+The core idea is that expert archives should not remain static content stores. They should become memory substrates for agents.
+
+The Trip Code + River model is the unique layer: Trip Codes give readers stable handles into archive memory, River edges preserve how ideas update or continue over time, Mongo DB stores the operational memory graph, MCP exposes that memory to the agent, and Gemini converts retrieved memory into usable synthesis.</div>
+    </section>
+
+    <section class="grid">
+      <div class="field">
+        <span class="label">Built With Tags</span>
+        <div class="copy">Gemini
+Google Cloud
+Google Cloud Agent Builder
+Cloud Run
+Vertex AI
+Mongo DB
+Mongo DB Atlas
+Mongo DB MCP Server
+Model Context Protocol
+Go
+HTML
+JavaScript</div>
+      </div>
+      <div class="field">
+        <span class="label">Submission Links</span>
+        <div class="copy">Project URL: https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app
+
+Repository URL: https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing
+
+Demo Video URL: Add final under-3-minute demo video link before submission.
+
+Selected Track: Mongo DB
+
+License: MIT</div>
+      </div>
+    </section>
+
+    <section class="field">
+      <span class="label">Final Checklist</span>
+      <ul>
+        <li>Hosted root returns HTTP 200.</li>
+        <li><code>/health</code> returns HTTP 200.</li>
+        <li><code>/v1/judge-demo</code> returns live proof.</li>
+        <li>Root page links public GitHub repo.</li>
+        <li>Root page links consolidated public docs and this submission pack.</li>
+        <li>README has Judge Quickstart.</li>
+        <li>MIT license is visible at repo root.</li>
+        <li>Devpost includes hosted URL, public repo URL, and video under three minutes.</li>
+        <li>Devpost track is Mongo DB.</li>
+        <li>Public docs contain no secrets, cookies, account metadata, or private evidence.</li>
+      </ul>
+    </section>
+
+    <section class="field">
+      <span class="label">Working Links</span>
+      <p><a href="./">Hosted demo root</a></p>
+      <p><a href="./v1/judge-demo">Runtime proof JSON</a></p>
+      <p><a href="./README.html">README</a></p>
+      <p><a href="./docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html">Consolidated public docs</a></p>
+      <p><a href="https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing">Public GitHub repository</a></p>
+    </section>
+
+    <script id="strategix-devpost-submission-contract" type="application/xml">
+<StrategiXVisualSpec version="1.4" status="devpost-submission-pack" artifact="DEVPOST_SUBMISSION.html">
+  <CanonicalArtifact>
+    <Title>AITrailblazer AI Agent Publishing Devpost Submission Pack</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+    <Challenge>Google Cloud Rapid Agent Hackathon</Challenge>
+  </CanonicalArtifact>
+  <SubmissionFields>
+    <Title>AITrailblazer AI Agent Publishing</Title>
+    <Tagline>Turn publication archives into Gemini-powered Trip Code, River, Mongo DB, and MCP agent memory.</Tagline>
+    <ProjectUrl>https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app</ProjectUrl>
+    <RepositoryUrl>https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing</RepositoryUrl>
+    <DemoVideoStatus>remaining</DemoVideoStatus>
+    <SelectedTrack>Mongo DB</SelectedTrack>
+    <License>MIT</License>
+  </SubmissionFields>
+  <ProofPath>
+    <Step>Open hosted root.</Step>
+    <Step>Run Judge Demo.</Step>
+    <Step>Resolve HUT-RIVER-001.</Step>
+    <Step>Verify Gemini, Agent Builder, Mongo DB, Mongo DB MCP, and Cloud Run proof.</Step>
+    <Step>Ask a follow-up and verify session memory.</Step>
+  </ProofPath>
+  <Boundary>No credentials, cookies, account metadata, billing exports, private screenshots, or private evidence are included.</Boundary>
+</StrategiXVisualSpec>
+    </script>
+  </main>
+</body>
+</html>

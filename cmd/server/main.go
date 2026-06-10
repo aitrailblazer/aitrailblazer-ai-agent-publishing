@@ -153,6 +153,7 @@ func serveStaticPublishingSurface(w http.ResponseWriter, r *http.Request) {
 	allowed := clean == "index.html" ||
 		clean == "README.html" ||
 		clean == "CHANGELOG.html" ||
+		clean == "DEVPOST_SUBMISSION.html" ||
 		clean == "LICENSE" ||
 		strings.HasPrefix(clean, "img"+string(filepath.Separator)) ||
 		strings.HasPrefix(clean, "docs"+string(filepath.Separator))

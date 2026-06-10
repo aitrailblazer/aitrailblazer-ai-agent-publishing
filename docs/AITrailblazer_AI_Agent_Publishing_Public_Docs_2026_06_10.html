@@ -87,6 +87,7 @@
     <Item status="done">Hosted root now leads with a Judge Proof Checklist and a Run Judge Demo button above the live proof workspace.</Item>
     <Item status="done">Hosted root includes a dedicated Mongo DB MCP Runtime Proof panel with server, transport, read-only mode, queried collections, tool result, and agent action.</Item>
     <Item status="done">README includes Judge Quickstart, Public Safety Boundary, target users, impact framing, and three-minute video structure.</Item>
+    <Item status="done">A root-level Devpost submission pack provides copy-ready fields without adding another docs-folder artifact.</Item>
     <Item status="remaining">Add the final public video demo link in Devpost before final submit.</Item>
   </BuildChecklist>
   <SanitizationContract>
@@ -169,6 +170,7 @@
       ['done', 'Submission-readiness automation checks local gates, hosted smoke tests, public repo visibility, scans, and follow-up memory.'],
       ['done', 'The live demo now exposes the agent action trace: resolve handle, retrieve memory, invoke MCP, synthesize, and continue.'],
       ['done', 'The first screen now includes Judge Proof Checklist, Run Judge Demo, demo states, and Mongo DB MCP Runtime Proof.'],
+      ['done', 'DEVPOST_SUBMISSION.html provides copy-ready title, tagline, description, technical implementation, impact, judging notes, built-with tags, and final checklist.'],
       ['remaining', 'Add the final public demo video link in Devpost before final submit.']
     ];
 
@@ -414,6 +416,15 @@
             <section class="panel">
               <h2>Operator Commands</h2>
               <div class="grid4">${commands.map((item) => this.renderCard(item, 'Command'))}</div>
+            </section>
+
+            <section class="panel">
+              <h2>Submission Pack</h2>
+              <div class="grid3">
+                ${this.renderCard(['Devpost copy', 'DEVPOST_SUBMISSION.html contains copy-ready title, tagline, description, technical implementation, impact, judging notes, built-with tags, and submission links.'], 'Ready')}
+                ${this.renderCard(['Hosted project', 'https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app'], 'Link')}
+                ${this.renderCard(['Public repository', 'https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing'], 'Link')}
+              </div>
             </section>
 
             <section class="panel" id="digest">

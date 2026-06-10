@@ -67,17 +67,17 @@ pass "docs folder contains one HTML file"
 [[ -f "${DOC_PATH}" ]] || fail "canonical docs file is missing"
 pass "canonical docs file exists"
 
-if rg -n "href=[\"']\\./docs/" index.html README.html CHANGELOG.html | rg -v "${DOC_PATH}" >/dev/null; then
-  rg -n "href=[\"']\\./docs/" index.html README.html CHANGELOG.html | rg -v "${DOC_PATH}" >&2
+if rg -n "href=[\"']\\./docs/" index.html README.html CHANGELOG.html DEVPOST_SUBMISSION.html | rg -v "${DOC_PATH}" >/dev/null; then
+  rg -n "href=[\"']\\./docs/" index.html README.html CHANGELOG.html DEVPOST_SUBMISSION.html | rg -v "${DOC_PATH}" >&2
   fail "public HTML links to stale docs files"
 fi
-pass "index/README/changelog docs links target consolidated public docs"
+pass "index/README/changelog/submission docs links target consolidated public docs"
 
 echo
 echo "== public secret and evidence scan =="
 private_evidence_pattern="Co""dex|Open""AI|Chat""GPT|Clau""de|Anth""ropic|Cur""sor|Co""pilot|csrf""-token|Rapid_Agent_Hackathon_Rules_Source_2026_06_08""\\.raw\\.html|860""1137|AI""za|s""k-[A-Za-z0-9]|mong""odb\\+srv://[^ <)\"']+:[^ <)\"']+@"
 if rg -n "${private_evidence_pattern}" \
-  index.html README.html CHANGELOG.html Makefile Dockerfile cmd internal scripts docs .env.example >"${tmpdir}/scan.txt"; then
+  index.html README.html CHANGELOG.html DEVPOST_SUBMISSION.html Makefile Dockerfile cmd internal scripts docs .env.example >"${tmpdir}/scan.txt"; then
   cat "${tmpdir}/scan.txt" >&2
   fail "public scan found prohibited private evidence or obvious token pattern"
 fi
@@ -90,6 +90,7 @@ rg -q "AITrailblazer AI Agent Publishing" "${tmpdir}/root.html" || fail "hosted 
 rg -q "Judge Proof Checklist" "${tmpdir}/root.html" || fail "hosted root missing judge proof checklist"
 rg -q "Run Judge Demo" "${tmpdir}/root.html" || fail "hosted root missing Run Judge Demo button"
 rg -q "Public docs" "${tmpdir}/root.html" || fail "hosted root missing consolidated docs link"
+rg -q "Devpost Submission Pack" "${tmpdir}/root.html" || fail "hosted root missing Devpost submission pack link"
 rg -q "A short code printed in an article" "${tmpdir}/root.html" || fail "hosted root missing plain-language TripCode definition"
 rg -q "Resolve handle" "${tmpdir}/root.html" || fail "hosted root missing agent action trace"
 rg -q "Mongo DB MCP Runtime Proof" "${tmpdir}/root.html" || fail "hosted root missing MongoDB MCP runtime proof panel"
@@ -107,6 +108,11 @@ pass "hosted consolidated docs"
 http_get "${BASE_URL}/LICENSE" "${tmpdir}/license.txt" "${tmpdir}/license.headers"
 rg -q "MIT License" "${tmpdir}/license.txt" || fail "hosted license missing MIT License"
 pass "hosted license"
+
+http_get "${BASE_URL}/DEVPOST_SUBMISSION.html" "${tmpdir}/devpost.html" "${tmpdir}/devpost.headers"
+rg -q "Copy-ready Devpost submission pack" "${tmpdir}/devpost.html" || fail "hosted Devpost submission pack missing title marker"
+rg -q "Demo Video URL: Add final under-3-minute demo video link before submission" "${tmpdir}/devpost.html" || fail "hosted Devpost submission pack missing video placeholder"
+pass "hosted Devpost submission pack"
 
 http_get "${BASE_URL}/v1/judge-demo" "${tmpdir}/judge.json" "${tmpdir}/judge.headers"
 assert_json_value "${tmpdir}/judge.json" '.runtime_proof[] | select(.system == "Gemini" and .status == "live invoked")' "Gemini live proof"
@@ -141,6 +147,10 @@ http_get "${PUBLIC_RAW_BASE}/README.html" "${tmpdir}/repo-readme.html" "${tmpdir
 rg -q "Judge Quickstart" "${tmpdir}/repo-readme.html" || fail "public repo README missing Judge Quickstart"
 rg -q "Public Safety Boundary" "${tmpdir}/repo-readme.html" || fail "public repo README missing Public Safety Boundary"
 pass "public repo README judge quickstart visible"
+
+http_get "${PUBLIC_RAW_BASE}/DEVPOST_SUBMISSION.html" "${tmpdir}/repo-devpost.html" "${tmpdir}/repo-devpost.headers"
+rg -q "AITrailblazer AI Agent Publishing Devpost Submission Pack" "${tmpdir}/repo-devpost.html" || fail "public repo Devpost submission pack missing title"
+pass "public repo Devpost submission pack visible"
 
 http_get "${PUBLIC_RAW_BASE}/${DOC_PATH}" "${tmpdir}/repo-doc.html" "${tmpdir}/repo-doc.headers"
 rg -q "Consolidated Public Documentation" "${tmpdir}/repo-doc.html" || fail "public repo docs missing consolidated docs marker"
