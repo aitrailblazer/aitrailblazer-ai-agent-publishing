@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITrailblazer Start Here</title>
+  <meta name="description" content="A judge-ready command center for the AITrailblazer AI Agent Publishing demo.">
+  <style>
+    * { box-sizing: border-box; }
+    html {
+      background: #070a10;
+      color: #f8fbff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 14% 4%, rgba(95,168,255,.18), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(97,211,148,.16), transparent 34%),
+        linear-gradient(180deg, #070a10, #0d1118 46%, #070a10);
+    }
+    start-here:not(:defined) { display: block; padding: 32px; color: #bcc8d8; }
+  </style>
+</head>
+<body>
+<start-here></start-here>
+
+<script id="strategix-start-contract" type="application/xml">
+<StrategiXVisualSpec version="1.4" status="public-start-here" generated="2026-06-10" artifact="START_HERE.html">
+  <CanonicalArtifact>
+    <Title>AITrailblazer Start Here</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+    <Challenge>Google Cloud Rapid Agent Hackathon</Challenge>
+    <RelatedArtifact>VIDEO_SLIDES.html</RelatedArtifact>
+    <HostedRoot>https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app</HostedRoot>
+  </CanonicalArtifact>
+  <Purpose>Provide a first-click judge command center for the hosted AITrailblazer AI Agent Publishing demo without exposing private operator notes or credentials.</Purpose>
+  <DemoContract>
+    <Step order="1">Open the hosted root and confirm the interactive public demo loads.</Step>
+    <Step order="2">Run the judge proof endpoint and inspect Gemini, Agent Builder, MongoDB, and MongoDB MCP status.</Step>
+    <Step order="3">Resolve HUT-RIVER-001 and show source-grounded River memory.</Step>
+    <Step order="4">Ask a second-turn follow-up and verify session memory continuity.</Step>
+    <Step order="5">Use the video slides page as the under-three-minute recording storyboard.</Step>
+  </DemoContract>
+  <PublicSafetyBoundary>No secrets, cookies, private account screenshots, private prompt traces, or non-public development evidence are included.</PublicSafetyBoundary>
+</StrategiXVisualSpec>
+</script>
+
+<script type="module">
+  import { LitElement, html, css } from 'https://unpkg.com/lit@3/index.js?module';
+
+  const HOSTED_URL = 'https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app';
+  const SESSION = 'start-here-demo';
+  const commands = [
+    {
+      id: '00',
+      phase: 'Open',
+      title: 'Open the hosted public demo',
+      command: 'open https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app',
+      expected: 'The root page opens the interactive AITrailblazer demo, not a 404 or raw JSON page.'
+    },
+    {
+      id: '01',
+      phase: 'Health',
+      title: 'Verify Cloud Run health',
+      command: 'curl -s https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/health | jq .',
+      expected: 'The service returns ok=true and identifies aitrailblazer-ai-agent-publishing.'
+    },
+    {
+      id: '02',
+      phase: 'Proof',
+      title: 'Run judge proof',
+      command: 'curl -s https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/v1/judge-demo | jq \'{tripcode:.tripcode_result.tripcode, proof:.runtime_proof, answer:.tripcode_result.answer}\'',
+      expected: 'The response shows HUT-RIVER-001 plus live Gemini, Agent Builder, MongoDB, and MongoDB MCP proof.'
+    },
+    {
+      id: '03',
+      phase: 'Memory',
+      title: 'Resolve the TripCode River',
+      command: `curl -s "${HOSTED_URL}/resolve?tripcode=HUT-RIVER-001&session_id=${SESSION}&question=What%20changed%20across%20this%20River%3F&include_river=true&include_mongo_fit=true" | jq '{tripcode, answer, river_nodes:(.packet.river.nodes | length), mongo_fit}'`,
+      expected: 'The agent resolves the TripCode and returns River nodes from MongoDB-backed memory.'
+    },
+    {
+      id: '04',
+      phase: 'Continuity',
+      title: 'Ask a second-turn follow-up',
+      command: `curl -s -X POST "${HOSTED_URL}/resolve?session_id=${SESSION}" -H "Content-Type: text/plain" --data "Using the previous publication River, what should stay in context?" | jq '{mode, tripcode, answer, memory}'`,
+      expected: 'The follow-up reuses the resolved TripCode session instead of asking the user to repeat context.'
+    },
+    {
+      id: '05',
+      phase: 'Submit',
+      title: 'Validate the final public video URL',
+      command: 'make video-url-check DEMO_VIDEO_URL=https://www.youtube.com/watch?v=REPLACE_WITH_PUBLIC_VIDEO',
+      expected: 'After the video exists, the checker validates a reachable public YouTube or Vimeo URL.'
+    }
+  ];
+
+  const proofCards = [
+    ['TripCode', 'A stable article memory handle: HUT-RIVER-001.'],
+    ['River', 'A linked chain of article records, claims, changes, and follow-ups.'],
+    ['MongoDB MCP', 'The agent retrieves database-grounded context through the official MongoDB MCP server.'],
+    ['Gemini', 'Gemini synthesizes the retrieved packet into a concise answer for the reader.'],
+    ['Session Memory', 'A follow-up question reuses prior context instead of restarting the workflow.'],
+    ['Public Boundary', 'The page is sanitized and contains no private credentials or operator traces.']
+  ];
+
+  class StartHere extends LitElement {
+    static properties = {
+      selected: { type: Number },
+      copied: { type: String }
+    };
+
+    static styles = css`
+      :host { display: block; }
+      main { max-width: 1260px; margin: 0 auto; padding: 28px 18px 52px; }
+      a { color: inherit; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .hero, .panel {
+        border: 1px solid rgba(255,255,255,.14);
+        background: rgba(16,22,33,.88);
+        border-radius: 18px;
+        box-shadow: 0 24px 80px rgba(0,0,0,.28);
+      }
+      .hero {
+        min-height: 420px;
+        display: grid;
+        grid-template-columns: .95fr 1.05fr;
+        gap: 18px;
+        align-items: stretch;
+        padding: 22px;
+        overflow: hidden;
+        position: relative;
+      }
+      .hero::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #5fa8ff, #61d394, transparent);
+      }
+      .eyebrow {
+        color: #61d394;
+        font-size: 12px;
+        font-weight: 950;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 12px 0 14px;
+        font-size: clamp(42px, 6vw, 76px);
+        line-height: .96;
+        letter-spacing: 0;
+      }
+      .lede { color: #d7e0ee; font-size: 19px; max-width: 760px; margin: 0 0 18px; }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.16);
+        background: rgba(255,255,255,.08);
+        color: #f8fbff;
+        font-weight: 900;
+      }
+      .button.primary { background: #61d394; color: #061018; border-color: #61d394; }
+      .button.blue { background: #5fa8ff; color: #061018; border-color: #5fa8ff; }
+      .heroVisual {
+        position: relative;
+        min-height: 360px;
+        border: 1px solid rgba(95,168,255,.24);
+        border-radius: 16px;
+        background: #07101d;
+        overflow: hidden;
+      }
+      .heroVisual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 360px;
+        object-fit: cover;
+        opacity: .74;
+      }
+      .screen {
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 14px;
+        background: rgba(7,12,21,.82);
+        backdrop-filter: blur(16px);
+        padding: 14px;
+      }
+      .screen b { display: block; color: #f8fbff; font-size: 20px; }
+      .screen span { display: block; color: #b9c5d6; font-size: 13px; margin-top: 4px; }
+      .grid { display: grid; grid-template-columns: .78fr 1.22fr; gap: 16px; margin-top: 16px; }
+      .panel { padding: 18px; }
+      h2 { margin: 0 0 10px; color: #f8fbff; font-size: 26px; }
+      .muted { color: #aebbd0; }
+      .stepList { display: grid; gap: 8px; }
+      .step {
+        width: 100%;
+        text-align: left;
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 13px;
+        background: rgba(255,255,255,.045);
+        color: #f8fbff;
+        padding: 12px;
+        cursor: pointer;
+      }
+      .step.active { border-color: rgba(97,211,148,.62); background: rgba(97,211,148,.13); }
+      .step span { display: inline-flex; color: #ffd166; font-size: 11px; font-weight: 950; letter-spacing: .08em; text-transform: uppercase; }
+      .step b { display: block; margin-top: 5px; font-size: 15px; }
+      .commandBox { display: grid; gap: 12px; }
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        overflow: auto;
+        background: #050a12;
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 14px;
+        color: #dff6ff;
+        padding: 15px;
+        font: 14px/1.48 "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+      .expected {
+        border-left: 4px solid #61d394;
+        background: rgba(97,211,148,.08);
+        border-radius: 12px;
+        color: #dfffe9;
+        padding: 12px 14px;
+      }
+      button.copy {
+        justify-self: start;
+        border: 1px solid #5fa8ff;
+        background: #5fa8ff;
+        color: #061018;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 950;
+        cursor: pointer;
+      }
+      .proofGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+      .card {
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 13px;
+        background: rgba(255,255,255,.045);
+        padding: 13px;
+        min-height: 116px;
+      }
+      .card b { display: block; color: #61d394; }
+      .card span { display: block; color: #b9c5d6; font-size: 13px; margin-top: 6px; }
+      .timeline { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px; margin-top: 12px; }
+      .time {
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 13px;
+        background: rgba(255,255,255,.045);
+        padding: 12px;
+        min-height: 112px;
+      }
+      .time b { color: #ffd166; display: block; font-size: 12px; }
+      .time span { color: #c4cede; display: block; font-size: 13px; margin-top: 7px; }
+      @media (max-width: 920px) {
+        .hero, .grid { grid-template-columns: 1fr; }
+        .proofGrid, .timeline { grid-template-columns: 1fr; }
+      }
+    `;
+
+    constructor() {
+      super();
+      this.selected = 0;
+      this.copied = '';
+    }
+
+    get activeCommand() {
+      return commands[this.selected] || commands[0];
+    }
+
+    async copyCommand() {
+      const active = this.activeCommand;
+      await navigator.clipboard.writeText(active.command);
+      this.copied = active.id;
+      setTimeout(() => { this.copied = ''; }, 1200);
+    }
+
+    render() {
+      const active = this.activeCommand;
+      return html`
+        <main>
+          <section class="hero">
+            <div>
+              <div class="eyebrow">Judge command center</div>
+              <h1>Start Here</h1>
+              <p class="lede">Run the AITrailblazer AI Agent Publishing proof in the shortest path: hosted root, health, judge proof, TripCode River resolution, and second-turn session memory.</p>
+              <div class="actions">
+                <a class="button primary" href="./">Open Demo</a>
+                <a class="button blue" href="./VIDEO_SLIDES.html">Video Slides</a>
+                <a class="button" href="./v1/judge-demo">Runtime JSON</a>
+                <a class="button" href="./DEVPOST_SUBMISSION.html">Devpost Pack</a>
+              </div>
+            </div>
+            <div class="heroVisual">
+              <img src="./img/AITrailblazerAI.png" alt="AITrailblazer publishing agent visual">
+              <div class="screen">
+                <b>TripCode to agent memory</b>
+                <span>MongoDB MCP retrieval, Gemini synthesis, and session-aware follow-up on Cloud Run.</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="grid">
+            <div class="panel">
+              <h2>Replay Steps</h2>
+              <p class="muted">Use these commands for a quick manual demo or for recording the final video.</p>
+              <div class="stepList">
+                ${commands.map((step, index) => html`
+                  <button class=${`step ${index === this.selected ? 'active' : ''}`} @click=${() => { this.selected = index; }}>
+                    <span>${step.id} · ${step.phase}</span>
+                    <b>${step.title}</b>
+                  </button>
+                `)}
+              </div>
+            </div>
+            <div class="panel commandBox">
+              <h2>${active.title}</h2>
+              <pre>${active.command}</pre>
+              <button class="copy" @click=${this.copyCommand}>${this.copied === active.id ? 'Copied' : 'Copy Command'}</button>
+              <div class="expected"><strong>Expected:</strong> ${active.expected}</div>
+            </div>
+          </section>
+
+          <section class="panel" style="margin-top:16px">
+            <h2>Proof Surface</h2>
+            <p class="muted">The judge path shows the product idea, the runtime stack, and the public safety boundary without requiring private credentials.</p>
+            <div class="proofGrid">
+              ${proofCards.map(([title, body]) => html`<div class="card"><b>${title}</b><span>${body}</span></div>`)}
+            </div>
+          </section>
+
+          <section class="panel" style="margin-top:16px">
+            <h2>Video Timing</h2>
+            <div class="timeline">
+              <div class="time"><b>0:00-0:20</b><span>Open hosted root and name the archive-memory problem.</span></div>
+              <div class="time"><b>0:20-0:45</b><span>Show TripCode, River, MongoDB MCP, Gemini, and Cloud Run architecture.</span></div>
+              <div class="time"><b>0:45-1:35</b><span>Run judge proof and resolve HUT-RIVER-001.</span></div>
+              <div class="time"><b>1:35-2:20</b><span>Ask a second-turn follow-up and show session memory.</span></div>
+              <div class="time"><b>2:20-2:55</b><span>Close with publisher impact, MongoDB fit, and Google Cloud agent fit.</span></div>
+            </div>
+          </section>
+        </main>
+      `;
+    }
+  }
+
+  customElements.define('start-here', StartHere);
+</script>
+</body>
+</html>

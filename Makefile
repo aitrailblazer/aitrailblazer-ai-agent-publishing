@@ -110,6 +110,8 @@ validate:
 	@test -f README.html
 	@test -f DEVPOST_SUBMISSION.html
 	@test -f EXECPLAN_FINAL_SUBMISSION_VIDEO.html
+	@test -f START_HERE.html
+	@test -f VIDEO_SLIDES.html
 	@test -f LICENSE
 	@test -f AGENTS.md
 	@test -f go.mod
@@ -120,6 +122,8 @@ validate:
 	@grep -q "StrategiXVisualSpec" index.html
 	@grep -q "StrategiXVisualSpec" DEVPOST_SUBMISSION.html
 	@grep -q "StrategiXVisualSpec" EXECPLAN_FINAL_SUBMISSION_VIDEO.html
+	@grep -q "StrategiXVisualSpec" START_HERE.html
+	@grep -q "StrategiXVisualSpec" VIDEO_SLIDES.html
 	@grep -q "StrategiXVisualSpec" docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html
 	@grep -q "Google Cloud Rapid Agent Hackathon" index.html
 	@grep -q "rapid-agent.devpost.com/resources" index.html

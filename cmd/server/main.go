@@ -155,6 +155,8 @@ func serveStaticPublishingSurface(w http.ResponseWriter, r *http.Request) {
 		clean == "CHANGELOG.html" ||
 		clean == "DEVPOST_SUBMISSION.html" ||
 		clean == "EXECPLAN_FINAL_SUBMISSION_VIDEO.html" ||
+		clean == "START_HERE.html" ||
+		clean == "VIDEO_SLIDES.html" ||
 		clean == "LICENSE" ||
 		strings.HasPrefix(clean, "img"+string(filepath.Separator)) ||
 		strings.HasPrefix(clean, "docs"+string(filepath.Separator))

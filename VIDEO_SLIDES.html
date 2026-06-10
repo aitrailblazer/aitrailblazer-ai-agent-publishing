@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITrailblazer Video Slides</title>
+  <meta name="description" content="Under-three-minute recording storyboard for AITrailblazer AI Agent Publishing.">
+  <style>
+    * { box-sizing: border-box; }
+    html {
+      background: #070a10;
+      color: #f8fbff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(95,168,255,.16), transparent 30%),
+        radial-gradient(circle at 88% 6%, rgba(97,211,148,.16), transparent 32%),
+        linear-gradient(180deg, #070a10, #0d1118 54%, #070a10);
+    }
+    video-slides:not(:defined) { display: block; padding: 32px; color: #bcc8d8; }
+  </style>
+</head>
+<body>
+<video-slides></video-slides>
+
+<script id="strategix-video-slides-contract" type="application/xml">
+<StrategiXVisualSpec version="1.4" status="public-video-slides" generated="2026-06-10" artifact="VIDEO_SLIDES.html">
+  <CanonicalArtifact>
+    <Title>AITrailblazer Video Slides</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+    <RelatedArtifact>START_HERE.html</RelatedArtifact>
+    <RuntimeLimit>Under three minutes</RuntimeLimit>
+  </CanonicalArtifact>
+  <Purpose>Provide a public storyboard deck for the final Devpost demo video.</Purpose>
+  <SlideDeck>
+    <Slide index="1" time="0:00-0:15">Open with the publisher archive problem.</Slide>
+    <Slide index="2" time="0:15-0:35">Explain TripCodes and Rivers as agent memory handles.</Slide>
+    <Slide index="3" time="0:35-0:55">Show the Google Cloud and MongoDB architecture.</Slide>
+    <Slide index="4" time="0:55-1:30">Run the live judge proof path.</Slide>
+    <Slide index="5" time="1:30-2:00">Resolve HUT-RIVER-001 and show River memory.</Slide>
+    <Slide index="6" time="2:00-2:30">Show the second-turn follow-up with session memory.</Slide>
+    <Slide index="7" time="2:30-2:55">Close with impact and competition fit.</Slide>
+  </SlideDeck>
+  <PublicSafetyBoundary>Use hosted public proof only; do not record private consoles, private account pages, API keys, or hidden development traces.</PublicSafetyBoundary>
+</StrategiXVisualSpec>
+</script>
+
+<script type="module">
+  import { LitElement, html, css } from 'https://unpkg.com/lit@3/index.js?module';
+
+  const slides = [
+    {
+      time: '0:00-0:15',
+      title: 'AITrailblazer AI Agent Publishing',
+      subtitle: 'Turn expert publication archives into agent memory.',
+      target: 'Hosted root page.',
+      proof: 'The public demo loads first, before terminal output.',
+      voice: 'AITrailblazer helps publishers turn static article archives into living agent memory. A reader starts with a TripCode, not a blank prompt.',
+      nodes: ['Hosted Root', 'Archive Memory', 'TripCode', 'Reader']
+    },
+    {
+      time: '0:15-0:35',
+      title: 'TripCodes And Rivers',
+      subtitle: 'A short code resolves to linked article memory.',
+      target: 'Plain-language TripCode and River cards.',
+      proof: 'The project explains memory handles in non-technical terms.',
+      voice: 'A TripCode is a stable handle printed in an article. A River is the linked trail of related articles, claims, changes, and follow-ups.',
+      nodes: ['TripCode', 'Article', 'Claims', 'River']
+    },
+    {
+      time: '0:35-0:55',
+      title: 'Agent Architecture',
+      subtitle: 'Cloud Run, Gemini, Agent Builder, MongoDB, and MongoDB MCP.',
+      target: 'Judge Proof Checklist and MongoDB MCP Runtime Proof.',
+      proof: 'The architecture shows actual runtime systems, not only a diagram.',
+      voice: 'The runtime uses Cloud Run for hosting, Gemini for synthesis, Agent Builder for discovery, MongoDB for memory, and the official MongoDB MCP path for database-grounded context.',
+      nodes: ['Cloud Run', 'Gemini', 'Agent Builder', 'MongoDB MCP']
+    },
+    {
+      time: '0:55-1:30',
+      title: 'Live Judge Proof',
+      subtitle: 'Run the proof endpoint and inspect the status.',
+      target: 'Run Judge Demo button or /v1/judge-demo JSON.',
+      proof: 'Gemini, Agent Builder, MongoDB, and MongoDB MCP report live invoked status.',
+      voice: 'The judge proof endpoint returns the resolved TripCode packet and runtime proof, including the systems that were invoked during the demo path.',
+      nodes: ['Judge Demo', 'Runtime Proof', 'TripCode Result', 'Answer']
+    },
+    {
+      time: '1:30-2:00',
+      title: 'Resolve HUT-RIVER-001',
+      subtitle: 'The reader gets a grounded research packet.',
+      target: 'Resolve flow on the root page or START_HERE command 03.',
+      proof: 'The response includes River nodes and MongoDB fit.',
+      voice: 'Now we resolve HUT-RIVER-001. The agent retrieves source context, River links, and claim memory, then Gemini summarizes what changed across the connected publication trail.',
+      nodes: ['Input', 'MongoDB Records', 'River Nodes', 'Gemini Answer']
+    },
+    {
+      time: '2:00-2:30',
+      title: 'Second-Turn Memory',
+      subtitle: 'Follow-up questions reuse the resolved River.',
+      target: 'Follow-up command or browser follow-up input.',
+      proof: 'The second turn returns the same TripCode session context.',
+      voice: 'The important product behavior is continuity. The next question reuses the resolved River, so the reader does not have to restate the article or thesis trail.',
+      nodes: ['Session', 'Follow-up', 'Prior River', 'Next Actions']
+    },
+    {
+      time: '2:30-2:55',
+      title: 'Why It Matters',
+      subtitle: 'Old publishing becomes reusable knowledge.',
+      target: 'Final impact section and Devpost pack.',
+      proof: 'The demo stays bounded: publisher memory, not investment advice or live market-data claims.',
+      voice: 'The impact is simple: publishers make old work useful again, analysts preserve reasoning trails, and readers navigate complex archives through a code that agents can resolve safely.',
+      nodes: ['Publishers', 'Analysts', 'Readers', 'Reusable Memory']
+    }
+  ];
+
+  class VideoSlides extends LitElement {
+    static properties = {
+      current: { type: Number }
+    };
+
+    static styles = css`
+      :host { display: block; }
+      main { max-width: 1420px; margin: 0 auto; padding: 24px 20px 36px; }
+      header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+      a { color: #8cc3ff; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+      .mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #5fa8ff, #61d394);
+        color: #061018;
+        display: grid;
+        place-items: center;
+        font-weight: 1000;
+      }
+      .brand b { display: block; color: #fff; }
+      .brand span { display: block; color: #aebbd0; font-size: 12px; }
+      .meta { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+      .meta span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 10px;
+        border: 1px solid rgba(97,211,148,.24);
+        border-radius: 999px;
+        background: rgba(97,211,148,.07);
+        color: #dfffe9;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .deck {
+        position: relative;
+        min-height: 760px;
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 20px;
+        background: rgba(16,22,33,.9);
+        box-shadow: 0 24px 80px rgba(0,0,0,.3);
+        overflow: hidden;
+      }
+      .slide {
+        display: grid;
+        grid-template-columns: .86fr 1.14fr;
+        gap: 22px;
+        min-height: 760px;
+        padding: 68px 30px 58px;
+        background: linear-gradient(135deg, rgba(95,168,255,.08), rgba(97,211,148,.06)), rgba(16,22,33,.94);
+      }
+      .frameTop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 0 22px;
+        border-bottom: 1px solid rgba(255,255,255,.12);
+        background: rgba(7,10,16,.72);
+        backdrop-filter: blur(16px);
+      }
+      .frameTop span { color: #eaf2ff; font-size: 13px; font-weight: 950; letter-spacing: .08em; text-transform: uppercase; }
+      .frameTop strong { color: #ffd166; font-size: 13px; font-weight: 950; letter-spacing: .08em; text-transform: uppercase; }
+      .kicker { color: #8cc3ff; font-weight: 950; font-size: 12px; letter-spacing: .11em; text-transform: uppercase; }
+      h1 { font-size: clamp(44px,5.8vw,76px); line-height: .96; margin: 12px 0 14px; letter-spacing: 0; color: #fff; }
+      .subtitle { font-size: 22px; line-height: 1.25; color: #dce7f7; margin: 0 0 18px; font-weight: 760; }
+      .infoGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
+      .infoGrid div, .quoteCard, .voiceCard {
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 14px;
+        background: rgba(7,12,21,.7);
+        padding: 14px;
+      }
+      .infoGrid b, .quoteCard b, .voiceCard b {
+        display: block;
+        color: #8cc3ff;
+        font-size: 11px;
+        font-weight: 950;
+        letter-spacing: .09em;
+        text-transform: uppercase;
+        margin-bottom: 7px;
+      }
+      .infoGrid span { display: block; color: #c2ccda; font-size: 14px; line-height: 1.35; }
+      .quoteCard { border-left: 4px solid #61d394; }
+      .quoteCard strong { display: block; color: #fff; font-size: 21px; line-height: 1.22; }
+      .voiceCard { margin-top: 12px; border-left: 4px solid #ffd166; }
+      .voiceCard p { margin: 0; color: #dce7f7; font-size: 17px; line-height: 1.45; }
+      .visual { display: grid; place-items: center; min-height: 620px; }
+      .screenShell {
+        width: 100%;
+        max-width: 740px;
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 18px;
+        background: #07101d;
+        box-shadow: 0 34px 90px rgba(0,0,0,.44);
+        overflow: hidden;
+      }
+      .bar { height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 14px; background: rgba(255,255,255,.07); border-bottom: 1px solid rgba(255,255,255,.1); }
+      .bar i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+      .bar i:nth-child(2) { background: #ffbd2e; }
+      .bar i:nth-child(3) { background: #28c840; }
+      .bar span { margin-left: 8px; color: #aebbd0; font-size: 12px; font-weight: 850; }
+      .screenBody {
+        padding: 22px;
+        background:
+          radial-gradient(circle at 74% 18%, rgba(95,168,255,.12), transparent 34%),
+          radial-gradient(circle at 18% 80%, rgba(97,211,148,.12), transparent 34%),
+          linear-gradient(90deg, rgba(95,168,255,.04) 1px, transparent 1px),
+          linear-gradient(rgba(95,168,255,.035) 1px, transparent 1px),
+          #07101d;
+        background-size: auto, auto, 36px 36px, 36px 36px;
+      }
+      .trip {
+        border: 1px solid rgba(97,211,148,.28);
+        border-radius: 16px;
+        background: rgba(97,211,148,.08);
+        padding: 18px;
+        margin-bottom: 14px;
+      }
+      .trip span { display: block; color: #ffd166; font-size: 12px; font-weight: 950; letter-spacing: .09em; text-transform: uppercase; }
+      .trip strong { display: block; color: #61d394; font-size: 30px; margin-top: 5px; line-height: 1.1; }
+      .trip small { display: block; color: #c2ccda; font-size: 13px; margin-top: 5px; }
+      .diagramRail { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
+      .diagramNode {
+        position: relative;
+        min-height: 150px;
+        border: 1px solid rgba(255,255,255,.13);
+        border-radius: 15px;
+        background: rgba(255,255,255,.045);
+        padding: 14px;
+      }
+      .diagramNode:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        right: -10px;
+        top: 70px;
+        width: 10px;
+        height: 2px;
+        background: #8cc3ff;
+        box-shadow: 0 0 18px rgba(95,168,255,.7);
+      }
+      .diagramNode em {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: #61d394;
+        color: #061018;
+        font-style: normal;
+        font-weight: 950;
+        margin-bottom: 14px;
+      }
+      .diagramNode span { display: block; color: #f8fbff; font-weight: 900; line-height: 1.18; }
+      .packet { border-left: 4px solid #8cc3ff; border-radius: 14px; background: rgba(95,168,255,.08); padding: 14px; }
+      .packet b { display: block; color: #8cc3ff; }
+      .packet span { display: block; color: #dff6ff; font-size: 14px; line-height: 1.35; margin-top: 5px; }
+      .evidenceStrip {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        padding: 0 22px;
+        border-top: 1px solid rgba(95,168,255,.24);
+        background: linear-gradient(90deg, rgba(95,168,255,.12), rgba(255,209,102,.08), rgba(97,211,148,.1));
+        color: #dff6ff;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: .04em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .nav { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 8px; margin-top: 12px; }
+      .nav button {
+        border: 1px solid rgba(255,255,255,.13);
+        background: rgba(255,255,255,.05);
+        color: #f8fbff;
+        border-radius: 13px;
+        padding: 10px;
+        text-align: left;
+        min-height: 78px;
+        cursor: pointer;
+      }
+      .nav button.active { border-color: #61d394; background: rgba(97,211,148,.14); }
+      .nav span { display: block; color: #ffd166; font-size: 11px; font-weight: 950; }
+      .nav b { display: block; margin-top: 5px; font-size: 12px; line-height: 1.15; }
+      .controls { display: flex; gap: 10px; align-items: center; justify-content: flex-end; margin-top: 12px; }
+      .controls button {
+        border: 1px solid rgba(255,255,255,.15);
+        border-radius: 999px;
+        background: rgba(255,255,255,.08);
+        color: #f8fbff;
+        padding: 10px 14px;
+        font-weight: 950;
+        cursor: pointer;
+      }
+      .controls button.primary { background: #61d394; color: #061018; border-color: #61d394; }
+      @media (max-width: 980px) {
+        header { align-items: flex-start; flex-direction: column; }
+        .slide { grid-template-columns: 1fr; }
+        .nav { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .diagramRail, .infoGrid { grid-template-columns: 1fr; }
+        .diagramNode:not(:last-child)::after { display: none; }
+      }
+    `;
+
+    constructor() {
+      super();
+      this.current = 0;
+    }
+
+    next() {
+      this.current = (this.current + 1) % slides.length;
+    }
+
+    prev() {
+      this.current = (this.current + slides.length - 1) % slides.length;
+    }
+
+    render() {
+      const slide = slides[this.current] || slides[0];
+      return html`
+        <main>
+          <header>
+            <div class="brand">
+              <div class="mark">AI</div>
+              <div><b>AITrailblazer Video Slides</b><span>Under-three-minute public recording storyboard</span></div>
+            </div>
+            <div class="meta"><span>Runtime 2:55</span><span>7 slides</span><span>Public proof only</span></div>
+            <a href="./START_HERE.html">Back to Start Here</a>
+          </header>
+
+          <div class="deck">
+            <section class="slide">
+              <div class="frameTop">
+                <span>AITrailblazer AI Agent Publishing</span>
+                <strong>${slide.time} · ${this.current + 1}/7</strong>
+              </div>
+              <div>
+                <div class="kicker">${slide.time} · Slide ${this.current + 1}</div>
+                <h1>${slide.title}</h1>
+                <p class="subtitle">${slide.subtitle}</p>
+                <div class="infoGrid">
+                  <div><b>Screenshot Target</b><span>${slide.target}</span></div>
+                  <div><b>Proof Target</b><span>${slide.proof}</span></div>
+                </div>
+                <div class="quoteCard">
+                  <b>On-screen text</b>
+                  <strong>${slide.title}. ${slide.subtitle}</strong>
+                </div>
+                <div class="voiceCard">
+                  <b>Voiceover</b>
+                  <p>${slide.voice}</p>
+                </div>
+              </div>
+              <div class="visual">
+                <div class="screenShell">
+                  <div class="bar"><i></i><i></i><i></i><span>AITrailblazer public demo</span></div>
+                  <div class="screenBody">
+                    <div class="trip">
+                      <span>Recording beat</span>
+                      <strong>${slide.title}</strong>
+                      <small>${slide.subtitle}</small>
+                    </div>
+                    <div class="diagramRail">
+                      ${slide.nodes.map((node, index) => html`
+                        <div class="diagramNode">
+                          <em>${index + 1}</em>
+                          <span>${node}</span>
+                        </div>
+                      `)}
+                    </div>
+                    <div class="packet">
+                      <b>Public proof boundary</b>
+                      <span>${slide.proof}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="evidenceStrip">hosted root · /health · /v1/judge-demo · /resolve · MongoDB MCP · Gemini · session memory · no private traces</div>
+            </section>
+          </div>
+
+          <div class="nav">
+            ${slides.map((item, index) => html`
+              <button class=${index === this.current ? 'active' : ''} @click=${() => { this.current = index; }}>
+                <span>${item.time}</span>
+                <b>${item.title}</b>
+              </button>
+            `)}
+          </div>
+          <div class="controls">
+            <button @click=${this.prev}>Previous</button>
+            <button class="primary" @click=${this.next}>Next</button>
+          </div>
+        </main>
+      `;
+    }
+  }
+
+  customElements.define('video-slides', VideoSlides);
+</script>
+</body>
+</html>

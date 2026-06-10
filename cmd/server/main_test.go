@@ -74,6 +74,12 @@ func TestStaticPublishingSurface(t *testing.T) {
 	if err := os.WriteFile("EXECPLAN_FINAL_SUBMISSION_VIDEO.html", []byte("<!doctype html><title>ExecPlan</title>"), 0o600); err != nil {
 		t.Fatalf("write execplan: %v", err)
 	}
+	if err := os.WriteFile("START_HERE.html", []byte("<!doctype html><title>Start Here</title>"), 0o600); err != nil {
+		t.Fatalf("write start here: %v", err)
+	}
+	if err := os.WriteFile("VIDEO_SLIDES.html", []byte("<!doctype html><title>Video Slides</title>"), 0o600); err != nil {
+		t.Fatalf("write video slides: %v", err)
+	}
 	if err := os.Mkdir("img", 0o700); err != nil {
 		t.Fatalf("mkdir img: %v", err)
 	}
@@ -111,6 +117,20 @@ func TestStaticPublishingSurface(t *testing.T) {
 	mux.ServeHTTP(rec, req)
 	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "ExecPlan") {
 		t.Fatalf("execplan static = %d %q", rec.Code, rec.Body.String())
+	}
+
+	req = httptest.NewRequest(http.MethodGet, "/START_HERE.html", nil)
+	rec = httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "Start Here") {
+		t.Fatalf("start here static = %d %q", rec.Code, rec.Body.String())
+	}
+
+	req = httptest.NewRequest(http.MethodGet, "/VIDEO_SLIDES.html", nil)
+	rec = httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "Video Slides") {
+		t.Fatalf("video slides static = %d %q", rec.Code, rec.Body.String())
 	}
 
 	req = httptest.NewRequest(http.MethodGet, "/go.mod", nil)
