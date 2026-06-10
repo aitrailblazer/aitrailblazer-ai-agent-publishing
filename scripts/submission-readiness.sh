@@ -89,6 +89,8 @@ http_get "${BASE_URL}/" "${tmpdir}/root.html" "${tmpdir}/root.headers"
 rg -q "AITrailblazer AI Agent Publishing" "${tmpdir}/root.html" || fail "hosted root missing project title"
 rg -q "Try the live proof" "${tmpdir}/root.html" || fail "hosted root missing live proof CTA"
 rg -q "Public docs" "${tmpdir}/root.html" || fail "hosted root missing consolidated docs link"
+rg -q "A short code printed in an article" "${tmpdir}/root.html" || fail "hosted root missing plain-language TripCode definition"
+rg -q "Resolve handle" "${tmpdir}/root.html" || fail "hosted root missing agent action trace"
 pass "hosted root"
 
 http_get "${BASE_URL}/health" "${tmpdir}/health.json" "${tmpdir}/health.headers"

@@ -139,6 +139,21 @@
       ['agent_runs', 'Tool calls and output summaries']
     ];
 
+    const plainTerms = [
+      ['TripCode', 'A short code printed in an article or briefing. It gives the agent an exact memory handle instead of a blank prompt.'],
+      ['River', 'A linked trail of related articles, updates, claims, and follow-ups that shows how a thesis changes over time.'],
+      ['MCP context', 'The official MongoDB MCP server exposes selected database records to the agent as retrievable tool context.'],
+      ['Session memory', 'The follow-up turn reuses the already resolved article and River so the reader does not repeat context.']
+    ];
+
+    const actionTemplates = [
+      ['Resolve handle', 'Read the TripCode and map it to the anchor article record.'],
+      ['Retrieve memory', 'Load article, claim, River edge, session, and run records from MongoDB.'],
+      ['Invoke MCP', 'Use the official MongoDB MCP path to expose database-grounded context.'],
+      ['Synthesize', 'Ask Gemini to produce a source-grounded answer from the retrieved packet.'],
+      ['Continue', 'Store and reuse session context for the next reader question.']
+    ];
+
     const links = [
       ['Public Docs', './docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html'],
       ['Rapid Agent Resources', 'https://rapid-agent.devpost.com/resources'],
@@ -422,6 +437,57 @@
           color: var(--muted);
           font-size: 14px;
         }
+        .term-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 8px;
+          margin: 0 0 14px;
+        }
+        .term-card,
+        .action-step {
+          border: 1px solid var(--line);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .055);
+          padding: 10px;
+        }
+        .term-card strong,
+        .action-step strong {
+          display: block;
+          color: var(--ink);
+          font-size: 13px;
+          margin-bottom: 4px;
+        }
+        .term-card span,
+        .action-step span {
+          display: block;
+          color: var(--muted);
+          font-size: 12px;
+        }
+        .action-trace {
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 8px;
+          margin: 14px 0 0;
+        }
+        .action-step {
+          min-height: 112px;
+        }
+        .action-step small {
+          display: inline-flex;
+          align-items: center;
+          min-height: 22px;
+          border-radius: 999px;
+          background: rgba(84, 163, 255, .13);
+          color: #9fc9ff;
+          padding: 0 8px;
+          font-size: 11px;
+          font-weight: 850;
+          margin-bottom: 8px;
+        }
+        .action-step.live small {
+          background: rgba(97, 211, 148, .13);
+          color: var(--green);
+        }
         .control-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -644,6 +710,10 @@
           .demo-layout {
             grid-template-columns: 1fr;
           }
+          .term-grid,
+          .action-trace {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
           .grid,
           .links {
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -679,7 +749,9 @@
           .links,
           .control-grid,
           .status-strip,
-          .proof-summary {
+          .proof-summary,
+          .term-grid,
+          .action-trace {
             grid-template-columns: 1fr;
           }
           .media-footer {
@@ -785,6 +857,61 @@
         return text.includes('live') || text.includes('deployment') || text.includes('ready');
       }
 
+      liveSystemSet() {
+        const items = this.runtimeItems();
+        return new Set(items.filter((item) => this.isLiveStatus(item.status)).map((item) => item.system));
+      }
+
+      actionStatus(title, liveSystems) {
+        if (title === 'Resolve handle') {
+          return this.resolved?.tripcode ? 'verified' : 'ready';
+        }
+        if (title === 'Retrieve memory') {
+          return liveSystems.has('MongoDB') ? 'live' : 'ready';
+        }
+        if (title === 'Invoke MCP') {
+          return liveSystems.has('MongoDB MCP') ? 'live' : 'ready';
+        }
+        if (title === 'Synthesize') {
+          return liveSystems.has('Gemini') ? 'live' : 'ready';
+        }
+        if (title === 'Continue') {
+          return this.demo?.follow_up_result || this.resolved?.second_turn_memory ? 'verified' : 'ready';
+        }
+        return 'ready';
+      }
+
+      renderTermCards() {
+        return html`
+          <div class="term-grid">
+            ${plainTerms.map(([title, body]) => html`
+              <article class="term-card">
+                <strong>${title}</strong>
+                <span>${body}</span>
+              </article>
+            `)}
+          </div>
+        `;
+      }
+
+      renderActionTrace() {
+        const liveSystems = this.liveSystemSet();
+        return html`
+          <div class="action-trace" aria-label="Agent action trace">
+            ${actionTemplates.map(([title, body], index) => {
+              const status = this.actionStatus(title, liveSystems);
+              return html`
+                <article class="action-step ${status === 'live' || status === 'verified' ? 'live' : ''}">
+                  <small>${index + 1}. ${status}</small>
+                  <strong>${title}</strong>
+                  <span>${body}</span>
+                </article>
+              `;
+            })}
+          </div>
+        `;
+      }
+
       renderStatusPills() {
         const items = this.runtimeItems();
         if (!items.length) {
@@ -859,7 +986,7 @@
             <div class="inner">
               <div class="section-head">
                 <h2>Try the live proof</h2>
-                <p>Run the hosted Cloud Run agent path and render the exact TripCode, River, MongoDB, MCP, Gemini, and second-turn memory evidence judges need to see.</p>
+                <p>Run the hosted Cloud Run agent path and watch the agent resolve a handle, retrieve MongoDB memory through MCP, invoke Gemini, and continue with saved session context.</p>
               </div>
               <div class="demo-grid">
                 <div class="demo-panel">
@@ -876,6 +1003,7 @@
                       </div>
                     `)}
                   </div>
+                  ${this.renderTermCards()}
                   <div class="control-grid">
                     <label>
                       TripCode
@@ -899,6 +1027,7 @@
                   </details>
                   ${this.error ? html`<div class="error-box">${this.error}</div>` : ''}
                   ${this.renderStatusPills()}
+                  ${this.renderActionTrace()}
 
                   <div class="demo-layout">
                     <div>
