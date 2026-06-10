@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AITrailblazer AI Agent Publishing Public Docs</title>
+  <meta name="description" content="Consolidated public documentation for the AITrailblazer AI Agent Publishing Google Cloud Rapid Agent Hackathon submission.">
+  <style>
+    html {
+      background: #0b0f14;
+      color: #f7fbff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.48;
+      scroll-behavior: smooth;
+    }
+    body { margin: 0; min-height: 100vh; }
+    aitrailblazer-public-docs:not(:defined) { display: block; padding: 32px; }
+  </style>
+</head>
+<body>
+  <aitrailblazer-public-docs></aitrailblazer-public-docs>
+
+  <script id="strategix-public-docs-contract" type="application/xml">
+<StrategiXVisualSpec id="aitrailblazer-ai-agent-publishing-public-docs-2026-06-10" version="1.4" status="consolidated-public-docs" canonicalFormat="html">
+  <CanonicalArtifact>
+    <Title>AITrailblazer AI Agent Publishing Public Docs</Title>
+    <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
+    <Challenge>Google Cloud Rapid Agent Hackathon</Challenge>
+    <Created>2026-06-10</Created>
+    <File>docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html</File>
+    <Supersedes>docs/AITrailblazer_AI_Agent_Publishing_Winning_Spec_2026_06_08.html</Supersedes>
+    <Supersedes>docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html</Supersedes>
+    <Supersedes>docs/AITrailblazer_AI_Agent_Publishing_Competition_Win_Improvements_2026_06_09.html</Supersedes>
+    <Supersedes>docs/ExecPlan_AITrailblazer_MongoDB_Atlas_Runtime_2026_06_09.html</Supersedes>
+    <Supersedes>docs/ExecPlan_Public_Docs_Sanitization_2026_06_09.html</Supersedes>
+    <Supersedes>docs/MongoDB_Free_Development_Testing_Plan_2026_06_08.html</Supersedes>
+    <Supersedes>docs/Rapid_Agent_Hackathon_Resource_Map_2026_06_08.html</Supersedes>
+    <Supersedes>docs/Rapid_Agent_Hackathon_Rules_Source_2026_06_08.html</Supersedes>
+  </CanonicalArtifact>
+  <Purpose>Replace the previous multi-file public docs set with one judge-readable and machine-readable HTML artifact that explains the product, runtime proof, MongoDB/MCP architecture, competition fit, build checklist, sanitization posture, and remaining submission gate.</Purpose>
+  <ProductContract>
+    <Name>AITrailblazer AI Agent Publishing</Name>
+    <Tagline>Turn publication archives into Gemini-powered TripCode, River, MongoDB, and MCP agent memory.</Tagline>
+    <UserFlow>A reader enters a known TripCode, the agent resolves related article records and River edges from MongoDB, Gemini synthesizes source-grounded context, and the reader can continue through session-aware follow-up memory.</UserFlow>
+    <ProofTripCode>HUT-RIVER-001</ProofTripCode>
+    <ProofDataset>Three seeded River articles, claim nodes, River edges, reader session memory, and agent run records.</ProofDataset>
+  </ProductContract>
+  <RuntimeProof>
+    <Endpoint>/</Endpoint>
+    <Endpoint>/v1/judge-demo</Endpoint>
+    <Endpoint>/resolve</Endpoint>
+    <System name="Cloud Run">Hosted public web and API runtime.</System>
+    <System name="Gemini">Live synthesis through Google Cloud Vertex AI Gemini.</System>
+    <System name="Agent Builder">Live search/orchestration lane over seeded River documents.</System>
+    <System name="MongoDB">Persistent memory model for articles, tripcodes, claims, river_edges, reader_sessions, and agent_runs.</System>
+    <System name="MongoDB MCP">Official MongoDB MCP server exposed through HTTP transport for judge proof.</System>
+  </RuntimeProof>
+  <MongoDBContract>
+    <Collection name="articles">Canonical article records with title, date, summary, source label, TripCode, and key claims.</Collection>
+    <Collection name="tripcodes">Stable handles that map a reader-known code to article and River memory.</Collection>
+    <Collection name="claims">Source-grounded claims extracted from article memory.</Collection>
+    <Collection name="river_edges">Updates, continuations, contradictions, and theme links between articles.</Collection>
+    <Collection name="reader_sessions">Questions, resolved objects, and follow-up context.</Collection>
+    <Collection name="agent_runs">Tool calls, timestamps, runtime proof, and output summaries.</Collection>
+  </MongoDBContract>
+  <RuntimeModes>
+    <Mode name="embedded" status="live">Starts MongoDB in the Cloud Run container, seeds the judge-demo records, runs official MongoDB MCP, and provides stable deadline-safe proof.</Mode>
+    <Mode name="atlas" status="ready">Uses MDB_MCP_CONNECTION_STRING from Secret Manager, rejects localhost strings, skips embedded mongod, and lets the official MCP server connect to Atlas.</Mode>
+  </RuntimeModes>
+  <CompetitionContract>
+    <Requirement>Build a functional agent powered by Gemini and Google Cloud Agent Builder or the Gemini Enterprise Agent Platform.</Requirement>
+    <Requirement>Integrate a partner product and MCP server. Selected partner: MongoDB.</Requirement>
+    <Requirement>Run on a supported web platform with a hosted public URL.</Requirement>
+    <Requirement>Submit a public repository with license, description, video demo no longer than three minutes, and hosted project link.</Requirement>
+    <Requirement>Keep public materials focused on permitted Google Cloud and MongoDB runtime evidence.</Requirement>
+  </CompetitionContract>
+  <BuildChecklist>
+    <Item status="done">Public root serves the interactive demo.</Item>
+    <Item status="done">Cloud Run runtime is deployed.</Item>
+    <Item status="done">Gemini live proof is available.</Item>
+    <Item status="done">Agent Builder live proof is available.</Item>
+    <Item status="done">MongoDB and official MongoDB MCP proof is available.</Item>
+    <Item status="done">CORS and browser API calls are supported.</Item>
+    <Item status="done">Public docs are consolidated into one HTML artifact.</Item>
+    <Item status="remaining">Add the final public video demo link in Devpost before final submit.</Item>
+  </BuildChecklist>
+  <SanitizationContract>
+    <Rule>No secrets, tokens, credentials, raw browser captures, account session metadata, or private operator evidence belongs in public docs.</Rule>
+    <Rule>Public docs retain only curated, inert source digests and project-facing implementation facts.</Rule>
+    <Rule>The public subtree is scanned before push for private evidence terms and obvious token patterns.</Rule>
+  </SanitizationContract>
+  <AcceptanceCriteria>
+    <Criterion>docs contains one canonical public docs HTML file.</Criterion>
+    <Criterion>index.html and README.html link only to the consolidated public docs artifact.</Criterion>
+    <Criterion>make validate and make check pass.</Criterion>
+    <Criterion>Hosted root, changelog, and consolidated docs return HTTP 200 after deploy.</Criterion>
+    <Criterion>Hosted /v1/judge-demo continues to report live Gemini, Agent Builder, MongoDB, and MongoDB MCP proof.</Criterion>
+  </AcceptanceCriteria>
+</StrategiXVisualSpec>
+  </script>
+
+  <script type="module">
+    import { LitElement, html, css } from 'https://unpkg.com/lit@3/index.js?module';
+
+    const systems = [
+      ['Cloud Run', 'Hosted web/API runtime with static public docs and live proof endpoints.'],
+      ['Gemini', 'Generates source-grounded synthesis from retrieved publishing memory.'],
+      ['Agent Builder', 'Live search/orchestration lane over the seeded River documents.'],
+      ['MongoDB', 'Stores article memory, TripCodes, River edges, claims, sessions, and agent runs.'],
+      ['MongoDB MCP', 'Official MCP server exposes database-grounded retrieval proof.']
+    ];
+
+    const collections = [
+      ['articles', 'Canonical source article records and summaries.'],
+      ['tripcodes', 'Stable handles for reader-known archive entry points.'],
+      ['claims', 'Source-grounded claim nodes.'],
+      ['river_edges', 'Updates, continuations, contradictions, and themes.'],
+      ['reader_sessions', 'Follow-up memory and resolved context.'],
+      ['agent_runs', 'Runtime proof, tool calls, and output summaries.']
+    ];
+
+    const flows = [
+      ['TripCode resolution', 'User enters HUT-RIVER-001 and receives the linked article packet, claims, and source context.'],
+      ['River traversal', 'The agent compares prior, anchor, and follow-up article records to show how the thesis changed.'],
+      ['Second-turn memory', 'The user asks what to monitor next and the session reuses the already resolved River memory.']
+    ];
+
+    const checklist = [
+      ['done', 'Public root serves the interactive demo.'],
+      ['done', 'Cloud Run image includes index, README, changelog, docs, license, and image assets.'],
+      ['done', 'Gemini, Agent Builder, MongoDB, and MongoDB MCP proof is live.'],
+      ['done', 'CORS preflight and browser API calls are supported.'],
+      ['done', 'Public subtree is sanitized and published to GitHub.'],
+      ['done', 'Docs are consolidated into one canonical HTML artifact.'],
+      ['remaining', 'Add the final public demo video link in Devpost before final submit.']
+    ];
+
+    const sourceDigest = [
+      ['Winning spec', 'The submission should prioritize one judge-proof vertical slice: TripCode resolution, River traversal, MongoDB/MCP context, Gemini synthesis, and second-turn memory.'],
+      ['Build checklist', 'The required panels are input, agent plan, source context, River memory, Gemini answer, next actions, and runtime proof.'],
+      ['Competition analysis', 'The highest leverage improvements were public root deployment, a judge-friendly interactive demo, fresh-browser validation, and video completion.'],
+      ['Atlas ExecPlan', 'Embedded mode is live and stable; Atlas mode is ready through Secret Manager and rejects local connection strings.'],
+      ['Public sanitization', 'Raw captures and private operator evidence are excluded from the public repository and docs.'],
+      ['MongoDB free plan', 'Use free/local paths for development, keep MCP read-only by default, and route paid Atlas usage through Marketplace only when needed.'],
+      ['Resource map', 'The resource lanes are Gemini/Agent Builder, actions and data stores, MongoDB partner tooling, runtime state, Cloud Run, and safety.'],
+      ['Rules source', 'The submission requires a hosted project, public repository with license, short demo video, description, and eligible Google Cloud plus partner product usage.']
+    ];
+
+    const commands = [
+      ['Local gate', 'make check'],
+      ['Hosted proof', 'curl -s https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/v1/judge-demo'],
+      ['Atlas preflight', 'make atlas-check'],
+      ['Atlas deploy', 'make deploy-atlas ATLAS_SECRET=publishing-mongodb-atlas-uri']
+    ];
+
+    class AITrailblazerPublicDocs extends LitElement {
+      static styles = css`
+        :host {
+          display: block;
+          min-height: 100vh;
+          background:
+            radial-gradient(circle at 18% 0%, rgba(74, 222, 128, .16), transparent 30%),
+            radial-gradient(circle at 82% 6%, rgba(96, 165, 250, .15), transparent 34%),
+            #0b0f14;
+        }
+        main {
+          width: min(1180px, calc(100vw - 32px));
+          margin: 0 auto;
+          padding: 34px 0 58px;
+        }
+        nav {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          gap: 12px;
+          align-items: center;
+          padding: 8px 0 24px;
+        }
+        nav strong { font-size: 15px; }
+        nav a {
+          color: #b7c7dc;
+          text-decoration: none;
+          font-size: 13px;
+          font-weight: 760;
+          margin-left: 12px;
+        }
+        .hero,
+        .panel,
+        .card {
+          border: 1px solid rgba(183, 199, 220, .22);
+          border-radius: 8px;
+          background: rgba(15, 23, 32, .86);
+          box-shadow: 0 24px 74px rgba(0, 0, 0, .28);
+        }
+        .hero {
+          padding: 30px;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(280px, 390px);
+          gap: 24px;
+          align-items: end;
+        }
+        .panel { padding: 20px; margin-top: 16px; }
+        .card { padding: 16px; min-height: 118px; }
+        .eyebrow,
+        .tag {
+          color: #4ade80;
+          font-size: 12px;
+          font-weight: 900;
+          text-transform: uppercase;
+        }
+        .tag {
+          display: inline-block;
+          border: 1px solid rgba(74, 222, 128, .35);
+          border-radius: 999px;
+          background: rgba(74, 222, 128, .1);
+          padding: 4px 9px;
+          margin-bottom: 8px;
+        }
+        h1 {
+          margin: 8px 0 12px;
+          font-size: clamp(38px, 6vw, 78px);
+          line-height: .98;
+          letter-spacing: 0;
+        }
+        h2 {
+          margin: 0 0 12px;
+          color: #93c5fd;
+          font-size: 22px;
+          letter-spacing: 0;
+        }
+        h3 {
+          margin: 0 0 8px;
+          color: #f7fbff;
+          font-size: 17px;
+          letter-spacing: 0;
+        }
+        p { margin: 0; color: #b7c7dc; }
+        .lede { max-width: 760px; font-size: 18px; }
+        .grid2,
+        .grid3,
+        .grid4 {
+          display: grid;
+          gap: 12px;
+        }
+        .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .metric {
+          border: 1px solid rgba(183, 199, 220, .22);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, .05);
+          padding: 12px;
+        }
+        .metric strong { display: block; color: #fde68a; font-size: 26px; }
+        .metric span { color: #b7c7dc; font-size: 13px; }
+        ul {
+          display: grid;
+          gap: 8px;
+          margin: 0;
+          padding-left: 20px;
+          color: #b7c7dc;
+        }
+        code {
+          color: #fde68a;
+          background: rgba(253, 230, 138, .08);
+          border-radius: 6px;
+          padding: 2px 6px;
+        }
+        pre {
+          white-space: pre-wrap;
+          overflow: auto;
+          max-height: 420px;
+          color: #dbeafe;
+          background: rgba(0, 0, 0, .32);
+          border-radius: 8px;
+          padding: 14px;
+          font-size: 12px;
+        }
+        @media (max-width: 920px) {
+          .hero,
+          .grid2,
+          .grid3,
+          .grid4 { grid-template-columns: 1fr; }
+          nav a { margin-left: 0; margin-right: 12px; }
+        }
+      `;
+
+      xmlText() {
+        return document.getElementById('strategix-public-docs-contract')?.textContent?.trim() || '';
+      }
+
+      renderCard([title, body], tag = 'Section') {
+        return html`<article class="card"><span class="tag">${tag}</span><h3>${title}</h3><p>${body}</p></article>`;
+      }
+
+      render() {
+        return html`
+          <main>
+            <nav>
+              <strong>AITrailblazer Public Docs</strong>
+              <div>
+                <a href="#runtime">Runtime</a>
+                <a href="#mongodb">MongoDB</a>
+                <a href="#checklist">Checklist</a>
+                <a href="#digest">Digest</a>
+                <a href="#xml">XML</a>
+              </div>
+            </nav>
+
+            <section class="hero">
+              <div>
+                <div class="eyebrow">Consolidated Public Documentation</div>
+                <h1>One docs artifact for the submission.</h1>
+                <p class="lede">This file replaces the previous docs folder spread with one self-contained StrategiX Visual Spec covering product story, competition fit, runtime proof, MongoDB/MCP architecture, build checklist, sanitization, and remaining Devpost gate.</p>
+              </div>
+              <div class="grid2">
+                <div class="metric"><strong>1</strong><span>canonical docs file</span></div>
+                <div class="metric"><strong>8</strong><span>legacy docs consolidated</span></div>
+                <div class="metric"><strong>5</strong><span>live proof systems</span></div>
+                <div class="metric"><strong>6</strong><span>MongoDB collections</span></div>
+              </div>
+            </section>
+
+            <section class="panel" id="product">
+              <h2>Product Contract</h2>
+              <div class="grid3">
+                ${this.renderCard(['User Entry', 'A reader starts with a known TripCode such as HUT-RIVER-001 instead of a blank prompt.'], 'Flow')}
+                ${this.renderCard(['Agent Memory', 'MongoDB stores article, claim, River, session, and run records that can be retrieved through MCP.'], 'Memory')}
+                ${this.renderCard(['Grounded Answer', 'Gemini synthesizes the retrieved publisher memory and preserves follow-up context.'], 'Gemini')}
+              </div>
+            </section>
+
+            <section class="panel" id="runtime">
+              <h2>Runtime Proof</h2>
+              <div class="grid3">${systems.map((item) => this.renderCard(item, 'Live'))}</div>
+            </section>
+
+            <section class="panel" id="mongodb">
+              <h2>MongoDB Contract</h2>
+              <div class="grid3">${collections.map((item) => this.renderCard(item, 'Collection'))}</div>
+            </section>
+
+            <section class="panel">
+              <h2>Core Demo Flows</h2>
+              <div class="grid3">${flows.map((item) => this.renderCard(item, 'Flow'))}</div>
+            </section>
+
+            <section class="panel" id="checklist">
+              <h2>Build And Submission Checklist</h2>
+              <div class="grid2">
+                ${checklist.map(([status, body]) => html`
+                  <article class="card">
+                    <span class="tag">${status}</span>
+                    <p>${body}</p>
+                  </article>
+                `)}
+              </div>
+            </section>
+
+            <section class="panel">
+              <h2>Operator Commands</h2>
+              <div class="grid4">${commands.map((item) => this.renderCard(item, 'Command'))}</div>
+            </section>
+
+            <section class="panel" id="digest">
+              <h2>Consolidated Source Digest</h2>
+              <div class="grid2">${sourceDigest.map((item) => this.renderCard(item, 'Digest'))}</div>
+            </section>
+
+            <section class="panel">
+              <h2>Public Sanitization</h2>
+              <ul>
+                <li>No credentials, tokens, raw browser captures, account metadata, or private operator evidence are included.</li>
+                <li>The public repo keeps curated implementation facts and inert source digests only.</li>
+                <li>DeltaSignal remains proof/source material; AITrailblazer AI Agent Publishing is the generalized submission product.</li>
+              </ul>
+            </section>
+
+            <section class="panel" id="xml">
+              <h2>Embedded XML Contract</h2>
+              <pre>${this.xmlText()}</pre>
+            </section>
+          </main>
+        `;
+      }
+    }
+
+    customElements.define('aitrailblazer-public-docs', AITrailblazerPublicDocs);
+  </script>
+</body>
+</html>

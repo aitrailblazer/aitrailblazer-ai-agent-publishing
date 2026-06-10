@@ -111,13 +111,10 @@ validate:
 	@test -f go.mod
 	@test -f cmd/server/main.go
 	@test -f internal/agent/types.go
-	@test -f docs/MongoDB_Free_Development_Testing_Plan_2026_06_08.html
-	@test -f docs/AITrailblazer_AI_Agent_Publishing_Winning_Spec_2026_06_08.html
-	@test -f docs/AITrailblazer_AI_Agent_Publishing_Build_Checklist_2026_06_08.html
-	@test -f docs/ExecPlan_AITrailblazer_MongoDB_Atlas_Runtime_2026_06_09.html
-	@test -f docs/ExecPlan_Public_Docs_Sanitization_2026_06_09.html
-	@test -f docs/Rapid_Agent_Hackathon_Rules_Source_2026_06_08.html
+	@test -f docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html
+	@test "$$(find docs -maxdepth 1 -type f -name '*.html' | wc -l | tr -d ' ')" = "1"
 	@grep -q "StrategiXVisualSpec" index.html
+	@grep -q "StrategiXVisualSpec" docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html
 	@grep -q "Google Cloud Rapid Agent Hackathon" index.html
 	@grep -q "rapid-agent.devpost.com/resources" index.html
 	@grep -q "AITrailblazer AI Agent Publishing" index.html
