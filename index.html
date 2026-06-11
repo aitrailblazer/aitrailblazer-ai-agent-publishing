@@ -4,1413 +4,345 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AITrailblazer AI Agent Publishing | Google Cloud Rapid Agent Hackathon</title>
-  <meta name="description" content="AITrailblazer turns expert publication archives into MongoDB-backed agent memory with TripCodes, River links, MongoDB MCP, Gemini, Agent Builder, and Cloud Run.">
+  <meta name="description" content="AITrailblazer AI Agent Publishing turns publication archives into TripCode and River memory for Gemini-ready agent workflows on Google Cloud and MongoDB.">
   <meta property="og:title" content="AITrailblazer AI Agent Publishing">
-  <meta property="og:description" content="Turn expert publication archives into source-grounded agent memory with TripCodes, Rivers, MongoDB MCP, Gemini, Agent Builder, and Google Cloud.">
-  <meta property="og:image" content="./img/AITrailblazerAI.png">
+  <meta property="og:description" content="A compact Cloud Run demo that turns a publication archive into agent-readable TripCode, River, MongoDB, MCP, and Gemini-ready memory.">
+  <meta property="og:image" content="./img/Demo01.png">
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070a10;
+      --panel: #101722;
+      --panel-2: #141d2a;
+      --line: rgba(255,255,255,.14);
+      --text: #f7fbff;
+      --muted: rgba(247,251,255,.72);
+      --gold: #efd27f;
+      --green: #7eeaa1;
+      --blue: #77d8ff;
+    }
+    * { box-sizing: border-box; }
     html {
-      background: #0c0f14;
-      color: #f9fbff;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 14% 8%, rgba(126,234,161,.18), transparent 32%),
+        radial-gradient(circle at 92% 0%, rgba(119,216,255,.16), transparent 36%),
+        var(--bg);
+      color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.45;
-      scroll-behavior: smooth;
+      line-height: 1.35;
     }
     body { margin: 0; min-height: 100vh; }
-    ai-publishing-surface:not(:defined) { display: block; padding: 32px; }
+    a { color: inherit; }
+    .shell {
+      width: min(1180px, calc(100vw - 44px));
+      margin: 0 auto;
+      padding: 22px 0 30px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #02050a;
+      box-shadow: 0 16px 44px rgba(0,0,0,.38);
+    }
+    .eyebrow {
+      margin: 0 0 3px;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .brand strong {
+      display: block;
+      font-size: 17px;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 13px;
+      border: 1px solid rgba(126,234,161,.36);
+      border-radius: 999px;
+      color: var(--green);
+      background: rgba(126,234,161,.08);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 18px rgba(126,234,161,.8);
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: .84fr 1.16fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(16,23,34,.96), rgba(13,20,30,.9));
+      box-shadow: 0 30px 90px rgba(0,0,0,.38);
+      overflow: hidden;
+    }
+    .copy {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      min-height: 680px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(48px, 6vw, 82px);
+      line-height: .9;
+      letter-spacing: 0;
+      max-width: 760px;
+    }
+    .lede {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 23px);
+      font-weight: 720;
+      max-width: 650px;
+    }
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 24px 0 0;
+    }
+    .metric {
+      border: 1px solid rgba(126,234,161,.22);
+      border-radius: 16px;
+      background: rgba(126,234,161,.06);
+      padding: 14px;
+    }
+    .metric strong {
+      display: block;
+      color: var(--green);
+      font-size: 25px;
+      line-height: 1;
+    }
+    .metric span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 26px 0 0;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 950;
+      background: rgba(255,255,255,.06);
+      transition: transform .16s ease, border-color .16s ease;
+    }
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(119,216,255,.5);
+    }
+    .button.primary {
+      color: #06110c;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      box-shadow: 0 20px 50px rgba(126,234,161,.22);
+    }
+    .note {
+      margin-top: auto;
+      padding-top: 22px;
+      color: rgba(247,251,255,.62);
+      font-size: 13px;
+      font-weight: 720;
+    }
+    .shots {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+      padding: 14px;
+      min-height: 680px;
+    }
+    .shot {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--panel-2);
+    }
+    .shot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 305px;
+      object-fit: cover;
+      object-position: top center;
+    }
+    .caption {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 13px;
+      background: rgba(4,8,14,.82);
+      backdrop-filter: blur(10px);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .caption span {
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 11px;
+    }
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 2px 0;
+      color: rgba(247,251,255,.52);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    footer a { color: rgba(247,251,255,.68); text-decoration: none; }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .copy, .shots { min-height: auto; }
+      .shots { grid-template-rows: none; }
+      h1 { font-size: clamp(44px, 12vw, 72px); }
+    }
+    @media (max-width: 640px) {
+      .shell { width: min(100vw - 26px, 1180px); }
+      header { align-items: flex-start; flex-direction: column; }
+      .copy { padding: 22px; }
+      .proof { grid-template-columns: 1fr; }
+      footer { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
-  <ai-publishing-surface></ai-publishing-surface>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <img class="logo" src="./img/DeltaSignalIcon-256.png" alt="AITrailblazer mark">
+        <div>
+          <p class="eyebrow">Google Cloud Rapid Agent Hackathon · MongoDB Track</p>
+          <strong>AITrailblazer AI Agent Publishing</strong>
+        </div>
+      </div>
+      <div class="status"><span class="dot"></span> Cloud Run Live</div>
+    </header>
+
+    <main class="hero">
+      <section class="panel copy">
+        <p class="eyebrow">Publication Archive → Agent Memory</p>
+        <h1>Turn articles into reusable agent context.</h1>
+        <p class="lede">One TripCode resolves a publication object, River memory, MongoDB context, MCP evidence, Gemini-ready synthesis, and follow-up session state.</p>
+
+        <div class="proof" aria-label="Demo proof numbers">
+          <div class="metric"><strong>1</strong><span>TripCode entry point</span></div>
+          <div class="metric"><strong>3</strong><span>River article records</span></div>
+          <div class="metric"><strong>7</strong><span>proof panels returned</span></div>
+        </div>
+
+        <div class="actions">
+          <a class="button primary" href="/demo/">Open Browser Demo →</a>
+          <a class="button" href="/demo/run">Open Manual Controls</a>
+          <a class="button" href="https://github.com/aitrailblazer/aitrailblazer-ai-agent-publishing">View GitHub Repo</a>
+        </div>
+
+        <p class="note">Built as a compact Cloud Run proof for browser, API, MongoDB MCP, and Gemini-ready publishing workflows. No private key is required to view the public demo shell.</p>
+      </section>
+
+      <section class="panel shots" aria-label="Demo screenshots">
+        <figure class="shot">
+          <img src="./img/Demo01.png" alt="AITrailblazer publishing demo landing page screenshot">
+          <figcaption class="caption"><b>Landing proof</b><span>Archive → Agent Memory</span></figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="./img/Demo02.png" alt="AITrailblazer publishing demo control screen screenshot">
+          <figcaption class="caption"><b>Runtime proof</b><span>JSON → Rendered Packet</span></figcaption>
+        </figure>
+      </section>
+    </main>
+
+    <footer>
+      <span>© 2026 AITrailblazer</span>
+      <span><a href="./PROJECT_README.html">Project README</a> · <a href="./docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html">Public Docs</a> · <a href="https://rapid-agent.devpost.com/resources">Rapid Agent Resources</a></span>
+    </footer>
+  </div>
 
   <script id="strategix-publishing-contract" type="application/xml">
-<StrategiXVisualSpec version="1.4" status="public-publishing-surface" generated="2026-06-08" artifact="index.html">
+<StrategiXVisualSpec version="1.4" status="minimal-public-landing" generated="2026-06-11" artifact="index.html">
   <CanonicalArtifact>
     <Title>AITrailblazer AI Agent Publishing</Title>
     <Workspace>aitrailblazer-ai-agent-publishing</Workspace>
     <Challenge>Google Cloud Rapid Agent Hackathon</Challenge>
     <ChallengeResourceUrl>https://rapid-agent.devpost.com/resources</ChallengeResourceUrl>
     <PrimaryEntrypoint>index.html</PrimaryEntrypoint>
-    <PublicDocs>docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html</PublicDocs>
-    <HeroImage>img/AITrailblazerAI.png</HeroImage>
+    <HeroImage>img/Demo01.png</HeroImage>
+    <SecondaryImage>img/Demo02.png</SecondaryImage>
   </CanonicalArtifact>
-  <Purpose>Present AITrailblazer AI Agent Publishing as an official-facing Google Cloud Rapid Agent Hackathon submission: a Gemini-powered publishing agent that turns articles, TripCodes, and research archives into searchable, source-grounded memory using MongoDB Atlas, MCP, and Google Cloud.</Purpose>
+  <Purpose>Minimal public landing page for the deployed Cloud Run project.</Purpose>
   <ProductContract>
-    <Tagline>AITrailblazer turns expert publication archives into agent memory.</Tagline>
-    <Summary>AITrailblazer turns expert publication archives into agent memory. A reader enters a Trip Code from an article, MongoDB resolves the article, claims, River links, and session memory through MCP, and Gemini synthesizes a grounded answer that can continue across follow-up questions.</Summary>
-    <ProofCase>DeltaSignal provides the source inspiration and seeded proof case: three River-connected records that demonstrate why published research needs durable memory, claim continuity, and monitor-next workflows.</ProofCase>
-    <Audience>Publishers, analysts, researchers, newsletter operators, institutional research teams, and readers who need accumulated articles to become reusable knowledge.</Audience>
+    <Tagline>Turn articles into reusable agent context.</Tagline>
+    <Summary>One TripCode resolves a publication object, River memory, MongoDB context, MCP evidence, Gemini-ready synthesis, and follow-up session state.</Summary>
+    <Audience>Judges, publishers, analysts, researchers, and readers evaluating the live demo.</Audience>
   </ProductContract>
-  <OfficialNarrative>
-    <Inspiration>Most publishing and research archives are passive. Valuable articles, newsletters, claims, updates, contradictions, and follow-up threads become difficult to retrieve or reuse. AITrailblazer starts from the idea that readers should begin with a memorable TripCode instead of a blank chatbot prompt.</Inspiration>
-    <WhatItDoes>AITrailblazer lets a user enter a known TripCode such as HUT-RIVER-001. The agent resolves that code into linked article records, claim clusters, and River edges stored in MongoDB. Gemini generates a concise, source-grounded synthesis that shows what the article said, how it connects to related work, and what the reader should monitor next.</WhatItDoes>
-    <HowItWorks>The demo centers on three seeded River articles: a prior thesis, an anchor TripCode article, and a follow-up monitor-next article. MongoDB stores articles, tripcodes, claims, river_edges, reader_sessions, and agent_runs. MCP exposes database-grounded context, Gemini synthesizes the answer, and Google Cloud provides deployment and orchestration.</HowItWorks>
-    <Impact>AITrailblazer turns static publishing into living memory. Publishers make old articles useful again, analysts preserve thesis trails, and readers navigate complex archives through a simple code instead of disconnected search or blank chat history.</Impact>
-  </OfficialNarrative>
-  <Generalization>
-    <Step>Ingest a publication archive.</Step>
-    <Step>Assign each article or claim cluster a stable TripCode.</Step>
-    <Step>Build Rivers that connect articles, topics, evidence, follow-ups, and thesis evolution.</Step>
-    <Step>Store operational records, embeddings, semantic indexes, and session memory in a persistent database layer.</Step>
-    <Step>Let Gemini and MCP-aware agents resolve one TripCode into a grounded research packet and follow-up conversation.</Step>
-  </Generalization>
-  <MongoDBFit>
-    <Fit>MongoDB Atlas is the closest partner fit from the Rapid Agent resources because the partner page describes Atlas as a unified operational foundation and persistent memory layer for AI and agentic workloads.</Fit>
-    <Fit>MongoDB combines operational, vector, and semantic data on one platform, which maps to article objects, TripCode keys, River edges, embeddings, semantic search, and reader/session memory.</Fit>
-    <Fit>The MongoDB resource page points to MongoDB MCP Server, Atlas Search, Vector Search, Aggregations, data modeling, tools, AI Learning Hub, and Voyage AI documentation.</Fit>
-  </MongoDBFit>
-  <ResourceContract>
-    <Phase name="Core Frameworks">Gemini Enterprise Agent Platform API setup, Agent Builder, Python SDK, Agent Starter Pack, and Google Cloud credits.</Phase>
-    <Phase name="Actions And Data">Agent Builder Extensions and Agent Builder Data Stores for tools and grounding.</Phase>
-    <Phase name="Partners">Arize, Elastic, Fivetran, GitLab, MongoDB, and Dynatrace resource lanes.</Phase>
-    <Phase name="Runtime State Logic">Agent Runtime and Secret Manager.</Phase>
-    <Phase name="Deployment Safety">Agent Builder deployment, Cloud Run, and safety settings.</Phase>
-  </ResourceContract>
-  <PublishingWorkflow>
-    <Step>Capture official Devpost resources and sponsor links.</Step>
-    <Step>Translate the agent narrative into a judge-readable public surface.</Step>
-    <Step>Link the runnable demo, repository, video, and docs without leaking private state.</Step>
-    <Step>Validate local static assets before submission or GitHub Pages publication.</Step>
-  </PublishingWorkflow>
   <RuntimeProofSurface>
+    <Endpoint>/demo/</Endpoint>
+    <Endpoint>/demo/run</Endpoint>
     <Endpoint>/v1/judge-demo</Endpoint>
-    <Panel>Input</Panel>
-    <Panel>Agent Plan</Panel>
-    <Panel>Source Context</Panel>
-    <Panel>River Memory</Panel>
-    <Panel>Gemini Answer</Panel>
-    <Panel>Next Actions</Panel>
-    <Panel>Runtime Proof</Panel>
-    <Flow>TripCode resolution</Flow>
-    <Flow>River traversal</Flow>
-    <Flow>Second-turn memory</Flow>
+    <Flow>Publication archive to TripCode memory.</Flow>
+    <Flow>Raw JSON proof to rendered HTML packet.</Flow>
   </RuntimeProofSurface>
   <AcceptanceCriteria>
-    <Criterion>Static page works without a build step.</Criterion>
-    <Criterion>All long-form durable artifacts are HTML with embedded XML contracts.</Criterion>
-    <Criterion>No secrets, cookies, private screenshots, or Google Cloud credentials are stored.</Criterion>
-    <Criterion>Rapid Agent resource phases are represented clearly for planning.</Criterion>
-    <Criterion>Workspace can be previewed and validated with Makefile targets.</Criterion>
+    <Criterion>Root page is minimal, readable, and points immediately to the browser demo.</Criterion>
+    <Criterion>Root page references Demo01.png and Demo02.png as visual proof.</Criterion>
+    <Criterion>No secrets, cookies, private screenshots, or credentials are embedded.</Criterion>
   </AcceptanceCriteria>
 </StrategiXVisualSpec>
-  </script>
-
-  <script type="module">
-    import { LitElement, html, css } from 'https://unpkg.com/lit@3/index.js?module';
-
-    const officialNarrative = [
-      ['Inspiration', 'Publishers, analysts, researchers, and readers create valuable knowledge every day, but most of it becomes archive debt. Articles get published, newsletters move on, and important claims, updates, contradictions, and follow-up threads become difficult to retrieve or reuse.'],
-      ['What It Does', 'A user enters a known TripCode such as HUT-RIVER-001. The agent resolves that code into linked article records, claim clusters, and River edges stored in MongoDB, then Gemini generates a concise, source-grounded synthesis and next actions.'],
-      ['How It Works', 'The demo uses three seeded River articles: a prior thesis, an anchor TripCode article, and a follow-up monitor-next article. MongoDB stores the memory objects, MCP exposes database-grounded context, Gemini synthesizes the answer, and Google Cloud hosts the agent path.'],
-      ['Impact', 'AITrailblazer turns static publishing into living memory. Publishers make old articles useful again, analysts preserve reasoning trails, and readers navigate complex archives through a simple code instead of a blank prompt or keyword search.']
-    ];
-
-    const judgeProofChecklist = [
-      ['Live Cloud Run app', 'passing'],
-      ['Gemini / Vertex AI synthesis', 'passing'],
-      ['Agent Builder search lane', 'passing'],
-      ['MongoDB collections resolved', 'passing'],
-      ['MongoDB MCP tool call', 'passing'],
-      ['Trip Code HUT-RIVER-001', 'ready'],
-      ['Second-turn reader memory', 'ready']
-    ];
-
-    const demoStates = [
-      ['Resolve', 'Trip Code entered and MongoDB objects found.'],
-      ['Understand', 'Source context, claims, River links, and Gemini answer shown together.'],
-      ['Continue', 'Follow-up question reuses session memory and returns next monitoring actions.']
-    ];
-
-    const checklist = [
-      ['Name lock', 'Use AITrailblazer AI Agent Publishing as the official product name.'],
-      ['Proof case', 'Use DeltaSignal and the HUT TripCode article as the concrete origin story.'],
-      ['Resource map', 'Devpost resources and MongoDB partner details are normalized into planning artifacts.'],
-      ['Demo readiness', 'Submission page leaves room for archive ingestion, TripCode resolution, River view, and judge notes.'],
-      ['Secret boundary', 'No Devpost cookies, Google Cloud keys, billing exports, or private screenshots.'],
-      ['HTML-only docs', 'Durable long-form artifacts stay in StrategiX Visual Spec HTML format.']
-    ];
-
-    const proofPanels = [
-      ['Input', 'TripCode or article question.'],
-      ['Agent Plan', 'Shows retrieval, synthesis, memory, and next-action steps.'],
-      ['Source Context', 'Three article records and claim cluster.'],
-      ['River Memory', 'Prior article, anchor article, follow-up article, updates, evidence, and continuity.'],
-      ['Gemini Answer', 'Grounded synthesis from retrieved publisher memory.'],
-      ['Next Actions', 'Monitor, compare, follow up, or save session.'],
-      ['Runtime Proof', 'Gemini, Agent Builder, MongoDB, and MCP status.']
-    ];
-
-    const liveFlows = [
-      ['TripCode resolution', 'Resolve HUT-RIVER-001 through MongoDB records and MCP context.'],
-      ['River traversal', 'Compare three connected article records and summarize what changed.'],
-      ['Second-turn memory', 'Ask what to monitor next and reuse stored session context.']
-    ];
-
-    const collections = [
-      ['articles', 'Canonical article records'],
-      ['tripcodes', 'Stable memory handles'],
-      ['claims', 'Extracted source-grounded claims'],
-      ['river_edges', 'Updates, contradictions, continuations, themes'],
-      ['reader_sessions', 'Questions and follow-up memory'],
-      ['agent_runs', 'Tool calls and output summaries']
-    ];
-
-    const plainTerms = [
-      ['TripCode', 'A short code printed in an article or briefing. It gives the agent an exact memory handle instead of a blank prompt.'],
-      ['River', 'A linked trail of related articles, updates, claims, and follow-ups that shows how a thesis changes over time.'],
-      ['MCP context', 'The official MongoDB MCP server exposes selected database records to the agent as retrievable tool context.'],
-      ['Session memory', 'The follow-up turn reuses the already resolved article and River so the reader does not repeat context.']
-    ];
-
-    const actionTemplates = [
-      ['Resolve handle', 'Read the TripCode and map it to the anchor article record.'],
-      ['Retrieve memory', 'Load article, claim, River edge, session, and run records from MongoDB.'],
-      ['Invoke MCP', 'Use the official MongoDB MCP path to expose database-grounded context.'],
-      ['Synthesize', 'Ask Gemini to produce a source-grounded answer from the retrieved packet.'],
-      ['Continue', 'Store and reuse session context for the next reader question.']
-    ];
-
-    const mcpRuntimeProof = [
-      ['MCP server', 'official MongoDB MCP server'],
-      ['Transport', 'HTTP'],
-      ['Mode', 'read-only JSON'],
-      ['Collections queried', 'articles, tripcodes, claims, river_edges, reader_sessions, agent_runs'],
-      ['Tool result', 'found records for HUT-RIVER-001'],
-      ['Agent action', 'retrieved River context and passed it to Gemini']
-    ];
-
-    const links = [
-      ['Start Here', './START_HERE.html'],
-      ['Video Slides', './VIDEO_SLIDES.html'],
-      ['Public Docs', './docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html'],
-      ['Devpost Submission Pack', './DEVPOST_SUBMISSION.html'],
-      ['Final Video ExecPlan', './EXECPLAN_FINAL_SUBMISSION_VIDEO.html'],
-      ['Rapid Agent Resources', 'https://rapid-agent.devpost.com/resources'],
-      ['Hosted Proof', './v1/judge-demo'],
-      ['Changelog', './CHANGELOG.html'],
-      ['README', './PROJECT_README.html']
-    ];
-
-    const DEFAULT_API_BASE = 'https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app';
-    const DEMO_SESSION_ID = 'public-live-demo';
-
-    class AIPublishingSurface extends LitElement {
-      static properties = {
-        apiBase: { state: true },
-        tripcode: { state: true },
-        question: { state: true },
-        loading: { state: true },
-        error: { state: true },
-        demo: { state: true },
-        resolved: { state: true },
-        lastMode: { state: true }
-      };
-
-      static styles = css`
-        :host {
-          display: block;
-          min-height: 100vh;
-          --bg: #0c0f14;
-          --ink: #f9fbff;
-          --muted: rgba(249, 251, 255, .72);
-          --line: rgba(255, 255, 255, .14);
-          --panel: rgba(18, 23, 32, .86);
-          --panel2: rgba(29, 35, 46, .9);
-          --blue: #5fa8ff;
-          --green: #61d394;
-          --yellow: #ffd166;
-          --red: #ff6b6b;
-          --max: 1180px;
-        }
-        * { box-sizing: border-box; }
-        a { color: inherit; }
-        .shell {
-          min-height: 100vh;
-          background: var(--bg);
-        }
-        header {
-          position: sticky;
-          top: 0;
-          z-index: 20;
-          border-bottom: 1px solid var(--line);
-          background: rgba(12, 15, 20, .86);
-          backdrop-filter: blur(16px);
-        }
-        nav {
-          width: min(var(--max), calc(100vw - 32px));
-          height: 66px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-        }
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          min-width: 0;
-          font-weight: 850;
-        }
-        .mark {
-          width: 34px;
-          height: 34px;
-          border-radius: 8px;
-          background: linear-gradient(135deg, var(--blue), var(--green));
-          display: grid;
-          place-items: center;
-          color: #06111f;
-          font-weight: 950;
-        }
-        .navlinks {
-          display: flex;
-          gap: 14px;
-          color: var(--muted);
-          font-size: 13px;
-          font-weight: 750;
-        }
-        .navlinks a {
-          text-decoration: none;
-        }
-        .hero {
-          width: min(var(--max), calc(100vw - 32px));
-          margin: 0 auto;
-          min-height: auto;
-          padding: 46px 0 36px;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
-          gap: 32px;
-          align-items: center;
-        }
-        .eyebrow {
-          color: var(--green);
-          font-size: 13px;
-          font-weight: 850;
-          text-transform: uppercase;
-          letter-spacing: 0;
-          margin: 0 0 12px;
-        }
-        h1 {
-          margin: 0;
-          max-width: 760px;
-          font-size: clamp(40px, 6vw, 76px);
-          line-height: .96;
-          letter-spacing: 0;
-        }
-        .lede {
-          margin: 22px 0 0;
-          max-width: 690px;
-          color: var(--muted);
-          font-size: clamp(17px, 2vw, 21px);
-        }
-        .actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 12px;
-          margin-top: 28px;
-        }
-        .button {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 42px;
-          padding: 0 16px;
-          border-radius: 8px;
-          border: 1px solid var(--line);
-          text-decoration: none;
-          font-weight: 850;
-          color: var(--ink);
-          background: rgba(255, 255, 255, .07);
-        }
-        .button.primary {
-          background: var(--blue);
-          color: #07111f;
-          border-color: transparent;
-        }
-        .button.demo-entry {
-          min-height: 58px;
-          padding: 0 24px;
-          font-size: 18px;
-          border-radius: 12px;
-          background: linear-gradient(135deg, #7febaa, #78d8ff);
-          color: #06110c;
-          border-color: transparent;
-          box-shadow: 0 18px 48px rgba(97, 211, 148, .24);
-        }
-        button.button {
-          cursor: pointer;
-          font: inherit;
-        }
-        button.button:disabled {
-          cursor: wait;
-          opacity: .64;
-        }
-        .media {
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          overflow: hidden;
-          background: #111722;
-        }
-        .media img {
-          display: block;
-          width: 100%;
-          aspect-ratio: 5 / 4;
-          object-fit: contain;
-          background: #f8fafc;
-        }
-        .media-footer {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1px;
-          background: var(--line);
-        }
-        .metric {
-          background: #111722;
-          padding: 16px;
-        }
-        .metric strong {
-          display: block;
-          font-size: 22px;
-        }
-        .metric span {
-          color: var(--muted);
-          font-size: 12px;
-          font-weight: 750;
-        }
-        section {
-          border-top: 1px solid var(--line);
-          padding: 58px 0;
-        }
-        .inner {
-          width: min(var(--max), calc(100vw - 32px));
-          margin: 0 auto;
-        }
-        .section-head {
-          display: flex;
-          align-items: end;
-          justify-content: space-between;
-          gap: 20px;
-          margin-bottom: 22px;
-        }
-        h2 {
-          margin: 0;
-          font-size: clamp(28px, 4vw, 46px);
-          line-height: 1.05;
-        }
-        .section-head p {
-          margin: 0;
-          max-width: 460px;
-          color: var(--muted);
-        }
-        .grid {
-          display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-          gap: 12px;
-        }
-        .demo-grid {
-          display: grid;
-          grid-template-columns: minmax(320px, .74fr) minmax(300px, .26fr);
-          gap: 14px;
-          align-items: start;
-        }
-        .demo-panel {
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: var(--panel);
-          padding: 18px;
-        }
-        .demo-kicker {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 16px;
-        }
-        .demo-kicker span {
-          display: inline-flex;
-          align-items: center;
-          min-height: 28px;
-          border: 1px solid rgba(97, 211, 148, .35);
-          border-radius: 999px;
-          background: rgba(97, 211, 148, .1);
-          color: var(--green);
-          padding: 0 10px;
-          font-size: 12px;
-          font-weight: 850;
-        }
-        .proof-summary {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 8px;
-          margin-bottom: 14px;
-        }
-        .summary-tile {
-          min-height: 74px;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, .06);
-          padding: 10px;
-        }
-        .summary-tile strong,
-        .summary-tile span {
-          display: block;
-        }
-        .summary-tile strong {
-          color: var(--yellow);
-          font-size: 20px;
-        }
-        .summary-tile span {
-          color: var(--muted);
-          font-size: 12px;
-          font-weight: 750;
-          margin-top: 2px;
-        }
-        .judge-proof-card {
-          margin-top: 24px;
-          border: 1px solid rgba(95, 168, 255, .44);
-          border-radius: 8px;
-          background: rgba(18, 23, 32, .9);
-          padding: 16px;
-        }
-        .judge-proof-card h2 {
-          font-size: 22px;
-          margin: 0 0 10px;
-        }
-        .judge-proof-card p {
-          margin: 0 0 12px;
-          color: var(--muted);
-          font-size: 14px;
-        }
-        .judge-proof-list,
-        .mcp-proof-grid,
-        .state-grid {
-          display: grid;
-          gap: 8px;
-        }
-        .judge-proof-list {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .judge-proof-item,
-        .mcp-proof-item,
-        .state-card {
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, .055);
-          padding: 10px;
-        }
-        .judge-proof-item strong,
-        .judge-proof-item span,
-        .mcp-proof-item strong,
-        .mcp-proof-item span,
-        .state-card strong,
-        .state-card span {
-          display: block;
-        }
-        .judge-proof-item strong,
-        .mcp-proof-item strong,
-        .state-card strong {
-          font-size: 12px;
-        }
-        .judge-proof-item span {
-          margin-top: 3px;
-          color: var(--green);
-          font-size: 12px;
-          font-weight: 850;
-        }
-        .mcp-proof-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          margin-top: 12px;
-        }
-        .mcp-proof-panel-wrap {
-          margin-top: 14px;
-        }
-        .mcp-proof-item span,
-        .state-card span {
-          color: var(--muted);
-          font-size: 12px;
-          margin-top: 4px;
-        }
-        .state-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          margin: 14px 0;
-        }
-        .demo-panel h3,
-        .mini-card h3 {
-          margin: 0 0 8px;
-          font-size: 18px;
-        }
-        .demo-panel p,
-        .mini-card p {
-          margin: 0;
-          color: var(--muted);
-          font-size: 14px;
-        }
-        .term-grid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 8px;
-          margin: 0 0 14px;
-        }
-        .term-card,
-        .action-step {
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, .055);
-          padding: 10px;
-        }
-        .term-card strong,
-        .action-step strong {
-          display: block;
-          color: var(--ink);
-          font-size: 13px;
-          margin-bottom: 4px;
-        }
-        .term-card span,
-        .action-step span {
-          display: block;
-          color: var(--muted);
-          font-size: 12px;
-        }
-        .action-trace {
-          display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-          gap: 8px;
-          margin: 14px 0 0;
-        }
-        .action-step {
-          min-height: 112px;
-        }
-        .action-step small {
-          display: inline-flex;
-          align-items: center;
-          min-height: 22px;
-          border-radius: 999px;
-          background: rgba(84, 163, 255, .13);
-          color: #9fc9ff;
-          padding: 0 8px;
-          font-size: 11px;
-          font-weight: 850;
-          margin-bottom: 8px;
-        }
-        .action-step.live small {
-          background: rgba(97, 211, 148, .13);
-          color: var(--green);
-        }
-        .control-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 12px;
-          margin-bottom: 12px;
-        }
-        label {
-          display: grid;
-          gap: 6px;
-          color: var(--muted);
-          font-size: 12px;
-          font-weight: 850;
-          text-transform: uppercase;
-        }
-        input {
-          width: 100%;
-          min-height: 42px;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, .08);
-          color: var(--ink);
-          padding: 0 12px;
-          font: inherit;
-          font-size: 14px;
-          text-transform: none;
-        }
-        input::placeholder {
-          color: rgba(249, 251, 255, .44);
-        }
-        .demo-actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin: 12px 0 16px;
-        }
-        details.advanced {
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, .045);
-          padding: 10px 12px 12px;
-          margin: 0 0 14px;
-        }
-        details.advanced summary {
-          cursor: pointer;
-          color: var(--muted);
-          font-size: 12px;
-          font-weight: 850;
-          text-transform: uppercase;
-        }
-        details.advanced label {
-          margin-top: 10px;
-        }
-        .status-strip {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 8px;
-          margin: 12px 0 0;
-        }
-        .status-pill {
-          min-height: 72px;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, .06);
-          padding: 10px;
-        }
-        .status-pill strong,
-        .status-pill span {
-          display: block;
-        }
-        .status-pill strong {
-          font-size: 13px;
-        }
-        .status-pill span {
-          color: var(--muted);
-          font-size: 12px;
-          margin-top: 3px;
-        }
-        .status-pill.live {
-          border-color: rgba(97, 211, 148, .5);
-          background: rgba(97, 211, 148, .12);
-        }
-        .demo-layout {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(250px, .42fr);
-          gap: 12px;
-          margin-top: 14px;
-        }
-        .river-list,
-        .mini-list {
-          display: grid;
-          gap: 8px;
-        }
-        .mini-card {
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, .06);
-          padding: 12px;
-        }
-        .mini-card small {
-          display: block;
-          color: var(--green);
-          font-weight: 850;
-          margin-bottom: 3px;
-        }
-        .subhead {
-          margin: 16px 0 8px;
-          color: var(--ink);
-          font-size: 16px;
-        }
-        .claim-list {
-          margin: 10px 0 0;
-          padding-left: 18px;
-          color: var(--muted);
-          font-size: 14px;
-        }
-        .error-box {
-          border: 1px solid rgba(255, 107, 107, .5);
-          border-radius: 8px;
-          background: rgba(255, 107, 107, .1);
-          color: #ffd7d7;
-          padding: 12px;
-          margin-top: 12px;
-          font-size: 14px;
-        }
-        .empty-state {
-          min-height: 180px;
-          display: grid;
-          place-items: center;
-          border: 1px dashed var(--line);
-          border-radius: 8px;
-          color: var(--muted);
-          text-align: center;
-          padding: 20px;
-        }
-        .card {
-          min-height: 180px;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: var(--panel);
-          padding: 18px;
-        }
-        .card h3 {
-          margin: 0 0 10px;
-          font-size: 18px;
-        }
-        .card p {
-          margin: 0;
-          color: var(--muted);
-          font-size: 14px;
-        }
-        .checklist {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 12px;
-        }
-        .row {
-          display: grid;
-          grid-template-columns: 30px minmax(0, 1fr);
-          gap: 12px;
-          align-items: start;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          background: var(--panel2);
-          padding: 16px;
-        }
-        .dot {
-          width: 30px;
-          height: 30px;
-          border-radius: 8px;
-          background: rgba(97, 211, 148, .14);
-          color: var(--green);
-          display: grid;
-          place-items: center;
-          font-weight: 950;
-        }
-        .row strong {
-          display: block;
-          margin-bottom: 3px;
-        }
-        .row span {
-          color: var(--muted);
-          font-size: 14px;
-        }
-        .links {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 12px;
-        }
-        .link-card {
-          display: flex;
-          min-height: 92px;
-          align-items: center;
-          justify-content: space-between;
-          gap: 10px;
-          border: 1px solid var(--line);
-          border-radius: 8px;
-          padding: 16px;
-          text-decoration: none;
-          background: rgba(255, 255, 255, .06);
-          font-weight: 850;
-        }
-        footer {
-          border-top: 1px solid var(--line);
-          color: var(--muted);
-          padding: 28px 0;
-        }
-        footer .inner {
-          display: flex;
-          justify-content: space-between;
-          gap: 16px;
-          flex-wrap: wrap;
-          font-size: 13px;
-        }
-        @media (max-width: 980px) {
-          .hero {
-            min-height: auto;
-            grid-template-columns: 1fr;
-          }
-          .demo-grid,
-          .demo-layout {
-            grid-template-columns: 1fr;
-          }
-          .term-grid,
-          .action-trace {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-          .grid,
-          .links {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-          .state-grid {
-            grid-template-columns: 1fr;
-          }
-          .status-strip {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-          .proof-summary {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-        }
-        @media (max-width: 680px) {
-          nav {
-            height: auto;
-            padding: 14px 0;
-            align-items: flex-start;
-            flex-direction: column;
-          }
-          .navlinks {
-            width: 100%;
-            overflow-x: auto;
-            padding-bottom: 4px;
-          }
-          .hero {
-            padding-top: 34px;
-          }
-          .section-head,
-          footer .inner {
-            display: block;
-          }
-          .grid,
-          .checklist,
-          .links,
-          .control-grid,
-          .status-strip,
-          .proof-summary,
-          .judge-proof-list,
-          .mcp-proof-grid,
-          .term-grid,
-          .action-trace {
-            grid-template-columns: 1fr;
-          }
-          .media-footer {
-            grid-template-columns: 1fr;
-          }
-        }
-      `;
-
-      constructor() {
-        super();
-        this.apiBase = DEFAULT_API_BASE;
-        this.tripcode = 'HUT-RIVER-001';
-        this.question = 'What should I monitor next?';
-        this.loading = false;
-        this.error = '';
-        this.demo = null;
-        this.resolved = null;
-        this.lastMode = 'judge-demo';
-      }
-
-      firstUpdated() {
-        this.runJudgeDemo();
-      }
-
-      apiURL(path) {
-        return `${this.apiBase.replace(/\/+$/, '')}${path}`;
-      }
-
-      async fetchJSON(path, options = {}) {
-        const response = await fetch(this.apiURL(path), {
-          ...options,
-          headers: {
-            Accept: 'application/json',
-            ...(options.headers || {})
-          }
-        });
-        const text = await response.text();
-        let body = {};
-        if (text.trim()) {
-          body = JSON.parse(text);
-        }
-        if (!response.ok) {
-          throw new Error(body.error || `Request failed with HTTP ${response.status}`);
-        }
-        return body;
-      }
-
-      async runJudgeDemo() {
-        this.loading = true;
-        this.error = '';
-        this.lastMode = 'judge-demo';
-        try {
-          const demo = await this.fetchJSON('/v1/judge-demo');
-          this.demo = demo;
-          this.resolved = demo.tripcode_result;
-          this.tripcode = demo.tripcode_result?.tripcode || this.tripcode;
-        } catch (error) {
-          this.error = error.message || String(error);
-        } finally {
-          this.loading = false;
-        }
-      }
-
-      async resolveTripCode() {
-        this.loading = true;
-        this.error = '';
-        this.lastMode = 'resolve';
-        try {
-          const params = new URLSearchParams({
-            tripcode: this.tripcode || 'HUT-RIVER-001',
-            session_id: DEMO_SESSION_ID,
-            question: this.question || 'Resolve this article into agent memory.',
-            include_river: 'true',
-            include_mongo_fit: 'true'
-          });
-          this.resolved = await this.fetchJSON(`/resolve?${params.toString()}`);
-        } catch (error) {
-          this.error = error.message || String(error);
-        } finally {
-          this.loading = false;
-        }
-      }
-
-      runtimeItems() {
-        return this.demo?.runtime_proof || this.resolved?.runtime_proof || [];
-      }
-
-      proofSummaryItems() {
-        const panels = this.demo?.required_panels?.length || 7;
-        const collections = this.demo?.required_collections?.length || 6;
-        const flows = this.demo?.live_flows?.filter((flow) => flow.verified).length || 3;
-        const riverNodes = this.resolved?.packet?.river?.nodes?.length || 3;
-        return [
-          [panels, 'judge panels'],
-          [collections, 'MongoDB collections'],
-          [flows, 'verified live flows'],
-          [riverNodes, 'River article nodes']
-        ];
-      }
-
-      isLiveStatus(status = '') {
-        const text = status.toLowerCase();
-        return text.includes('live') || text.includes('deployment') || text.includes('ready');
-      }
-
-      liveSystemSet() {
-        const items = this.runtimeItems();
-        return new Set(items.filter((item) => this.isLiveStatus(item.status)).map((item) => item.system));
-      }
-
-      actionStatus(title, liveSystems) {
-        if (title === 'Resolve handle') {
-          return this.resolved?.tripcode ? 'verified' : 'ready';
-        }
-        if (title === 'Retrieve memory') {
-          return liveSystems.has('MongoDB') ? 'live' : 'ready';
-        }
-        if (title === 'Invoke MCP') {
-          return liveSystems.has('MongoDB MCP') ? 'live' : 'ready';
-        }
-        if (title === 'Synthesize') {
-          return liveSystems.has('Gemini') ? 'live' : 'ready';
-        }
-        if (title === 'Continue') {
-          return this.demo?.follow_up_result || this.resolved?.second_turn_memory ? 'verified' : 'ready';
-        }
-        return 'ready';
-      }
-
-      renderTermCards() {
-        return html`
-          <div class="term-grid">
-            ${plainTerms.map(([title, body]) => html`
-              <article class="term-card">
-                <strong>${title}</strong>
-                <span>${body}</span>
-              </article>
-            `)}
-          </div>
-        `;
-      }
-
-      renderActionTrace() {
-        const liveSystems = this.liveSystemSet();
-        return html`
-          <div class="action-trace" aria-label="Agent action trace">
-            ${actionTemplates.map(([title, body], index) => {
-              const status = this.actionStatus(title, liveSystems);
-              return html`
-                <article class="action-step ${status === 'live' || status === 'verified' ? 'live' : ''}">
-                  <small>${index + 1}. ${status}</small>
-                  <strong>${title}</strong>
-                  <span>${body}</span>
-                </article>
-              `;
-            })}
-          </div>
-        `;
-      }
-
-      renderJudgeProofChecklist() {
-        return html`
-          <div class="judge-proof-card">
-            <h2>Judge Proof Checklist</h2>
-            <p>One Trip Code, one live runtime proof, one MongoDB MCP proof, one Gemini/Agent Builder proof.</p>
-            <div class="judge-proof-list">
-              ${judgeProofChecklist.map(([title, status]) => html`
-                <div class="judge-proof-item">
-                  <strong>${title}</strong>
-                  <span>${status}</span>
-                </div>
-              `)}
-            </div>
-            <div class="actions">
-              <button class="button primary" type="button" ?disabled=${this.loading} @click=${this.runJudgeDemo}>${this.loading && this.lastMode === 'judge-demo' ? 'Loading proof...' : 'Run Judge Demo'}</button>
-              <a class="button" href="#live-demo">Inspect proof</a>
-            </div>
-          </div>
-        `;
-      }
-
-      renderDemoStates() {
-        return html`
-          <div class="state-grid" aria-label="Visible demo states">
-            ${demoStates.map(([title, body]) => html`
-              <article class="state-card">
-                <strong>${title}</strong>
-                <span>${body}</span>
-              </article>
-            `)}
-          </div>
-        `;
-      }
-
-      renderMCPRuntimeProof() {
-        return html`
-          <article class="demo-panel">
-            <h3>Mongo DB MCP Runtime Proof</h3>
-            <p>The live demo shows partner usage in the browser instead of hiding it in docs.</p>
-            <div class="mcp-proof-grid">
-              ${mcpRuntimeProof.map(([title, body]) => html`
-                <div class="mcp-proof-item">
-                  <strong>${title}</strong>
-                  <span>${body}</span>
-                </div>
-              `)}
-            </div>
-          </article>
-        `;
-      }
-
-      renderStatusPills() {
-        const items = this.runtimeItems();
-        if (!items.length) {
-          return html`<div class="empty-state">Run the hosted proof to load runtime status.</div>`;
-        }
-        return html`
-          <div class="status-strip">
-            ${items.map((item) => html`
-              <div class="status-pill ${this.isLiveStatus(item.status) ? 'live' : ''}">
-                <strong>${item.system}</strong>
-                <span>${item.status}</span>
-              </div>
-            `)}
-          </div>
-        `;
-      }
-
-      renderRiverNodes() {
-        const nodes = this.resolved?.packet?.river?.nodes || [];
-        if (!nodes.length) {
-          return html`<div class="empty-state">River nodes will appear after a proof run.</div>`;
-        }
-        return html`
-          <div class="river-list">
-            ${nodes.map((node) => html`
-              <article class="mini-card">
-                <small>${node.kind}</small>
-                <h3>${node.title}</h3>
-                <p>${node.description}</p>
-              </article>
-            `)}
-          </div>
-        `;
-      }
-
-      renderClaims() {
-        const claims = this.resolved?.packet?.article?.claims || [];
-        if (!claims.length) {
-          return html``;
-        }
-        return html`
-          <ul class="claim-list">
-            ${claims.map((claim) => html`<li>${claim}</li>`)}
-          </ul>
-        `;
-      }
-
-      renderCollections() {
-        const collections = this.demo?.required_collections || [];
-        if (!collections.length) {
-          return html`<div class="empty-state">Collection proof loads from /v1/judge-demo.</div>`;
-        }
-        return html`
-          <div class="mini-list">
-            ${collections.map((collection) => html`
-              <article class="mini-card">
-                <small>${collection.seeded && collection.visible ? 'seeded + visible' : 'pending'}</small>
-                <h3>${collection.name}</h3>
-                <p>${collection.purpose}</p>
-              </article>
-            `)}
-          </div>
-        `;
-      }
-
-      renderLiveDemo() {
-        const article = this.resolved?.packet?.article;
-        const followUp = this.demo?.follow_up_result;
-        const flows = this.demo?.live_flows || [];
-        return html`
-          <section id="live-demo">
-            <div class="inner">
-              <div class="section-head">
-                <h2>Run Judge Demo</h2>
-                <p>Run the hosted Cloud Run agent path and watch the agent resolve a handle, retrieve MongoDB memory through MCP, invoke Gemini, and continue with saved session context.</p>
-              </div>
-              <div class="demo-grid">
-                <div class="demo-panel">
-                  <div class="demo-kicker">
-                    <span>Hosted Cloud Run</span>
-                    <span>Official MongoDB MCP</span>
-                    <span>Gemini + Agent Builder</span>
-                  </div>
-                  <div class="proof-summary">
-                    ${this.proofSummaryItems().map(([value, label]) => html`
-                      <div class="summary-tile">
-                        <strong>${value}</strong>
-                        <span>${label}</span>
-                      </div>
-                    `)}
-                  </div>
-                  ${this.renderTermCards()}
-                  ${this.renderDemoStates()}
-                  <div class="control-grid">
-                    <label>
-                      TripCode
-                      <input .value=${this.tripcode} @input=${(event) => { this.tripcode = event.target.value; }}>
-                    </label>
-                    <label>
-                      Follow-up question
-                      <input .value=${this.question} @input=${(event) => { this.question = event.target.value; }}>
-                    </label>
-                  </div>
-                  <div class="demo-actions">
-                    <button class="button primary" type="button" ?disabled=${this.loading} @click=${this.runJudgeDemo}>${this.loading && this.lastMode === 'judge-demo' ? 'Loading proof...' : 'Run Judge Demo'}</button>
-                    <button class="button" type="button" ?disabled=${this.loading} @click=${this.resolveTripCode}>${this.loading && this.lastMode === 'resolve' ? 'Resolving...' : 'Resolve TripCode'}</button>
-                  </div>
-                  <details class="advanced">
-                    <summary>Advanced endpoint</summary>
-                    <label>
-                      API base
-                      <input .value=${this.apiBase} @input=${(event) => { this.apiBase = event.target.value; }}>
-                    </label>
-                  </details>
-                  ${this.error ? html`<div class="error-box">${this.error}</div>` : ''}
-                  ${this.renderStatusPills()}
-                  ${this.renderActionTrace()}
-
-                  <div class="demo-layout">
-                    <div>
-                      <article class="mini-card">
-                        <small>${this.resolved?.mode || 'waiting'}</small>
-                        <h3>${article?.title || 'TripCode packet not loaded yet'}</h3>
-                        <p>${this.resolved?.summary || 'Run the hosted proof to load source-grounded synthesis.'}</p>
-                        ${this.renderClaims()}
-                      </article>
-                      <h3 class="subhead">River memory</h3>
-                      ${this.renderRiverNodes()}
-                    </div>
-                    <div>
-                      <article class="mini-card">
-                        <small>second-turn memory</small>
-                        <h3>${followUp?.tripcode || this.resolved?.tripcode || 'HUT-RIVER-001'}</h3>
-                        <p>${followUp?.summary || 'The judge proof loads follow-up memory from the stored session context.'}</p>
-                      </article>
-                      <h3 class="subhead">MongoDB collections</h3>
-                      ${this.renderCollections()}
-                    </div>
-                  </div>
-                </div>
-                <aside class="demo-panel">
-                  <h3>Proof checklist</h3>
-                  <div class="mini-list">
-                    ${flows.length ? flows.map((flow) => html`
-                      <article class="mini-card">
-                        <small>${flow.verified ? 'verified' : 'pending'}</small>
-                        <h3>${flow.name}</h3>
-                        <p>${flow.outcome}</p>
-                      </article>
-                    `) : html`<div class="empty-state">The live flow checklist appears after the proof loads.</div>`}
-                  </div>
-                </aside>
-              </div>
-              <div class="mcp-proof-panel-wrap">
-                ${this.renderMCPRuntimeProof()}
-              </div>
-            </div>
-          </section>
-        `;
-      }
-
-      render() {
-        return html`
-          <div class="shell">
-            <header>
-              <nav>
-                <div class="brand">
-                  <div class="mark" aria-hidden="true">AI</div>
-                  <span>AITrailblazer Publishing</span>
-                </div>
-                <div class="navlinks" aria-label="Page links">
-                  <a href="#live-demo">Try live</a>
-                  <a href="#resources">Resources</a>
-                  <a href="#proof">Proof</a>
-                  <a href="#checklist">Checklist</a>
-                  <a href="#links">Links</a>
-                </div>
-              </nav>
-            </header>
-
-            <main>
-              <div class="hero">
-                <div>
-                  <p class="eyebrow">Google Cloud Rapid Agent Hackathon</p>
-                  <h1>AITrailblazer AI Agent Publishing.</h1>
-                  <p class="lede">AITrailblazer turns expert publication archives into agent memory. A reader enters a Trip Code from an article, MongoDB resolves the article, claims, River links, and session memory through MCP, and Gemini synthesizes a grounded answer that can continue across follow-up questions.</p>
-                  <div class="actions">
-                    <a class="button demo-entry" href="/demo/">Open Browser Demo →</a>
-                    <a class="button primary" href="#live-demo">Try live proof</a>
-                    <a class="button" href="#proof">View runtime proof</a>
-                    <a class="button" href="./docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html">Public docs</a>
-                  </div>
-                  ${this.renderJudgeProofChecklist()}
-                </div>
-                <figure class="media">
-                  <img src="./img/AITrailblazerAI.png" alt="AITrailblazer AI Agent Publishing visual identity">
-                  <figcaption class="media-footer">
-                    <div class="metric"><strong>3</strong><span>seeded River articles</span></div>
-                    <div class="metric"><strong>MongoDB</strong><span>Closest memory partner</span></div>
-                  </figcaption>
-                </figure>
-              </div>
-
-              ${this.renderLiveDemo()}
-
-              <section>
-                <div class="inner">
-                  <div class="section-head">
-                    <h2>Official Submission Narrative</h2>
-                    <p>A reader should not have to start from a blank chatbot prompt. They should be able to start from a memorable code in an article, newsletter, or research note and recover the source context, related claims, and the story's evolution over time.</p>
-                  </div>
-                  <div class="grid">
-                    ${officialNarrative.map(([title, body]) => html`
-                      <article class="card">
-                        <h3>${title}</h3>
-                        <p>${body}</p>
-                      </article>
-                    `)}
-                  </div>
-                </div>
-              </section>
-
-              <section id="proof">
-                <div class="inner">
-                  <div class="section-head">
-                    <h2>Judge Proof</h2>
-                    <p>The demo is intentionally small: three seeded River articles, one TripCode path, one River, one follow-up memory turn, and a visible runtime proof package.</p>
-                  </div>
-                  <div class="grid">
-                    ${proofPanels.map(([title, body]) => html`
-                      <article class="card">
-                        <h3>${title}</h3>
-                        <p>${body}</p>
-                      </article>
-                    `)}
-                  </div>
-                </div>
-              </section>
-
-              <section>
-                <div class="inner">
-                  <div class="section-head">
-                    <h2>Three Live Flows</h2>
-                    <p>If these work reliably, the project is a functioning agent rather than a concept page.</p>
-                  </div>
-                  <div class="checklist">
-                    ${liveFlows.map(([title, body]) => html`
-                      <div class="row">
-                        <div class="dot" aria-hidden="true">✓</div>
-                        <div><strong>${title}</strong><span>${body}</span></div>
-                      </div>
-                    `)}
-                  </div>
-                </div>
-              </section>
-
-              <section>
-                <div class="inner">
-                  <div class="section-head">
-                    <h2>MongoDB Objects</h2>
-                    <p>These collections make MongoDB structurally necessary, not decorative.</p>
-                  </div>
-                  <div class="grid">
-                    ${collections.map(([title, body]) => html`
-                      <article class="card">
-                        <h3>${title}</h3>
-                        <p>${body}</p>
-                      </article>
-                    `)}
-                  </div>
-                </div>
-              </section>
-
-              <section id="resources">
-                <div class="inner">
-                  <div class="section-head">
-                    <h2>Technology Stack</h2>
-                    <p>TripCodes make knowledge addressable, MongoDB makes it structured and retrievable, MCP makes it agent-accessible, and Gemini turns it into clear synthesis.</p>
-                  </div>
-                  <div class="grid">
-                    <article class="card"><h3>MongoDB Atlas</h3><p>Stores articles, TripCodes, claims, River edges, reader sessions, and agent runs.</p></article>
-                    <article class="card"><h3>MongoDB MCP</h3><p>Exposes database-grounded context to the agent retrieval and proof path.</p></article>
-                    <article class="card"><h3>Gemini</h3><p>Generates grounded synthesis from retrieved publisher memory instead of an empty prompt.</p></article>
-                    <article class="card"><h3>Google Cloud</h3><p>Hosts the Cloud Run experience and provides the agent orchestration path.</p></article>
-                  </div>
-                </div>
-              </section>
-
-              <section id="checklist">
-                <div class="inner">
-                  <div class="section-head">
-                    <h2>Submission Checklist</h2>
-                    <p>Keep the name, proof case, MongoDB fit, and public/private boundaries clear.</p>
-                  </div>
-                  <div class="checklist">
-                    ${checklist.map(([title, body]) => html`
-                      <div class="row">
-                        <div class="dot" aria-hidden="true">✓</div>
-                        <div><strong>${title}</strong><span>${body}</span></div>
-                      </div>
-                    `)}
-                  </div>
-                </div>
-              </section>
-
-              <section id="links">
-                <div class="inner">
-                  <div class="section-head">
-                    <h2>Working Links</h2>
-                    <p>Start from the official Devpost resource page, then move into local publishing artifacts.</p>
-                  </div>
-                  <div class="links">
-                    ${links.map(([label, href]) => html`
-                      <a class="link-card" href=${href}>
-                        <span>${label}</span>
-                        <span aria-hidden="true">→</span>
-                      </a>
-                    `)}
-                  </div>
-                </div>
-              </section>
-            </main>
-
-            <footer>
-              <div class="inner">
-                <span>AITrailblazer AI Agent Publishing</span>
-                <span>No secrets, no Devpost session data, no private runtime credentials.</span>
-              </div>
-            </footer>
-          </div>
-        `;
-      }
-    }
-
-    customElements.define('ai-publishing-surface', AIPublishingSurface);
   </script>
 </body>
 </html>
