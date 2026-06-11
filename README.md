@@ -10,9 +10,19 @@ AITrailblazer AI Agent Publishing is a Google Cloud Rapid Agent Hackathon projec
   <a href="https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/demo/"><strong>Browser Demo</strong></a>
   ·
   <a href="https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/demo/run"><strong>Manual Controls</strong></a>
+  ·
+  <a href="https://youtu.be/j6NJYTDsW6E"><strong>Demo Video</strong></a>
 </p>
 
 ![AITrailblazer publishing landing proof](img/Demo01.png)
+
+## Demo Video
+
+The two-minute demo shows the hosted Cloud Run application functioning in the browser: the landing page, the publication-to-agent-memory workflow, raw JSON proof, rendered HTML packet, and reusable TripCode/River context.
+
+<a href="https://youtu.be/j6NJYTDsW6E">
+  <img src="https://img.youtube.com/vi/j6NJYTDsW6E/hqdefault.jpg" alt="Watch the AITrailblazer AI Agent Publishing demo video" width="720">
+</a>
 
 ## What The Demo Shows
 
