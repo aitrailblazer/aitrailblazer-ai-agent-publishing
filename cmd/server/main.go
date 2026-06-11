@@ -137,6 +137,7 @@ func newMux(
 		}
 		writeJSON(w, http.StatusOK, costTracker.Snapshot())
 	})
+	registerDemoUIRoutes(mux)
 	mux.HandleFunc("GET /", serveStaticPublishingSurface)
 	return mux
 }

@@ -1,0 +1,14 @@
+{
+  "name": "aitrailblazer-ai-agent-publishing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AITrailblazer AI Agent Publishing demo recorder.",
+  "type": "module",
+  "scripts": {
+    "check:playwright": "node -e \"import('playwright').then(()=>console.log('playwright-ok'))\"",
+    "record:publishing-demo": "node scripts/record-publishing-autoplay-demo.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}

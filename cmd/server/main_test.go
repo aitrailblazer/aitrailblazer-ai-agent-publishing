@@ -156,6 +156,81 @@ func TestStaticPublishingSurface(t *testing.T) {
 	}
 }
 
+func TestPublishingDemoUIRoutes(t *testing.T) {
+	t.Setenv("PUBLISHING_DEMO_API_KEY", "")
+	mux := testMux()
+	for _, path := range []string{"/demo", "/demo/"} {
+		req := httptest.NewRequest(http.MethodGet, path, nil)
+		rec := httptest.NewRecorder()
+		mux.ServeHTTP(rec, req)
+		if rec.Code != http.StatusOK {
+			t.Fatalf("%s status = %d", path, rec.Code)
+		}
+		body := rec.Body.String()
+		for _, want := range []string{
+			"Turn a publication archive into agent memory.",
+			"Opening voiceover:",
+			"archive context, TripCode identity, River memory",
+			"Submission qualification checklist",
+			"Functional running application",
+			"Google Cloud runtime surface",
+			"MongoDB-oriented memory model",
+			"Agent loop",
+			"Gemini-ready packet",
+			"Run 3 minute demo",
+			"DeltaSignalIcon-256.png",
+			"HUT-RIVER-001",
+			"HTML Packet",
+		} {
+			if !strings.Contains(body, want) {
+				t.Fatalf("%s missing %q", path, want)
+			}
+		}
+	}
+	for _, path := range []string{"/demo/run", "/demo/run/?autoplay=1"} {
+		req := httptest.NewRequest(http.MethodGet, path, nil)
+		rec := httptest.NewRecorder()
+		mux.ServeHTTP(rec, req)
+		if rec.Code != http.StatusOK {
+			t.Fatalf("%s status = %d", path, rec.Code)
+		}
+		body := rec.Body.String()
+		for _, want := range []string{
+			"AITrailblazer AI Agent Publishing",
+			"3 Minute Publishing Proof",
+			"Archive Brief",
+			"TripCode Resolve",
+			"Judge Proof Package",
+			"Rendered Packet",
+			"Rendered HTML report from live JSON",
+			"docFlow",
+			"DeltaSignalIcon-256.png",
+			"Second-turn Memory",
+			"Usage Ledger",
+			"play()",
+			"MongoDB MCP",
+		} {
+			if !strings.Contains(body, want) {
+				t.Fatalf("%s missing %q", path, want)
+			}
+		}
+	}
+}
+
+func TestPublishingDemoUIPrefillsLocalKey(t *testing.T) {
+	t.Setenv("PUBLISHING_DEMO_API_KEY", "local-demo-key")
+	mux := testMux()
+	req := httptest.NewRequest(http.MethodGet, "/demo/run", nil)
+	rec := httptest.NewRecorder()
+	mux.ServeHTTP(rec, req)
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d", rec.Code)
+	}
+	if !strings.Contains(rec.Body.String(), `value="local-demo-key"`) {
+		t.Fatalf("local demo key was not prefilled")
+	}
+}
+
 func TestArchiveBrief(t *testing.T) {
 	t.Setenv("PUBLISHING_DEMO_API_KEY", "")
 	mux := testMux()
