@@ -1,31 +1,66 @@
 # AITrailblazer AI Agent Publishing
 
-Google Cloud Rapid Agent Hackathon submission for turning a publication archive into agent-readable memory.
+**Turn a publication archive into reusable agent memory.**
 
-The project demonstrates a browser and API workflow where a published research archive becomes structured agent context: article objects, TripCodes, River continuity, MongoDB-backed state, Gemini-ready synthesis, and reusable reader packets.
+AITrailblazer AI Agent Publishing is a Google Cloud Rapid Agent Hackathon project that converts published research into structured, agent-readable context: article objects, TripCodes, River continuity, MongoDB-backed state, Gemini-ready synthesis, and reusable reader packets.
 
-## Live Demo
+<p>
+  <a href="https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/"><strong>Live App</strong></a>
+  ·
+  <a href="https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/demo/"><strong>Browser Demo</strong></a>
+  ·
+  <a href="https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/demo/run"><strong>Manual Controls</strong></a>
+</p>
 
-- Hosted app: https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/
-- Browser demo: https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/demo/
-- Manual demo controls: https://aitrailblazer-ai-agent-publishing-rmycwek6ba-uc.a.run.app/demo/run
+![AITrailblazer publishing landing proof](img/Demo01.png)
 
-## What It Proves
+## What The Demo Shows
 
-- A Cloud Run application can expose a repeatable publishing-agent workflow.
-- A TripCode can resolve a publication object into reusable River memory.
-- MongoDB/MCP-shaped context can support article, claim, River, session, and agent-run records.
-- Gemini-ready synthesis can convert raw JSON proof into a reader-facing packet.
-- Usage visibility keeps the demo cost-aware.
+Most publication archives are valuable but hard for agents to use. Articles, source links, and follow-up context usually stay trapped as static pages. This project turns that archive into a repeatable agent workflow:
 
-## Run Locally
+1. **Archive content becomes article objects.**
+2. **TripCodes provide stable resolver keys.**
+3. **Rivers group related articles into reusable memory.**
+4. **MongoDB-shaped context stores archive, claim, River, session, and run records.**
+5. **Gemini-ready synthesis converts raw proof into a reader-facing packet.**
+
+The browser demo shows the proof path end to end: raw JSON first for auditability, then a rendered HTML packet for a user-facing result.
+
+![AITrailblazer publishing runtime proof](img/Demo02.png)
+
+## Why It Matters
+
+This is not just a static website or a chatbot over article text. The project demonstrates a production-shaped loop:
+
+- **Discover** the available runtime surface.
+- **Invoke** a TripCode/River workflow.
+- **Verify** the returned evidence packet.
+- **Remember** session context for follow-up.
+- **Render** the final result as a reusable reader packet.
+
+That makes a publication archive useful to humans, browser users, API clients, and future agent-to-agent workflows.
+
+## Live Routes
+
+| Surface | Route |
+| --- | --- |
+| Landing page | `GET /` |
+| Browser demo | `GET /demo/` |
+| Manual controls | `GET /demo/run` |
+| Health check | `GET /health` |
+| Usage ledger | `GET /v1/usage` |
+| Archive brief | `POST /v1/archive-brief` |
+| TripCode resolve | `POST /v1/tripcode` |
+| Judge-friendly resolve | `GET|POST /resolve` |
+
+## Local Run
 
 ```bash
 GOWORK=off go test ./...
 PORT=8080 GOWORK=off go run ./cmd/server
 ```
 
-Then open:
+Open:
 
 ```text
 http://127.0.0.1:8080/
@@ -33,36 +68,37 @@ http://127.0.0.1:8080/demo/
 http://127.0.0.1:8080/demo/run
 ```
 
-## Useful Commands
+## Verification
 
 ```bash
 make test
 make validate
 make run
-make deploy
 npm ci
 npm run check:playwright
 ```
 
-## Main Routes
+## Deployment
 
-- `GET /health`
-- `GET /v1/judge-demo`
-- `GET /v1/usage`
-- `POST /v1/archive-brief`
-- `POST /v1/tripcode`
-- `GET|POST /resolve`
-- `GET /demo/`
-- `GET /demo/run`
+The public service is deployed on Google Cloud Run:
 
-## Public Docs
+```bash
+make deploy
+```
 
-The durable public project documentation is maintained as self-contained HTML visual specs:
+The container includes the Go HTTP service, static visual pages, demo screenshots, and MongoDB-oriented runtime support for the hackathon proof path.
 
-- `index.html`
-- `PROJECT_README.html`
-- `START_HERE.html`
-- `VIDEO_SLIDES.html`
-- `docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html`
+## Project Files
+
+| File | Purpose |
+| --- | --- |
+| `index.html` | Minimal public landing page |
+| `START_HERE.html` | Manual walkthrough and replay instructions |
+| `VIDEO_SLIDES.html` | Video script and slide sequence |
+| `PROJECT_README.html` | Long-form visual project notes |
+| `docs/*.html` | Self-contained public visual specs |
+| `cmd/server` | Go Cloud Run service |
+| `internal/agent` | Coordinator, TripCode resolver, memory store, and cost tracker |
+| `scripts/judge-demo.sh` | Curl-based demo flow |
 
 No API keys, private screenshots, or local operator artifacts are required to run the public demo paths.
