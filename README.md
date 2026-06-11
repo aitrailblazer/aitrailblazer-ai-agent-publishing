@@ -60,7 +60,7 @@ npm run check:playwright
 The durable public project documentation is maintained as self-contained HTML visual specs:
 
 - `index.html`
-- `README.html`
+- `PROJECT_README.html`
 - `START_HERE.html`
 - `VIDEO_SLIDES.html`
 - `docs/AITrailblazer_AI_Agent_Publishing_Public_Docs_2026_06_10.html`

@@ -107,7 +107,7 @@ preview:
 validate:
 	@test -f index.html
 	@test -f img/AITrailblazerAI.png
-	@test -f README.html
+	@test -f PROJECT_README.html
 	@test -f DEVPOST_SUBMISSION.html
 	@test -f EXECPLAN_FINAL_SUBMISSION_VIDEO.html
 	@test -f START_HERE.html

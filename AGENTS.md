@@ -90,7 +90,7 @@ The contest rules and Devpost FAQ create a strict AI-tool boundary for both the 
 
 - `index.html`: public static landing/spec page for GitHub Pages or local preview.
 - `CHANGELOG.html`: public changelog.
-- `README.html`: local workspace notes.
+- `PROJECT_README.html`: local workspace notes.
 - `docs/Rapid_Agent_Hackathon_Resource_Map_2026_06_08.html`: Rapid Agent resource map plus MongoDB fit.
 - `assets/agent-publishing-evidence-pipeline.png`: visual project signal borrowed from the DeltaSignal proof case.
 - `cmd/server`: HTTP service for judge demo endpoints.

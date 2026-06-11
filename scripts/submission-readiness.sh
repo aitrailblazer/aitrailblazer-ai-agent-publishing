@@ -67,8 +67,8 @@ pass "docs folder contains one HTML file"
 [[ -f "${DOC_PATH}" ]] || fail "canonical docs file is missing"
 pass "canonical docs file exists"
 
-if rg -n "href=[\"']\\./docs/" index.html README.html CHANGELOG.html DEVPOST_SUBMISSION.html EXECPLAN_FINAL_SUBMISSION_VIDEO.html START_HERE.html VIDEO_SLIDES.html | rg -v "${DOC_PATH}" >/dev/null; then
-  rg -n "href=[\"']\\./docs/" index.html README.html CHANGELOG.html DEVPOST_SUBMISSION.html EXECPLAN_FINAL_SUBMISSION_VIDEO.html START_HERE.html VIDEO_SLIDES.html | rg -v "${DOC_PATH}" >&2
+if rg -n "href=[\"']\\./docs/" index.html PROJECT_README.html CHANGELOG.html DEVPOST_SUBMISSION.html EXECPLAN_FINAL_SUBMISSION_VIDEO.html START_HERE.html VIDEO_SLIDES.html | rg -v "${DOC_PATH}" >/dev/null; then
+  rg -n "href=[\"']\\./docs/" index.html PROJECT_README.html CHANGELOG.html DEVPOST_SUBMISSION.html EXECPLAN_FINAL_SUBMISSION_VIDEO.html START_HERE.html VIDEO_SLIDES.html | rg -v "${DOC_PATH}" >&2
   fail "public HTML links to stale docs files"
 fi
 pass "index/README/changelog/submission docs links target consolidated public docs"
@@ -77,7 +77,7 @@ echo
 echo "== public secret and evidence scan =="
 private_evidence_pattern="Co""dex|Open""AI|Chat""GPT|Clau""de|Anth""ropic|Cur""sor|Co""pilot|csrf""-token|Rapid_Agent_Hackathon_Rules_Source_2026_06_08""\\.raw\\.html|860""1137|AI""za|s""k-[A-Za-z0-9]|mong""odb\\+srv://[^ <)\"']+:[^ <)\"']+@"
 if rg -n "${private_evidence_pattern}" \
-  index.html README.html CHANGELOG.html DEVPOST_SUBMISSION.html EXECPLAN_FINAL_SUBMISSION_VIDEO.html START_HERE.html VIDEO_SLIDES.html Makefile Dockerfile cmd internal scripts docs .env.example >"${tmpdir}/scan.txt"; then
+  index.html PROJECT_README.html CHANGELOG.html DEVPOST_SUBMISSION.html EXECPLAN_FINAL_SUBMISSION_VIDEO.html START_HERE.html VIDEO_SLIDES.html Makefile Dockerfile cmd internal scripts docs .env.example >"${tmpdir}/scan.txt"; then
   cat "${tmpdir}/scan.txt" >&2
   fail "public scan found prohibited private evidence or obvious token pattern"
 fi
@@ -162,7 +162,7 @@ http_get "${PUBLIC_RAW_BASE}/LICENSE" "${tmpdir}/repo-license.txt" "${tmpdir}/re
 rg -q "MIT License" "${tmpdir}/repo-license.txt" || fail "public repo raw LICENSE missing MIT License"
 pass "public repo MIT license visible"
 
-http_get "${PUBLIC_RAW_BASE}/README.html" "${tmpdir}/repo-readme.html" "${tmpdir}/repo-readme.headers"
+http_get "${PUBLIC_RAW_BASE}/PROJECT_README.html" "${tmpdir}/repo-readme.html" "${tmpdir}/repo-readme.headers"
 rg -q "Judge Quickstart" "${tmpdir}/repo-readme.html" || fail "public repo README missing Judge Quickstart"
 rg -q "Public Safety Boundary" "${tmpdir}/repo-readme.html" || fail "public repo README missing Public Safety Boundary"
 rg -q "No investment recommendations" "${tmpdir}/repo-readme.html" || fail "public repo README missing investment boundary"

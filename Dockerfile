@@ -19,7 +19,7 @@ RUN apt-get update \
 
 COPY --from=build /out/aitrailblazer-ai-agent-publishing /aitrailblazer-ai-agent-publishing
 COPY --from=build /src/index.html /index.html
-COPY --from=build /src/README.html /README.html
+COPY --from=build /src/PROJECT_README.html /PROJECT_README.html
 COPY --from=build /src/CHANGELOG.html /CHANGELOG.html
 COPY --from=build /src/DEVPOST_SUBMISSION.html /DEVPOST_SUBMISSION.html
 COPY --from=build /src/EXECPLAN_FINAL_SUBMISSION_VIDEO.html /EXECPLAN_FINAL_SUBMISSION_VIDEO.html

@@ -152,7 +152,7 @@ func serveStaticPublishingSurface(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	allowed := clean == "index.html" ||
-		clean == "README.html" ||
+		clean == "PROJECT_README.html" ||
 		clean == "CHANGELOG.html" ||
 		clean == "DEVPOST_SUBMISSION.html" ||
 		clean == "EXECPLAN_FINAL_SUBMISSION_VIDEO.html" ||
